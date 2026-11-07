@@ -1,0 +1,1189 @@
+{
+ "rule": "per house (preference order 15, 3, 8, 19, 20, then others): the first weekday from 1 Dec 2014 (else 1 Dec 2013) with >=90% 24 h coverage, a learned whole-home baseline and first activity before the standard deadline (an ordinary day). Baseline fitted on the previous 28 days only.",
+ "mode": "v1_whole_home (events = cycles the Aggregate detector marked human)",
+ "homes": [
+  {
+   "house": 15,
+   "occupants": 1,
+   "split": "test",
+   "date": "2014-12-02",
+   "weekday": "Tuesday",
+   "first_activity": {
+    "min": 363.8,
+    "time": "06:03",
+    "label": "kettle"
+   },
+   "events": [
+    {
+     "time": "06:03",
+     "min": 363.8,
+     "label": "kettle",
+     "dp_w": 3096,
+     "duration_s": 157,
+     "human_score": 1.0
+    }
+   ],
+   "baseline": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 13,
+    "usual_min": 664.2666666666667,
+    "spread_min": 249.17564,
+    "margin_min": 180.0,
+    "deadline_min": 844.2666666666667,
+    "policy": "standard",
+    "days_needed": 0,
+    "history": [
+     496.2,
+     778.7666666666667,
+     483.03333333333336,
+     439.73333333333335,
+     754.2833333333333,
+     628.0333333333333,
+     591.1833333333333,
+     664.2666666666667,
+     373.3833333333333,
+     837.4333333333333,
+     725.3333333333334,
+     963.3833333333333,
+     1376.85
+    ],
+    "usual": "11:04",
+    "deadline": "14:04",
+    "spread": 249,
+    "sentence": "First activity usually 11:04 ± 249 min on weekdays. Kettle asks if nothing by 14:04."
+   },
+   "baseline_cold": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 13,
+    "usual_min": 664.2666666666667,
+    "spread_min": 249.17564,
+    "margin_min": 120.0,
+    "deadline_min": 784.2666666666667,
+    "policy": "cold",
+    "days_needed": 0,
+    "history": [
+     496.2,
+     778.7666666666667,
+     483.03333333333336,
+     439.73333333333335,
+     754.2833333333333,
+     628.0333333333333,
+     591.1833333333333,
+     664.2666666666667,
+     373.3833333333333,
+     837.4333333333333,
+     725.3333333333334,
+     963.3833333333333,
+     1376.85
+    ],
+    "usual": "11:04",
+    "deadline": "13:04",
+    "spread": 249,
+    "sentence": "First activity usually 11:04 ± 249 min on weekdays. Kettle asks if nothing by 13:04."
+   },
+   "history_days": 25
+  },
+  {
+   "house": 3,
+   "occupants": 2,
+   "split": "tune",
+   "date": "2014-12-01",
+   "weekday": "Monday",
+   "first_activity": {
+    "min": 460.6,
+    "time": "07:40",
+    "label": "microwave"
+   },
+   "events": [
+    {
+     "time": "07:40",
+     "min": 460.6,
+     "label": "microwave",
+     "dp_w": 1602,
+     "duration_s": 340,
+     "human_score": 0.62
+    },
+    {
+     "time": "08:14",
+     "min": 494.2,
+     "label": "kettle",
+     "dp_w": 1646,
+     "duration_s": 34,
+     "human_score": 0.56
+    },
+    {
+     "time": "08:33",
+     "min": 513.8,
+     "label": "kettle",
+     "dp_w": 1816,
+     "duration_s": 102,
+     "human_score": 1.0
+    },
+    {
+     "time": "08:43",
+     "min": 523.8,
+     "label": "microwave",
+     "dp_w": 691,
+     "duration_s": 116,
+     "human_score": 0.79
+    },
+    {
+     "time": "09:00",
+     "min": 540.4,
+     "label": "microwave",
+     "dp_w": 1639,
+     "duration_s": 48,
+     "human_score": 0.8
+    },
+    {
+     "time": "09:56",
+     "min": 596.2,
+     "label": "kettle",
+     "dp_w": 1656,
+     "duration_s": 156,
+     "human_score": 0.74
+    },
+    {
+     "time": "14:36",
+     "min": 876.8,
+     "label": "kettle",
+     "dp_w": 1696,
+     "duration_s": 116,
+     "human_score": 0.85
+    },
+    {
+     "time": "16:27",
+     "min": 987.6,
+     "label": "kettle",
+     "dp_w": 1757,
+     "duration_s": 68,
+     "human_score": 0.97
+    },
+    {
+     "time": "16:50",
+     "min": 1010.2,
+     "label": "kettle",
+     "dp_w": 1665,
+     "duration_s": 82,
+     "human_score": 0.76
+    },
+    {
+     "time": "17:57",
+     "min": 1077.3,
+     "label": "microwave",
+     "dp_w": 1218,
+     "duration_s": 1011,
+     "human_score": 0.8
+    },
+    {
+     "time": "18:01",
+     "min": 1081.5,
+     "label": "microwave",
+     "dp_w": 1479,
+     "duration_s": 179,
+     "human_score": 0.8
+    },
+    {
+     "time": "18:16",
+     "min": 1096.9,
+     "label": "microwave",
+     "dp_w": 1849,
+     "duration_s": 633,
+     "human_score": 0.59
+    },
+    {
+     "time": "18:24",
+     "min": 1104.9,
+     "label": "microwave",
+     "dp_w": 1220,
+     "duration_s": 588,
+     "human_score": 0.8
+    },
+    {
+     "time": "18:32",
+     "min": 1112.6,
+     "label": "microwave",
+     "dp_w": 1234,
+     "duration_s": 483,
+     "human_score": 0.8
+    },
+    {
+     "time": "18:34",
+     "min": 1114.0,
+     "label": "microwave",
+     "dp_w": 1408,
+     "duration_s": 20,
+     "human_score": 0.52
+    },
+    {
+     "time": "19:06",
+     "min": 1147.0,
+     "label": "kettle",
+     "dp_w": 1660,
+     "duration_s": 264,
+     "human_score": 0.75
+    },
+    {
+     "time": "20:37",
+     "min": 1237.0,
+     "label": "microwave",
+     "dp_w": 1560,
+     "duration_s": 61,
+     "human_score": 0.54
+    }
+   ],
+   "baseline": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 17,
+    "usual_min": 465.8833333333333,
+    "spread_min": 27.23042000000001,
+    "margin_min": 81.69126000000003,
+    "deadline_min": 547.5745933333334,
+    "policy": "standard",
+    "days_needed": 0,
+    "history": [
+     458.25,
+     454.21666666666664,
+     462.6333333333333,
+     481.78333333333336,
+     453.3833333333333,
+     484.25,
+     316.96666666666664,
+     515.0333333333333,
+     465.8833333333333,
+     485.1,
+     502.68333333333334,
+     463.75,
+     470.76666666666665,
+     508.95,
+     437.75,
+     492.5833333333333,
+     444.8833333333333
+    ],
+    "usual": "7:46",
+    "deadline": "9:08",
+    "spread": 27,
+    "sentence": "First activity usually 7:46 ± 27 min on weekdays. Kettle asks if nothing by 9:08."
+   },
+   "baseline_cold": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 17,
+    "usual_min": 465.8833333333333,
+    "spread_min": 27.23042000000001,
+    "margin_min": 54.46084000000002,
+    "deadline_min": 520.3441733333334,
+    "policy": "cold",
+    "days_needed": 0,
+    "history": [
+     458.25,
+     454.21666666666664,
+     462.6333333333333,
+     481.78333333333336,
+     453.3833333333333,
+     484.25,
+     316.96666666666664,
+     515.0333333333333,
+     465.8833333333333,
+     485.1,
+     502.68333333333334,
+     463.75,
+     470.76666666666665,
+     508.95,
+     437.75,
+     492.5833333333333,
+     444.8833333333333
+    ],
+    "usual": "7:46",
+    "deadline": "8:40",
+    "spread": 27,
+    "sentence": "First activity usually 7:46 ± 27 min on weekdays. Kettle asks if nothing by 8:40."
+   },
+   "history_days": 25,
+   "kettle_iam_uses": [
+    {
+     "time": "07:40",
+     "min": 460.6,
+     "dp_w": 1537,
+     "duration_s": 340
+    },
+    {
+     "time": "08:14",
+     "min": 494.2,
+     "dp_w": 1586,
+     "duration_s": 34
+    },
+    {
+     "time": "09:00",
+     "min": 540.4,
+     "dp_w": 1606,
+     "duration_s": 27
+    },
+    {
+     "time": "09:56",
+     "min": 596.2,
+     "dp_w": 1588,
+     "duration_s": 177
+    },
+    {
+     "time": "14:36",
+     "min": 876.9,
+     "dp_w": 1565,
+     "duration_s": 115
+    },
+    {
+     "time": "16:50",
+     "min": 1010.2,
+     "dp_w": 1517,
+     "duration_s": 96
+    },
+    {
+     "time": "18:34",
+     "min": 1114.0,
+     "dp_w": 1410,
+     "duration_s": 20
+    },
+    {
+     "time": "19:06",
+     "min": 1146.9,
+     "dp_w": 1534,
+     "duration_s": 292
+    },
+    {
+     "time": "20:37",
+     "min": 1237.0,
+     "dp_w": 1518,
+     "duration_s": 67
+    }
+   ]
+  },
+  {
+   "house": 8,
+   "occupants": 2,
+   "split": "tune",
+   "date": "2014-12-01",
+   "weekday": "Monday",
+   "first_activity": {
+    "min": 261.1,
+    "time": "04:21",
+    "label": "microwave"
+   },
+   "events": [
+    {
+     "time": "04:21",
+     "min": 261.1,
+     "label": "microwave",
+     "dp_w": 634,
+     "duration_s": 465,
+     "human_score": 0.52
+    },
+    {
+     "time": "07:19",
+     "min": 440.0,
+     "label": "kettle",
+     "dp_w": 1991,
+     "duration_s": 102,
+     "human_score": 1.0
+    },
+    {
+     "time": "07:22",
+     "min": 442.1,
+     "label": "microwave",
+     "dp_w": 1620,
+     "duration_s": 68,
+     "human_score": 0.8
+    },
+    {
+     "time": "07:28",
+     "min": 448.5,
+     "label": "toaster",
+     "dp_w": 964,
+     "duration_s": 138,
+     "human_score": 0.5
+    },
+    {
+     "time": "09:40",
+     "min": 580.2,
+     "label": "kettle",
+     "dp_w": 2921,
+     "duration_s": 89,
+     "human_score": 1.0
+    },
+    {
+     "time": "13:07",
+     "min": 787.9,
+     "label": "microwave",
+     "dp_w": 689,
+     "duration_s": 34,
+     "human_score": 0.79
+    },
+    {
+     "time": "13:11",
+     "min": 791.9,
+     "label": "microwave",
+     "dp_w": 753,
+     "duration_s": 49,
+     "human_score": 0.78
+    },
+    {
+     "time": "13:12",
+     "min": 793.0,
+     "label": "microwave",
+     "dp_w": 643,
+     "duration_s": 55,
+     "human_score": 0.58
+    },
+    {
+     "time": "13:14",
+     "min": 794.0,
+     "label": "microwave",
+     "dp_w": 689,
+     "duration_s": 207,
+     "human_score": 0.79
+    },
+    {
+     "time": "13:16",
+     "min": 796.9,
+     "label": "microwave",
+     "dp_w": 686,
+     "duration_s": 55,
+     "human_score": 0.79
+    },
+    {
+     "time": "13:17",
+     "min": 797.6,
+     "label": "microwave",
+     "dp_w": 688,
+     "duration_s": 76,
+     "human_score": 0.79
+    },
+    {
+     "time": "13:32",
+     "min": 812.8,
+     "label": "toaster",
+     "dp_w": 852,
+     "duration_s": 134,
+     "human_score": 0.5
+    },
+    {
+     "time": "15:01",
+     "min": 901.9,
+     "label": "kettle",
+     "dp_w": 3052,
+     "duration_s": 137,
+     "human_score": 1.0
+    },
+    {
+     "time": "16:13",
+     "min": 973.1,
+     "label": "microwave",
+     "dp_w": 1317,
+     "duration_s": 247,
+     "human_score": 0.8
+    },
+    {
+     "time": "16:17",
+     "min": 977.5,
+     "label": "microwave",
+     "dp_w": 1566,
+     "duration_s": 68,
+     "human_score": 0.78
+    },
+    {
+     "time": "16:19",
+     "min": 979.1,
+     "label": "microwave",
+     "dp_w": 1691,
+     "duration_s": 27,
+     "human_score": 0.61
+    },
+    {
+     "time": "16:36",
+     "min": 996.6,
+     "label": "microwave",
+     "dp_w": 1675,
+     "duration_s": 116,
+     "human_score": 0.8
+    },
+    {
+     "time": "16:45",
+     "min": 1005.5,
+     "label": "microwave",
+     "dp_w": 1308,
+     "duration_s": 62,
+     "human_score": 0.8
+    },
+    {
+     "time": "16:45",
+     "min": 1005.7,
+     "label": "microwave",
+     "dp_w": 1140,
+     "duration_s": 48,
+     "human_score": 0.55
+    },
+    {
+     "time": "16:48",
+     "min": 1008.2,
+     "label": "microwave",
+     "dp_w": 1602,
+     "duration_s": 21,
+     "human_score": 0.59
+    },
+    {
+     "time": "16:50",
+     "min": 1010.9,
+     "label": "microwave",
+     "dp_w": 1532,
+     "duration_s": 124,
+     "human_score": 0.8
+    },
+    {
+     "time": "17:43",
+     "min": 1064.0,
+     "label": "kettle",
+     "dp_w": 2908,
+     "duration_s": 137,
+     "human_score": 1.0
+    },
+    {
+     "time": "00:24",
+     "min": 24.8,
+     "label": "microwave",
+     "dp_w": 647,
+     "duration_s": 1377,
+     "human_score": 0.52
+    }
+   ],
+   "baseline": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 19,
+    "usual_min": 410.3,
+    "spread_min": 34.39631999999998,
+    "margin_min": 103.18895999999995,
+    "deadline_min": 513.4889599999999,
+    "policy": "standard",
+    "days_needed": 0,
+    "history": [
+     443.9166666666667,
+     433.5,
+     403.9,
+     388.51666666666665,
+     264.18333333333334,
+     421.76666666666665,
+     417.23333333333335,
+     390.6333333333333,
+     439.25,
+     375.65,
+     341.9166666666667,
+     472.6333333333333,
+     433.53333333333336,
+     390.18333333333334,
+     443.8333333333333,
+     432.3,
+     372.0833333333333,
+     403.4,
+     410.3
+    ],
+    "usual": "6:50",
+    "deadline": "8:33",
+    "spread": 34,
+    "sentence": "First activity usually 6:50 ± 34 min on weekdays. Kettle asks if nothing by 8:33."
+   },
+   "baseline_cold": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 19,
+    "usual_min": 410.3,
+    "spread_min": 34.39631999999998,
+    "margin_min": 68.79263999999996,
+    "deadline_min": 479.09263999999996,
+    "policy": "cold",
+    "days_needed": 0,
+    "history": [
+     443.9166666666667,
+     433.5,
+     403.9,
+     388.51666666666665,
+     264.18333333333334,
+     421.76666666666665,
+     417.23333333333335,
+     390.6333333333333,
+     439.25,
+     375.65,
+     341.9166666666667,
+     472.6333333333333,
+     433.53333333333336,
+     390.18333333333334,
+     443.8333333333333,
+     432.3,
+     372.0833333333333,
+     403.4,
+     410.3
+    ],
+    "usual": "6:50",
+    "deadline": "7:59",
+    "spread": 34,
+    "sentence": "First activity usually 6:50 ± 34 min on weekdays. Kettle asks if nothing by 7:59."
+   },
+   "history_days": 27,
+   "kettle_iam_uses": [
+    {
+     "time": "07:20",
+     "min": 440.3,
+     "dp_w": 2734,
+     "duration_s": 165
+    },
+    {
+     "time": "09:39",
+     "min": 580.0,
+     "dp_w": 2688,
+     "duration_s": 103
+    },
+    {
+     "time": "13:11",
+     "min": 791.1,
+     "dp_w": 2719,
+     "duration_s": 146
+    },
+    {
+     "time": "13:28",
+     "min": 808.5,
+     "dp_w": 2684,
+     "duration_s": 27
+    },
+    {
+     "time": "15:01",
+     "min": 901.9,
+     "dp_w": 2746,
+     "duration_s": 137
+    },
+    {
+     "time": "17:43",
+     "min": 1063.9,
+     "dp_w": 2673,
+     "duration_s": 144
+    }
+   ]
+  },
+  {
+   "house": 19,
+   "occupants": 4,
+   "split": "test",
+   "date": "2014-12-01",
+   "weekday": "Monday",
+   "first_activity": {
+    "min": 464.4,
+    "time": "07:44",
+    "label": "microwave"
+   },
+   "events": [
+    {
+     "time": "07:44",
+     "min": 464.4,
+     "label": "microwave",
+     "dp_w": 1219,
+     "duration_s": 180,
+     "human_score": 0.8
+    },
+    {
+     "time": "07:44",
+     "min": 464.6,
+     "label": "kettle",
+     "dp_w": 2822,
+     "duration_s": 90,
+     "human_score": 1.0
+    },
+    {
+     "time": "07:54",
+     "min": 474.4,
+     "label": "toaster",
+     "dp_w": 765,
+     "duration_s": 138,
+     "human_score": 0.5
+    },
+    {
+     "time": "09:27",
+     "min": 567.8,
+     "label": "kettle",
+     "dp_w": 2670,
+     "duration_s": 63,
+     "human_score": 1.0
+    },
+    {
+     "time": "13:18",
+     "min": 798.5,
+     "label": "kettle",
+     "dp_w": 2503,
+     "duration_s": 104,
+     "human_score": 1.0
+    },
+    {
+     "time": "14:45",
+     "min": 885.7,
+     "label": "kettle",
+     "dp_w": 2603,
+     "duration_s": 49,
+     "human_score": 1.0
+    },
+    {
+     "time": "16:01",
+     "min": 961.0,
+     "label": "microwave",
+     "dp_w": 1136,
+     "duration_s": 55,
+     "human_score": 0.76
+    },
+    {
+     "time": "16:54",
+     "min": 1014.5,
+     "label": "kettle",
+     "dp_w": 2619,
+     "duration_s": 63,
+     "human_score": 1.0
+    },
+    {
+     "time": "17:37",
+     "min": 1057.5,
+     "label": "kettle",
+     "dp_w": 2810,
+     "duration_s": 139,
+     "human_score": 1.0
+    },
+    {
+     "time": "17:38",
+     "min": 1059.0,
+     "label": "microwave",
+     "dp_w": 1709,
+     "duration_s": 196,
+     "human_score": 0.8
+    },
+    {
+     "time": "17:48",
+     "min": 1068.3,
+     "label": "microwave",
+     "dp_w": 1877,
+     "duration_s": 188,
+     "human_score": 0.52
+    },
+    {
+     "time": "19:38",
+     "min": 1178.5,
+     "label": "kettle",
+     "dp_w": 2111,
+     "duration_s": 69,
+     "human_score": 1.0
+    },
+    {
+     "time": "21:17",
+     "min": 1277.7,
+     "label": "microwave",
+     "dp_w": 1196,
+     "duration_s": 96,
+     "human_score": 0.64
+    },
+    {
+     "time": "21:36",
+     "min": 1297.0,
+     "label": "kettle",
+     "dp_w": 2030,
+     "duration_s": 42,
+     "human_score": 1.0
+    }
+   ],
+   "baseline": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 19,
+    "usual_min": 448.2,
+    "spread_min": 15.690850000000056,
+    "margin_min": 47.07255000000017,
+    "deadline_min": 495.27255000000014,
+    "policy": "standard",
+    "days_needed": 0,
+    "history": [
+     439.3,
+     452.8,
+     435.3,
+     448.2,
+     457.55,
+     432.56666666666666,
+     467.5,
+     410.6666666666667,
+     436.05,
+     439.65,
+     446.8,
+     431.4,
+     451.65,
+     454.3333333333333,
+     464.3333333333333,
+     458.78333333333336,
+     434.1,
+     453.6333333333333,
+     461.1666666666667
+    ],
+    "usual": "7:28",
+    "deadline": "8:15",
+    "spread": 16,
+    "sentence": "First activity usually 7:28 ± 16 min on weekdays. Kettle asks if nothing by 8:15."
+   },
+   "baseline_cold": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 19,
+    "usual_min": 448.2,
+    "spread_min": 15.690850000000056,
+    "margin_min": 31.381700000000112,
+    "deadline_min": 479.5817000000001,
+    "policy": "cold",
+    "days_needed": 0,
+    "history": [
+     439.3,
+     452.8,
+     435.3,
+     448.2,
+     457.55,
+     432.56666666666666,
+     467.5,
+     410.6666666666667,
+     436.05,
+     439.65,
+     446.8,
+     431.4,
+     451.65,
+     454.3333333333333,
+     464.3333333333333,
+     458.78333333333336,
+     434.1,
+     453.6333333333333,
+     461.1666666666667
+    ],
+    "usual": "7:28",
+    "deadline": "8:00",
+    "spread": 16,
+    "sentence": "First activity usually 7:28 ± 16 min on weekdays. Kettle asks if nothing by 8:00."
+   },
+   "history_days": 27,
+   "kettle_iam_uses": [
+    {
+     "time": "07:44",
+     "min": 464.7,
+     "dp_w": 2912,
+     "duration_s": 83
+    },
+    {
+     "time": "08:02",
+     "min": 482.8,
+     "dp_w": 2935,
+     "duration_s": 55
+    },
+    {
+     "time": "09:27",
+     "min": 567.8,
+     "dp_w": 2950,
+     "duration_s": 63
+    },
+    {
+     "time": "09:39",
+     "min": 579.4,
+     "dp_w": 2939,
+     "duration_s": 34
+    },
+    {
+     "time": "13:18",
+     "min": 798.8,
+     "dp_w": 2795,
+     "duration_s": 84
+    },
+    {
+     "time": "14:45",
+     "min": 885.7,
+     "dp_w": 2936,
+     "duration_s": 49
+    },
+    {
+     "time": "16:00",
+     "min": 960.9,
+     "dp_w": 2824,
+     "duration_s": 104
+    },
+    {
+     "time": "16:54",
+     "min": 1014.6,
+     "dp_w": 2833,
+     "duration_s": 56
+    },
+    {
+     "time": "17:37",
+     "min": 1057.5,
+     "dp_w": 2922,
+     "duration_s": 139
+    }
+   ]
+  },
+  {
+   "house": 20,
+   "occupants": 2,
+   "split": "test",
+   "date": "2014-12-03",
+   "weekday": "Wednesday",
+   "first_activity": {
+    "min": 450.2,
+    "time": "07:30",
+    "label": "microwave"
+   },
+   "events": [
+    {
+     "time": "07:30",
+     "min": 450.2,
+     "label": "microwave",
+     "dp_w": 1038,
+     "duration_s": 1508,
+     "human_score": 0.52
+    },
+    {
+     "time": "07:56",
+     "min": 476.4,
+     "label": "kettle",
+     "dp_w": 2325,
+     "duration_s": 522,
+     "human_score": 0.68
+    },
+    {
+     "time": "12:18",
+     "min": 738.6,
+     "label": "toaster",
+     "dp_w": 895,
+     "duration_s": 176,
+     "human_score": 0.5
+    },
+    {
+     "time": "12:24",
+     "min": 745.0,
+     "label": "microwave",
+     "dp_w": 1484,
+     "duration_s": 46,
+     "human_score": 0.78
+    },
+    {
+     "time": "12:26",
+     "min": 746.1,
+     "label": "microwave",
+     "dp_w": 1405,
+     "duration_s": 129,
+     "human_score": 0.51
+    },
+    {
+     "time": "13:54",
+     "min": 834.7,
+     "label": "kettle",
+     "dp_w": 2272,
+     "duration_s": 345,
+     "human_score": 1.0
+    },
+    {
+     "time": "14:59",
+     "min": 899.2,
+     "label": "kettle",
+     "dp_w": 2859,
+     "duration_s": 88,
+     "human_score": 1.0
+    },
+    {
+     "time": "15:04",
+     "min": 904.7,
+     "label": "microwave",
+     "dp_w": 1566,
+     "duration_s": 236,
+     "human_score": 0.7
+    },
+    {
+     "time": "15:09",
+     "min": 909.2,
+     "label": "microwave",
+     "dp_w": 1464,
+     "duration_s": 229,
+     "human_score": 0.71
+    },
+    {
+     "time": "15:13",
+     "min": 913.5,
+     "label": "microwave",
+     "dp_w": 1268,
+     "duration_s": 229,
+     "human_score": 0.8
+    },
+    {
+     "time": "15:17",
+     "min": 917.8,
+     "label": "microwave",
+     "dp_w": 1647,
+     "duration_s": 235,
+     "human_score": 0.8
+    },
+    {
+     "time": "15:22",
+     "min": 922.0,
+     "label": "microwave",
+     "dp_w": 1581,
+     "duration_s": 236,
+     "human_score": 0.8
+    },
+    {
+     "time": "15:26",
+     "min": 926.4,
+     "label": "microwave",
+     "dp_w": 1508,
+     "duration_s": 234,
+     "human_score": 0.8
+    },
+    {
+     "time": "15:30",
+     "min": 930.6,
+     "label": "microwave",
+     "dp_w": 1584,
+     "duration_s": 235,
+     "human_score": 0.7
+    },
+    {
+     "time": "15:34",
+     "min": 934.7,
+     "label": "microwave",
+     "dp_w": 656,
+     "duration_s": 248,
+     "human_score": 0.66
+    },
+    {
+     "time": "17:16",
+     "min": 1036.7,
+     "label": "kettle",
+     "dp_w": 2948,
+     "duration_s": 102,
+     "human_score": 1.0
+    },
+    {
+     "time": "21:27",
+     "min": 1287.6,
+     "label": "kettle",
+     "dp_w": 2974,
+     "duration_s": 102,
+     "human_score": 1.0
+    }
+   ],
+   "baseline": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 18,
+    "usual_min": 501.64166666666665,
+    "spread_min": 114.34552499999995,
+    "margin_min": 180.0,
+    "deadline_min": 681.6416666666667,
+    "policy": "standard",
+    "days_needed": 0,
+    "history": [
+     743.9,
+     417.3333333333333,
+     609.25,
+     425.55,
+     424.28333333333336,
+     423.6666666666667,
+     426.0833333333333,
+     507.6,
+     572.3666666666667,
+     753.8166666666667,
+     427.0,
+     495.68333333333334,
+     446.55,
+     426.55,
+     754.8833333333333,
+     590.2833333333333,
+     578.5333333333333,
+     1078.4833333333333
+    ],
+    "usual": "8:22",
+    "deadline": "11:22",
+    "spread": 114,
+    "sentence": "First activity usually 8:22 ± 114 min on weekdays. Kettle asks if nothing by 11:22."
+   },
+   "baseline_cold": {
+    "learned": true,
+    "kind": "weekday",
+    "n": 18,
+    "usual_min": 501.64166666666665,
+    "spread_min": 114.34552499999995,
+    "margin_min": 120.0,
+    "deadline_min": 621.6416666666667,
+    "policy": "cold",
+    "days_needed": 0,
+    "history": [
+     743.9,
+     417.3333333333333,
+     609.25,
+     425.55,
+     424.28333333333336,
+     423.6666666666667,
+     426.0833333333333,
+     507.6,
+     572.3666666666667,
+     753.8166666666667,
+     427.0,
+     495.68333333333334,
+     446.55,
+     426.55,
+     754.8833333333333,
+     590.2833333333333,
+     578.5333333333333,
+     1078.4833333333333
+    ],
+    "usual": "8:22",
+    "deadline": "10:22",
+    "spread": 114,
+    "sentence": "First activity usually 8:22 ± 114 min on weekdays. Kettle asks if nothing by 10:22."
+   },
+   "history_days": 27,
+   "kettle_iam_uses": [
+    {
+     "time": "07:06",
+     "min": 426.6,
+     "dp_w": 2746,
+     "duration_s": 109
+    },
+    {
+     "time": "14:59",
+     "min": 899.2,
+     "dp_w": 2630,
+     "duration_s": 81
+    },
+    {
+     "time": "17:16",
+     "min": 1036.7,
+     "dp_w": 2746,
+     "duration_s": 109
+    },
+    {
+     "time": "21:27",
+     "min": 1287.5,
+     "dp_w": 2833,
+     "duration_s": 122
+    }
+   ]
+  }
+ ],
+ "provenance": {
+  "dataset": "REFIT Electrical Load Measurements (cleaned), CLEAN_REFIT_081116",
+  "files": [
+   "CLEAN_House15.csv",
+   "CLEAN_House3.csv",
+   "CLEAN_House8.csv",
+   "CLEAN_House19.csv",
+   "CLEAN_House20.csv"
+  ],
+  "licence": "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)",
+  "citation": "Murray, D., Stankovic, L. & Stankovic, V. (2017). An electrical load measurements dataset of United Kingdom households from a two-year longitudinal study. Scientific Data 4, 160122. doi:10.1038/sdata.2016.122",
+  "time_zone": "Europe/London (REFIT Unix column is local wall-clock time; see docs/refit-evaluation.md)",
+  "code": "kettle/eval/refit.py using kettle.detect, kettle.signatures, kettle.rhythm"
+ }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf6ee">
+  <meta name="description" content="Kettle: a quiet “I'm okay” from the people you care about.">
+  <title>Kettle · Circle</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="../shared/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="../shared/kettle.css">
+  <link rel="stylesheet" href="circle.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <img src="../shared/logo.svg" alt="" class="logo" width="30" height="30">
+    <div class="brand"><span class="word">Kettle</span><span class="sub" id="sub">Circle</span></div>
+    <span class="conn" id="conn" role="status" aria-live="polite"><span class="dot"></span><span class="sr-only" id="connText">Connecting</span></span>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <div id="alert" class="alert" hidden role="alertdialog" aria-modal="true" aria-labelledby="alertTitle" aria-describedby="alertBody"></div>
+  <div id="live" class="sr-only" aria-live="assertive"></div>
+  <script type="module" src="circle.js"></script>
+</body>
+</html>

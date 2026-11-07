@@ -1,0 +1,1824 @@
+{
+ "summary": {
+  "overall": {
+   "kettle_whole_home": {
+    "tp": 22444,
+    "fp": 10839,
+    "fn": 12442,
+    "precision": 0.674,
+    "recall": 0.643,
+    "f1": 0.658,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.637
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 21290,
+    "fp": 2638,
+    "fn": 13596,
+    "precision": 0.89,
+    "recall": 0.61,
+    "f1": 0.724,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.699
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 25082,
+    "fp": 59696,
+    "fn": 9804,
+    "precision": 0.296,
+    "recall": 0.719,
+    "f1": 0.419,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.443
+   },
+   "kettle_plug": {
+    "tp": 34345,
+    "fp": 2585,
+    "fn": 541,
+    "precision": 0.93,
+    "recall": 0.984,
+    "f1": 0.956,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.963
+   },
+   "microwave_whole_home": {
+    "tp": 11519,
+    "fp": 118777,
+    "fn": 9569,
+    "precision": 0.088,
+    "recall": 0.546,
+    "f1": 0.152,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     15,
+     17,
+     18,
+     19,
+     20
+    ],
+    "macro_f1": 0.165
+   }
+  },
+  "tune_1_9": {
+   "kettle_whole_home": {
+    "tp": 14889,
+    "fp": 7857,
+    "fn": 8646,
+    "precision": 0.655,
+    "recall": 0.633,
+    "f1": 0.643,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "macro_f1": 0.632
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 13997,
+    "fp": 1995,
+    "fn": 9538,
+    "precision": 0.875,
+    "recall": 0.595,
+    "f1": 0.708,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "macro_f1": 0.688
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 16763,
+    "fp": 41002,
+    "fn": 6772,
+    "precision": 0.29,
+    "recall": 0.712,
+    "f1": 0.412,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "macro_f1": 0.459
+   },
+   "kettle_plug": {
+    "tp": 23180,
+    "fp": 1107,
+    "fn": 355,
+    "precision": 0.954,
+    "recall": 0.985,
+    "f1": 0.969,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ],
+    "macro_f1": 0.97
+   },
+   "microwave_whole_home": {
+    "tp": 8306,
+    "fp": 66910,
+    "fn": 6870,
+    "precision": 0.11,
+    "recall": 0.547,
+    "f1": 0.184,
+    "houses": [
+     2,
+     3,
+     4,
+     5,
+     6,
+     8,
+     9
+    ],
+    "macro_f1": 0.235
+   }
+  },
+  "test_10_21": {
+   "kettle_whole_home": {
+    "tp": 7555,
+    "fp": 2982,
+    "fn": 3796,
+    "precision": 0.717,
+    "recall": 0.666,
+    "f1": 0.69,
+    "houses": [
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.643
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 7293,
+    "fp": 643,
+    "fn": 4058,
+    "precision": 0.919,
+    "recall": 0.642,
+    "f1": 0.756,
+    "houses": [
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.714
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 8319,
+    "fp": 18694,
+    "fn": 3032,
+    "precision": 0.308,
+    "recall": 0.733,
+    "f1": 0.434,
+    "houses": [
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.422
+   },
+   "kettle_plug": {
+    "tp": 11165,
+    "fp": 1478,
+    "fn": 186,
+    "precision": 0.883,
+    "recall": 0.984,
+    "f1": 0.931,
+    "houses": [
+     11,
+     13,
+     17,
+     19,
+     20,
+     21
+    ],
+    "macro_f1": 0.953
+   },
+   "microwave_whole_home": {
+    "tp": 3213,
+    "fp": 51867,
+    "fn": 2699,
+    "precision": 0.058,
+    "recall": 0.543,
+    "f1": 0.105,
+    "houses": [
+     10,
+     11,
+     12,
+     13,
+     15,
+     17,
+     18,
+     19,
+     20
+    ],
+    "macro_f1": 0.11
+   }
+  }
+ },
+ "cycles_by_label_all_houses": {
+  "cycling": 362687,
+  "unknown": 328599,
+  "microwave": 185153,
+  "fridge": 131670,
+  "human_unknown": 122500,
+  "tv": 87078,
+  "kettle": 47927,
+  "toaster": 4490
+ },
+ "per_house": {
+  "1": {
+   "occupants": 2,
+   "split": "tune",
+   "cycles_by_label": {
+    "cycling": 22330,
+    "unknown": 14929,
+    "microwave": 14419,
+    "human_unknown": 9335,
+    "fridge": 4296,
+    "kettle": 3008,
+    "tv": 2510,
+    "toaster": 329
+   },
+   "human_cycles_per_day": 24.2,
+   "days_24h_covered": 550
+  },
+  "2": {
+   "occupants": 4,
+   "split": "tune",
+   "cycles_by_label": {
+    "unknown": 10237,
+    "cycling": 6340,
+    "fridge": 3852,
+    "human_unknown": 3451,
+    "microwave": 3126,
+    "kettle": 2793,
+    "tv": 2072,
+    "toaster": 208
+   },
+   "human_cycles_per_day": 9.6,
+   "days_24h_covered": 450,
+   "kettle_whole_home": {
+    "tp": 2123,
+    "fp": 670,
+    "fn": 916,
+    "precision": 0.76,
+    "recall": 0.699,
+    "f1": 0.728,
+    "days": 450,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2156,
+    "fp_median_duration_s": 403
+   },
+   "kettle_plug": {
+    "tp": 2995,
+    "fp": 176,
+    "fn": 44,
+    "precision": 0.944,
+    "recall": 0.986,
+    "f1": 0.965,
+    "days": 450,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2746,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 2095,
+    "fp": 7,
+    "fn": 944,
+    "precision": 0.997,
+    "recall": 0.689,
+    "f1": 0.815,
+    "days": 450,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2890,
+    "fp_median_duration_s": 54
+   },
+   "calibration": {
+    "kettle_w": 3052.6,
+    "steps_w": [
+     3053,
+     2918,
+     3069
+    ],
+    "boil_times": [
+     "2013-09-18T07:20:14+01:00",
+     "2013-09-18T13:38:15+01:00",
+     "2013-09-18T15:20:01+01:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 2460,
+    "fp": 4039,
+    "fn": 579,
+    "precision": 0.379,
+    "recall": 0.809,
+    "f1": 0.516,
+    "days": 450,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2065,
+    "fp_median_duration_s": 60
+   },
+   "kettle_median_w": 2722,
+   "kettle_channel_checks": {
+    "channel": "Appliance8",
+    "max_w": 3729,
+    "runs_over_1000w": 3156
+   },
+   "microwave_whole_home": {
+    "tp": 879,
+    "fp": 2247,
+    "fn": 517,
+    "precision": 0.281,
+    "recall": 0.63,
+    "f1": 0.389,
+    "days": 450,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1282,
+    "fp_median_duration_s": 102
+   }
+  },
+  "3": {
+   "occupants": 2,
+   "split": "tune",
+   "cycles_by_label": {
+    "cycling": 25775,
+    "unknown": 20572,
+    "microwave": 10631,
+    "human_unknown": 9369,
+    "fridge": 7677,
+    "tv": 4953,
+    "kettle": 2350,
+    "toaster": 212
+   },
+   "human_cycles_per_day": 16.3,
+   "days_24h_covered": 535,
+   "kettle_whole_home": {
+    "tp": 1459,
+    "fp": 891,
+    "fn": 1959,
+    "precision": 0.621,
+    "recall": 0.427,
+    "f1": 0.506,
+    "days": 535,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2073,
+    "fp_median_duration_s": 89
+   },
+   "kettle_plug": {
+    "tp": 3347,
+    "fp": 119,
+    "fn": 71,
+    "precision": 0.966,
+    "recall": 0.979,
+    "f1": 0.972,
+    "days": 535,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 1910,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 843,
+    "fp": 513,
+    "fn": 2575,
+    "precision": 0.622,
+    "recall": 0.247,
+    "f1": 0.353,
+    "days": 535,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2073,
+    "fp_median_duration_s": 88
+   },
+   "calibration": {
+    "kettle_w": 2141.2,
+    "steps_w": [
+     2084,
+     2141,
+     2581
+    ],
+    "boil_times": [
+     "2013-09-26T07:06:04+01:00",
+     "2013-09-26T07:32:07+01:00",
+     "2013-09-26T09:25:09+01:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 1701,
+    "fp": 7763,
+    "fn": 1717,
+    "precision": 0.18,
+    "recall": 0.498,
+    "f1": 0.264,
+    "days": 535,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2409,
+    "fp_median_duration_s": 60
+   },
+   "kettle_median_w": 1984,
+   "kettle_channel_checks": {
+    "channel": "Appliance9",
+    "max_w": 2277,
+    "runs_over_1000w": 3484
+   },
+   "microwave_whole_home": {
+    "tp": 424,
+    "fp": 10207,
+    "fn": 655,
+    "precision": 0.04,
+    "recall": 0.393,
+    "f1": 0.072,
+    "days": 535,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 968,
+    "fp_median_duration_s": 122
+   }
+  },
+  "4": {
+   "occupants": 2,
+   "split": "tune",
+   "cycles_by_label": {
+    "fridge": 13317,
+    "unknown": 10608,
+    "tv": 8900,
+    "cycling": 6962,
+    "human_unknown": 4805,
+    "microwave": 3591,
+    "kettle": 1621,
+    "toaster": 262
+   },
+   "human_cycles_per_day": 8.3,
+   "days_24h_covered": 528,
+   "kettle_whole_home": {
+    "tp": 1389,
+    "fp": 232,
+    "fn": 405,
+    "precision": 0.857,
+    "recall": 0.774,
+    "f1": 0.813,
+    "days": 528,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2996,
+    "fp_median_duration_s": 194
+   },
+   "kettle_plug": {
+    "tp": 1776,
+    "fp": 42,
+    "fn": 18,
+    "precision": 0.977,
+    "recall": 0.99,
+    "f1": 0.983,
+    "days": 528,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 1917,
+    "fp_median_duration_s": 15
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 1368,
+    "fp": 32,
+    "fn": 426,
+    "precision": 0.977,
+    "recall": 0.763,
+    "f1": 0.857,
+    "days": 528,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1954,
+    "fp_median_duration_s": 148
+   },
+   "calibration": {
+    "kettle_w": 2052.9,
+    "steps_w": [
+     2059,
+     2053,
+     2003
+    ],
+    "boil_times": [
+     "2013-10-12T07:42:45+01:00",
+     "2013-10-12T10:28:12+01:00",
+     "2013-10-12T15:16:32+01:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 1481,
+    "fp": 284,
+    "fn": 313,
+    "precision": 0.839,
+    "recall": 0.826,
+    "f1": 0.832,
+    "days": 528,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2975,
+    "fp_median_duration_s": 180
+   },
+   "kettle_median_w": 1923,
+   "kettle_channel_checks": {
+    "channel": "Appliance9",
+    "max_w": 2560,
+    "runs_over_1000w": 1866
+   },
+   "microwave_whole_home": {
+    "tp": 1323,
+    "fp": 2268,
+    "fn": 679,
+    "precision": 0.368,
+    "recall": 0.661,
+    "f1": 0.473,
+    "days": 528,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 977,
+    "fp_median_duration_s": 137
+   }
+  },
+  "5": {
+   "occupants": 4,
+   "split": "tune",
+   "cycles_by_label": {
+    "microwave": 20094,
+    "unknown": 12478,
+    "cycling": 11268,
+    "human_unknown": 8379,
+    "fridge": 5448,
+    "kettle": 3696,
+    "tv": 2779,
+    "toaster": 185
+   },
+   "human_cycles_per_day": 33.2,
+   "days_24h_covered": 575,
+   "kettle_whole_home": {
+    "tp": 2464,
+    "fp": 1232,
+    "fn": 1452,
+    "precision": 0.667,
+    "recall": 0.629,
+    "f1": 0.647,
+    "days": 575,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1935,
+    "fp_median_duration_s": 141
+   },
+   "kettle_plug": {
+    "tp": 3853,
+    "fp": 169,
+    "fn": 63,
+    "precision": 0.958,
+    "recall": 0.984,
+    "f1": 0.971,
+    "days": 575,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2722,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 2421,
+    "fp": 265,
+    "fn": 1495,
+    "precision": 0.901,
+    "recall": 0.618,
+    "f1": 0.733,
+    "days": 575,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2511,
+    "fp_median_duration_s": 113
+   },
+   "calibration": {
+    "kettle_w": 2558.2,
+    "steps_w": [
+     2683,
+     2558,
+     2494
+    ],
+    "boil_times": [
+     "2013-09-27T06:53:56+01:00",
+     "2013-09-27T08:03:57+01:00",
+     "2013-09-27T17:02:44+01:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 2729,
+    "fp": 3322,
+    "fn": 1187,
+    "precision": 0.451,
+    "recall": 0.697,
+    "f1": 0.548,
+    "days": 575,
+    "median_abs_offset_s": 8.0,
+    "fp_median_dp_w": 1878,
+    "fp_median_duration_s": 104
+   },
+   "kettle_median_w": 2728,
+   "kettle_channel_checks": {
+    "channel": "Appliance8",
+    "max_w": 3856,
+    "runs_over_1000w": 4011
+   },
+   "microwave_whole_home": {
+    "tp": 3430,
+    "fp": 16664,
+    "fn": 1986,
+    "precision": 0.171,
+    "recall": 0.633,
+    "f1": 0.269,
+    "days": 575,
+    "median_abs_offset_s": 8.0,
+    "fp_median_dp_w": 1094,
+    "fp_median_duration_s": 150
+   }
+  },
+  "6": {
+   "occupants": 2,
+   "split": "tune",
+   "cycles_by_label": {
+    "cycling": 19766,
+    "unknown": 14657,
+    "human_unknown": 7134,
+    "fridge": 5421,
+    "microwave": 4647,
+    "kettle": 4032,
+    "tv": 2825,
+    "toaster": 213
+   },
+   "human_cycles_per_day": 13.9,
+   "days_24h_covered": 479,
+   "kettle_whole_home": {
+    "tp": 3034,
+    "fp": 998,
+    "fn": 1020,
+    "precision": 0.752,
+    "recall": 0.748,
+    "f1": 0.75,
+    "days": 479,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1770,
+    "fp_median_duration_s": 60
+   },
+   "kettle_plug": {
+    "tp": 4006,
+    "fp": 177,
+    "fn": 48,
+    "precision": 0.958,
+    "recall": 0.988,
+    "f1": 0.973,
+    "days": 479,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2620,
+    "fp_median_duration_s": 15
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 2966,
+    "fp": 97,
+    "fn": 1088,
+    "precision": 0.968,
+    "recall": 0.732,
+    "f1": 0.833,
+    "days": 479,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2495,
+    "fp_median_duration_s": 123
+   },
+   "calibration": {
+    "kettle_w": 2864.3,
+    "steps_w": [
+     2766,
+     2864,
+     2923
+    ],
+    "boil_times": [
+     "2013-11-29T09:13:34+00:00",
+     "2013-11-29T10:02:35+00:00",
+     "2013-11-29T11:04:34+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 3379,
+    "fp": 2492,
+    "fn": 675,
+    "precision": 0.576,
+    "recall": 0.833,
+    "f1": 0.681,
+    "days": 479,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2176,
+    "fp_median_duration_s": 67
+   },
+   "kettle_median_w": 2628,
+   "kettle_channel_checks": {
+    "channel": "Appliance7",
+    "max_w": 2820,
+    "runs_over_1000w": 4157
+   },
+   "microwave_whole_home": {
+    "tp": 1193,
+    "fp": 3454,
+    "fn": 1749,
+    "precision": 0.257,
+    "recall": 0.406,
+    "f1": 0.314,
+    "days": 479,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 808,
+    "fp_median_duration_s": 74
+   }
+  },
+  "7": {
+   "occupants": 4,
+   "split": "tune",
+   "cycles_by_label": {
+    "unknown": 38383,
+    "cycling": 37351,
+    "microwave": 25644,
+    "fridge": 14845,
+    "human_unknown": 13875,
+    "tv": 8628,
+    "kettle": 2095,
+    "toaster": 224
+   },
+   "human_cycles_per_day": 34.3,
+   "days_24h_covered": 525,
+   "kettle_whole_home": {
+    "tp": 607,
+    "fp": 1488,
+    "fn": 804,
+    "precision": 0.29,
+    "recall": 0.43,
+    "f1": 0.346,
+    "days": 525,
+    "median_abs_offset_s": 15.0,
+    "fp_median_dp_w": 2188,
+    "fp_median_duration_s": 110
+   },
+   "kettle_plug": {
+    "tp": 1386,
+    "fp": 57,
+    "fn": 25,
+    "precision": 0.96,
+    "recall": 0.982,
+    "f1": 0.971,
+    "days": 525,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2212,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 558,
+    "fp": 767,
+    "fn": 853,
+    "precision": 0.421,
+    "recall": 0.395,
+    "f1": 0.408,
+    "days": 525,
+    "median_abs_offset_s": 14.0,
+    "fp_median_dp_w": 2323,
+    "fp_median_duration_s": 272
+   },
+   "calibration": {
+    "kettle_w": 2334.5,
+    "steps_w": [
+     2335,
+     2580,
+     1139
+    ],
+    "boil_times": [
+     "2013-11-02T07:22:59+00:00",
+     "2013-11-02T17:31:13+00:00",
+     "2013-11-02T19:31:32+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 769,
+    "fp": 8391,
+    "fn": 642,
+    "precision": 0.084,
+    "recall": 0.545,
+    "f1": 0.145,
+    "days": 525,
+    "median_abs_offset_s": 14.0,
+    "fp_median_dp_w": 2394,
+    "fp_median_duration_s": 53
+   },
+   "kettle_median_w": 2216,
+   "kettle_channel_checks": {
+    "channel": "Appliance9",
+    "max_w": 3968,
+    "runs_over_1000w": 1454
+   }
+  },
+  "8": {
+   "occupants": 2,
+   "split": "tune",
+   "cycles_by_label": {
+    "cycling": 29060,
+    "unknown": 19148,
+    "microwave": 14249,
+    "human_unknown": 10568,
+    "fridge": 5447,
+    "kettle": 3423,
+    "tv": 3161,
+    "toaster": 528
+   },
+   "human_cycles_per_day": 22.6,
+   "days_24h_covered": 489,
+   "kettle_whole_home": {
+    "tp": 2002,
+    "fp": 1421,
+    "fn": 1081,
+    "precision": 0.585,
+    "recall": 0.649,
+    "f1": 0.615,
+    "days": 489,
+    "median_abs_offset_s": 13.0,
+    "fp_median_dp_w": 2238,
+    "fp_median_duration_s": 117
+   },
+   "kettle_plug": {
+    "tp": 3035,
+    "fp": 201,
+    "fn": 48,
+    "precision": 0.938,
+    "recall": 0.984,
+    "f1": 0.961,
+    "days": 489,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2728,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 1961,
+    "fp": 207,
+    "fn": 1122,
+    "precision": 0.905,
+    "recall": 0.636,
+    "f1": 0.747,
+    "days": 489,
+    "median_abs_offset_s": 13.0,
+    "fp_median_dp_w": 2809,
+    "fp_median_duration_s": 123
+   },
+   "calibration": {
+    "kettle_w": 3087.7,
+    "steps_w": [
+     3088,
+     3148,
+     3069
+    ],
+    "boil_times": [
+     "2013-11-02T07:10:32+00:00",
+     "2013-11-02T09:27:57+00:00",
+     "2013-11-02T18:51:57+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 2221,
+    "fp": 7786,
+    "fn": 862,
+    "precision": 0.222,
+    "recall": 0.72,
+    "f1": 0.339,
+    "days": 489,
+    "median_abs_offset_s": 13.0,
+    "fp_median_dp_w": 2295,
+    "fp_median_duration_s": 44
+   },
+   "kettle_median_w": 2758,
+   "kettle_channel_checks": {
+    "channel": "Appliance9",
+    "max_w": 3840,
+    "runs_over_1000w": 3125
+   },
+   "microwave_whole_home": {
+    "tp": 896,
+    "fp": 13353,
+    "fn": 1194,
+    "precision": 0.063,
+    "recall": 0.429,
+    "f1": 0.11,
+    "days": 489,
+    "median_abs_offset_s": 13.5,
+    "fp_median_dp_w": 1167,
+    "fp_median_duration_s": 81
+   }
+  },
+  "9": {
+   "occupants": 2,
+   "split": "tune",
+   "cycles_by_label": {
+    "cycling": 40028,
+    "microwave": 18878,
+    "unknown": 14246,
+    "human_unknown": 6978,
+    "fridge": 4658,
+    "kettle": 2736,
+    "tv": 2678,
+    "toaster": 45
+   },
+   "human_cycles_per_day": 29.2,
+   "days_24h_covered": 473,
+   "kettle_whole_home": {
+    "tp": 1811,
+    "fp": 925,
+    "fn": 1009,
+    "precision": 0.662,
+    "recall": 0.642,
+    "f1": 0.652,
+    "days": 473,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2178,
+    "fp_median_duration_s": 269
+   },
+   "kettle_plug": {
+    "tp": 2782,
+    "fp": 166,
+    "fn": 38,
+    "precision": 0.944,
+    "recall": 0.987,
+    "f1": 0.965,
+    "days": 473,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2712,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 1785,
+    "fp": 107,
+    "fn": 1035,
+    "precision": 0.943,
+    "recall": 0.633,
+    "f1": 0.758,
+    "days": 473,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2697,
+    "fp_median_duration_s": 123
+   },
+   "calibration": {
+    "kettle_w": 2861.5,
+    "steps_w": [
+     2862,
+     2822,
+     2913
+    ],
+    "boil_times": [
+     "2013-12-18T06:08:20+00:00",
+     "2013-12-18T06:12:35+00:00",
+     "2013-12-18T17:58:06+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 2023,
+    "fp": 6925,
+    "fn": 797,
+    "precision": 0.226,
+    "recall": 0.717,
+    "f1": 0.344,
+    "days": 473,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2074,
+    "fp_median_duration_s": 49
+   },
+   "kettle_median_w": 2740,
+   "kettle_channel_checks": {
+    "channel": "Appliance7",
+    "max_w": 3072,
+    "runs_over_1000w": 2876
+   },
+   "microwave_whole_home": {
+    "tp": 161,
+    "fp": 18717,
+    "fn": 90,
+    "precision": 0.009,
+    "recall": 0.641,
+    "f1": 0.017,
+    "days": 473,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1360,
+    "fp_median_duration_s": 91
+   }
+  },
+  "10": {
+   "occupants": 4,
+   "split": "test",
+   "cycles_by_label": {
+    "unknown": 60973,
+    "cycling": 21696,
+    "fridge": 14156,
+    "tv": 8479,
+    "human_unknown": 7171,
+    "microwave": 6482,
+    "kettle": 2608,
+    "toaster": 87
+   },
+   "human_cycles_per_day": 12.6,
+   "days_24h_covered": 506,
+   "microwave_whole_home": {
+    "tp": 644,
+    "fp": 5838,
+    "fn": 317,
+    "precision": 0.099,
+    "recall": 0.67,
+    "f1": 0.173,
+    "days": 506,
+    "median_abs_offset_s": 13.0,
+    "fp_median_dp_w": 1404,
+    "fp_median_duration_s": 209
+   }
+  },
+  "11": {
+   "occupants": 1,
+   "split": "test",
+   "cycles_by_label": {
+    "unknown": 13007,
+    "cycling": 11937,
+    "microwave": 10622,
+    "fridge": 9238,
+    "human_unknown": 6781,
+    "tv": 4752,
+    "kettle": 1224,
+    "toaster": 124
+   },
+   "human_cycles_per_day": 24.8,
+   "days_24h_covered": 340,
+   "kettle_whole_home": {
+    "tp": 1126,
+    "fp": 98,
+    "fn": 1458,
+    "precision": 0.92,
+    "recall": 0.436,
+    "f1": 0.591,
+    "days": 340,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2061,
+    "fp_median_duration_s": 88
+   },
+   "kettle_plug": {
+    "tp": 2560,
+    "fp": 39,
+    "fn": 24,
+    "precision": 0.985,
+    "recall": 0.991,
+    "f1": 0.988,
+    "days": 340,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2090,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 1036,
+    "fp": 64,
+    "fn": 1548,
+    "precision": 0.942,
+    "recall": 0.401,
+    "f1": 0.562,
+    "days": 340,
+    "median_abs_offset_s": 6.0,
+    "fp_median_dp_w": 2107,
+    "fp_median_duration_s": 105
+   },
+   "calibration": {
+    "kettle_w": 2163.8,
+    "steps_w": [
+     2164,
+     2080,
+     2194
+    ],
+    "boil_times": [
+     "2014-06-04T00:24:20+01:00",
+     "2014-06-04T01:01:53+01:00",
+     "2014-06-04T01:17:36+01:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 1320,
+    "fp": 450,
+    "fn": 1264,
+    "precision": 0.746,
+    "recall": 0.511,
+    "f1": 0.606,
+    "days": 340,
+    "median_abs_offset_s": 6.5,
+    "fp_median_dp_w": 2085,
+    "fp_median_duration_s": 50
+   },
+   "kettle_median_w": 2083,
+   "kettle_channel_checks": {
+    "channel": "Appliance7",
+    "max_w": 2256,
+    "runs_over_1000w": 2670
+   },
+   "microwave_whole_home": {
+    "tp": 195,
+    "fp": 10427,
+    "fn": 221,
+    "precision": 0.018,
+    "recall": 0.469,
+    "f1": 0.035,
+    "days": 340,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 993,
+    "fp_median_duration_s": 157
+   }
+  },
+  "12": {
+   "occupants": 3,
+   "split": "test",
+   "cycles_by_label": {
+    "cycling": 21223,
+    "unknown": 20335,
+    "microwave": 5754,
+    "fridge": 4765,
+    "human_unknown": 4014,
+    "kettle": 3293,
+    "tv": 2299,
+    "toaster": 286
+   },
+   "human_cycles_per_day": 13.4,
+   "days_24h_covered": 446,
+   "kettle_channel_checks": {
+    "channel": "Appliance6",
+    "max_w": 2050,
+    "runs_over_1000w": 1
+   },
+   "microwave_whole_home": {
+    "tp": 192,
+    "fp": 5562,
+    "fn": 163,
+    "precision": 0.033,
+    "recall": 0.541,
+    "f1": 0.063,
+    "days": 446,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1516,
+    "fp_median_duration_s": 109
+   }
+  },
+  "13": {
+   "occupants": 4,
+   "split": "test",
+   "cycles_by_label": {
+    "unknown": 18894,
+    "cycling": 13947,
+    "fridge": 8935,
+    "human_unknown": 6035,
+    "microwave": 5261,
+    "tv": 4794,
+    "kettle": 1581,
+    "toaster": 114
+   },
+   "human_cycles_per_day": 15.2,
+   "days_24h_covered": 349,
+   "kettle_whole_home": {
+    "tp": 677,
+    "fp": 904,
+    "fn": 325,
+    "precision": 0.428,
+    "recall": 0.676,
+    "f1": 0.524,
+    "days": 349,
+    "median_abs_offset_s": 8.0,
+    "fp_median_dp_w": 2210,
+    "fp_median_duration_s": 178
+   },
+   "kettle_plug": {
+    "tp": 983,
+    "fp": 10,
+    "fn": 19,
+    "precision": 0.99,
+    "recall": 0.981,
+    "f1": 0.985,
+    "days": 349,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2584,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 662,
+    "fp": 305,
+    "fn": 340,
+    "precision": 0.685,
+    "recall": 0.661,
+    "f1": 0.672,
+    "days": 349,
+    "median_abs_offset_s": 8.0,
+    "fp_median_dp_w": 3115,
+    "fp_median_duration_s": 229
+   },
+   "calibration": {
+    "kettle_w": 2896.0,
+    "steps_w": [
+     3078,
+     2683,
+     2896
+    ],
+    "boil_times": [
+     "2014-01-19T07:57:21+00:00",
+     "2014-01-19T11:00:32+00:00",
+     "2014-01-19T11:29:47+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 785,
+    "fp": 3919,
+    "fn": 217,
+    "precision": 0.167,
+    "recall": 0.783,
+    "f1": 0.275,
+    "days": 349,
+    "median_abs_offset_s": 8.0,
+    "fp_median_dp_w": 3056,
+    "fp_median_duration_s": 80
+   },
+   "kettle_median_w": 2566,
+   "kettle_channel_checks": {
+    "channel": "Appliance9",
+    "max_w": 3840,
+    "runs_over_1000w": 1125
+   },
+   "microwave_whole_home": {
+    "tp": 0,
+    "fp": 5261,
+    "fn": 3,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "days": 349,
+    "fp_median_dp_w": 1128,
+    "fp_median_duration_s": 317
+   }
+  },
+  "15": {
+   "occupants": 1,
+   "split": "test",
+   "cycles_by_label": {
+    "unknown": 15356,
+    "cycling": 11006,
+    "fridge": 3578,
+    "microwave": 2390,
+    "human_unknown": 2053,
+    "tv": 1624,
+    "kettle": 1268,
+    "toaster": 62
+   },
+   "human_cycles_per_day": 4.7,
+   "days_24h_covered": 476,
+   "microwave_whole_home": {
+    "tp": 194,
+    "fp": 2196,
+    "fn": 139,
+    "precision": 0.081,
+    "recall": 0.583,
+    "f1": 0.142,
+    "days": 476,
+    "median_abs_offset_s": 10.5,
+    "fp_median_dp_w": 697,
+    "fp_median_duration_s": 45
+   }
+  },
+  "16": {
+   "occupants": 6,
+   "split": "test",
+   "cycles_by_label": {
+    "cycling": 11833,
+    "microwave": 9174,
+    "unknown": 8227,
+    "human_unknown": 4999,
+    "kettle": 3924,
+    "fridge": 3653,
+    "tv": 2339,
+    "toaster": 260
+   },
+   "human_cycles_per_day": 24.5,
+   "days_24h_covered": 434
+  },
+  "17": {
+   "occupants": 3,
+   "split": "test",
+   "cycles_by_label": {
+    "cycling": 16899,
+    "microwave": 6876,
+    "unknown": 6631,
+    "human_unknown": 4526,
+    "tv": 2894,
+    "kettle": 2784,
+    "fridge": 2336,
+    "toaster": 523
+   },
+   "human_cycles_per_day": 15.6,
+   "days_24h_covered": 433,
+   "kettle_whole_home": {
+    "tp": 2368,
+    "fp": 416,
+    "fn": 854,
+    "precision": 0.851,
+    "recall": 0.735,
+    "f1": 0.789,
+    "days": 433,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1983,
+    "fp_median_duration_s": 102
+   },
+   "kettle_plug": {
+    "tp": 3129,
+    "fp": 1189,
+    "fn": 93,
+    "precision": 0.725,
+    "recall": 0.971,
+    "f1": 0.83,
+    "days": 433,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 938,
+    "fp_median_duration_s": 138
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 2335,
+    "fp": 134,
+    "fn": 887,
+    "precision": 0.946,
+    "recall": 0.725,
+    "f1": 0.821,
+    "days": 433,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2846,
+    "fp_median_duration_s": 122
+   },
+   "calibration": {
+    "kettle_w": 2737.3,
+    "steps_w": [
+     2653,
+     2792,
+     2737
+    ],
+    "boil_times": [
+     "2014-03-07T17:29:59+00:00",
+     "2014-03-07T18:16:28+00:00",
+     "2014-03-07T22:28:58+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 2595,
+    "fp": 6775,
+    "fn": 627,
+    "precision": 0.277,
+    "recall": 0.805,
+    "f1": 0.412,
+    "days": 433,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1929,
+    "fp_median_duration_s": 89
+   },
+   "kettle_median_w": 2946,
+   "kettle_channel_checks": {
+    "channel": "Appliance8",
+    "max_w": 3584,
+    "runs_over_1000w": 3308
+   },
+   "microwave_whole_home": {
+    "tp": 656,
+    "fp": 6220,
+    "fn": 584,
+    "precision": 0.095,
+    "recall": 0.529,
+    "f1": 0.162,
+    "days": 433,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 832,
+    "fp_median_duration_s": 105
+   }
+  },
+  "18": {
+   "occupants": 2,
+   "split": "test",
+   "cycles_by_label": {
+    "tv": 12663,
+    "fridge": 9275,
+    "cycling": 7181,
+    "microwave": 5927,
+    "unknown": 5885,
+    "human_unknown": 2671,
+    "kettle": 543,
+    "toaster": 123
+   },
+   "human_cycles_per_day": 9.4,
+   "days_24h_covered": 410,
+   "microwave_whole_home": {
+    "tp": 372,
+    "fp": 5555,
+    "fn": 219,
+    "precision": 0.063,
+    "recall": 0.629,
+    "f1": 0.114,
+    "days": 410,
+    "median_abs_offset_s": 13.0,
+    "fp_median_dp_w": 958,
+    "fp_median_duration_s": 61
+   }
+  },
+  "19": {
+   "occupants": 4,
+   "split": "test",
+   "cycles_by_label": {
+    "cycling": 36183,
+    "unknown": 13633,
+    "microwave": 8090,
+    "human_unknown": 4485,
+    "fridge": 2775,
+    "kettle": 2468,
+    "tv": 1681,
+    "toaster": 335
+   },
+   "human_cycles_per_day": 15.1,
+   "days_24h_covered": 431,
+   "kettle_whole_home": {
+    "tp": 1777,
+    "fp": 691,
+    "fn": 537,
+    "precision": 0.72,
+    "recall": 0.768,
+    "f1": 0.743,
+    "days": 431,
+    "median_abs_offset_s": 2.0,
+    "fp_median_dp_w": 2072,
+    "fp_median_duration_s": 92
+   },
+   "kettle_plug": {
+    "tp": 2288,
+    "fp": 137,
+    "fn": 26,
+    "precision": 0.944,
+    "recall": 0.989,
+    "f1": 0.966,
+    "days": 431,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2950,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 1753,
+    "fp": 98,
+    "fn": 561,
+    "precision": 0.947,
+    "recall": 0.758,
+    "f1": 0.842,
+    "days": 431,
+    "median_abs_offset_s": 2.0,
+    "fp_median_dp_w": 2345,
+    "fp_median_duration_s": 70
+   },
+   "calibration": {
+    "kettle_w": 2640.0,
+    "steps_w": [
+     2431,
+     2640,
+     2727
+    ],
+    "boil_times": [
+     "2014-03-07T07:25:32+00:00",
+     "2014-03-07T10:42:30+00:00",
+     "2014-03-07T13:36:48+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 1926,
+    "fp": 1708,
+    "fn": 388,
+    "precision": 0.53,
+    "recall": 0.832,
+    "f1": 0.648,
+    "days": 431,
+    "median_abs_offset_s": 2.0,
+    "fp_median_dp_w": 2003,
+    "fp_median_duration_s": 139
+   },
+   "kettle_median_w": 2960,
+   "kettle_channel_checks": {
+    "channel": "Appliance5",
+    "max_w": 3584,
+    "runs_over_1000w": 2370
+   },
+   "microwave_whole_home": {
+    "tp": 504,
+    "fp": 7586,
+    "fn": 476,
+    "precision": 0.062,
+    "recall": 0.514,
+    "f1": 0.111,
+    "days": 431,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 668,
+    "fp_median_duration_s": 74
+   }
+  },
+  "20": {
+   "occupants": 2,
+   "split": "test",
+   "cycles_by_label": {
+    "cycling": 5267,
+    "unknown": 4415,
+    "microwave": 3678,
+    "tv": 3501,
+    "fridge": 2497,
+    "kettle": 1950,
+    "human_unknown": 1874,
+    "toaster": 330
+   },
+   "human_cycles_per_day": 10.2,
+   "days_24h_covered": 426,
+   "kettle_whole_home": {
+    "tp": 1383,
+    "fp": 567,
+    "fn": 441,
+    "precision": 0.709,
+    "recall": 0.758,
+    "f1": 0.733,
+    "days": 426,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2267,
+    "fp_median_duration_s": 421
+   },
+   "kettle_plug": {
+    "tp": 1807,
+    "fp": 93,
+    "fn": 17,
+    "precision": 0.951,
+    "recall": 0.991,
+    "f1": 0.97,
+    "days": 426,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2777,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 1349,
+    "fp": 19,
+    "fn": 475,
+    "precision": 0.986,
+    "recall": 0.74,
+    "f1": 0.845,
+    "days": 426,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2953,
+    "fp_median_duration_s": 88
+   },
+   "calibration": {
+    "kettle_w": 3065.4,
+    "steps_w": [
+     3009,
+     3065,
+     3075
+    ],
+    "boil_times": [
+     "2014-03-21T13:12:15+00:00",
+     "2014-03-21T17:06:46+00:00",
+     "2014-03-21T21:32:04+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 1440,
+    "fp": 3678,
+    "fn": 384,
+    "precision": 0.281,
+    "recall": 0.789,
+    "f1": 0.415,
+    "days": 426,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 2205,
+    "fp_median_duration_s": 61
+   },
+   "kettle_median_w": 2795,
+   "kettle_channel_checks": {
+    "channel": "Appliance9",
+    "max_w": 3968,
+    "runs_over_1000w": 1864
+   },
+   "microwave_whole_home": {
+    "tp": 456,
+    "fp": 3222,
+    "fn": 577,
+    "precision": 0.124,
+    "recall": 0.441,
+    "f1": 0.194,
+    "days": 426,
+    "median_abs_offset_s": 7.0,
+    "fp_median_dp_w": 1416,
+    "fp_median_duration_s": 55
+   }
+  },
+  "21": {
+   "occupants": 4,
+   "split": "test",
+   "cycles_by_label": {
+    "cycling": 6635,
+    "unknown": 5985,
+    "microwave": 5620,
+    "fridge": 5501,
+    "human_unknown": 3997,
+    "tv": 3546,
+    "kettle": 530,
+    "toaster": 40
+   },
+   "human_cycles_per_day": 30.1,
+   "days_24h_covered": 158,
+   "kettle_whole_home": {
+    "tp": 224,
+    "fp": 306,
+    "fn": 181,
+    "precision": 0.423,
+    "recall": 0.553,
+    "f1": 0.479,
+    "days": 158,
+    "median_abs_offset_s": 15.0,
+    "fp_median_dp_w": 2158,
+    "fp_median_duration_s": 176
+   },
+   "kettle_plug": {
+    "tp": 398,
+    "fp": 10,
+    "fn": 7,
+    "precision": 0.975,
+    "recall": 0.983,
+    "f1": 0.979,
+    "days": 158,
+    "median_abs_offset_s": 0.0,
+    "fp_median_dp_w": 2892,
+    "fp_median_duration_s": 14
+   },
+   "kettle_whole_home_calibrated": {
+    "tp": 158,
+    "fp": 23,
+    "fn": 247,
+    "precision": 0.873,
+    "recall": 0.39,
+    "f1": 0.539,
+    "days": 158,
+    "median_abs_offset_s": 15.0,
+    "fp_median_dp_w": 2780,
+    "fp_median_duration_s": 45
+   },
+   "calibration": {
+    "kettle_w": 2935.6,
+    "steps_w": [
+     2025,
+     2936,
+     3040
+    ],
+    "boil_times": [
+     "2014-03-08T09:52:02+00:00",
+     "2014-03-08T18:18:27+00:00",
+     "2014-03-08T21:12:13+00:00"
+    ]
+   },
+   "kettle_whole_home_no_repeat_filter": {
+    "tp": 253,
+    "fp": 2164,
+    "fn": 152,
+    "precision": 0.105,
+    "recall": 0.625,
+    "f1": 0.179,
+    "days": 158,
+    "median_abs_offset_s": 15.0,
+    "fp_median_dp_w": 2501,
+    "fp_median_duration_s": 31
+   },
+   "kettle_median_w": 1432,
+   "kettle_channel_checks": {
+    "channel": "Appliance7",
+    "max_w": 3584,
+    "runs_over_1000w": 1153,
+    "median_run_w_before_2014-08-16": 2905,
+    "median_run_w_after_2014-08-16": 1414
+   }
+  }
+ },
+ "definitions": {
+  "ground_truth": "kettle IAM channel above 1000 W for >= 16 s (runs <= 16 s apart merged); microwave IAM above 500 W for >= 16 s",
+  "detection": "a 'cycle' event labelled kettle by the shipped detector on the Aggregate channel (DetectorConfig.for_refit()); its rising-edge time is matched one-to-one to a ground-truth start within +-60 s (closest pairs first)",
+  "calibrated": "same, with DetectorConfig.kettle_w set from 3 'calibration boils' (the first kettle uses in the data, as seen on the Aggregate channel)",
+  "plug": "the shipped detector with DetectorConfig.for_plug('kettle','uk') on the kettle IAM",
+  "days": "only local days with >=90% of the 24 h covered by data (no gap > 2 min); H21 only before 2014-08-16 (kettle IAM changed); H12 excluded (its 'kettle' IAM never exceeds ~1 kW)",
+  "splits": "tune = houses 1-9 (parameters were tuned on these only), test = houses 10-21"
+ },
+ "provenance": {
+  "dataset": "REFIT Electrical Load Measurements (cleaned), CLEAN_REFIT_081116",
+  "files": [
+   "CLEAN_House1.csv",
+   "CLEAN_House2.csv",
+   "CLEAN_House3.csv",
+   "CLEAN_House4.csv",
+   "CLEAN_House5.csv",
+   "CLEAN_House6.csv",
+   "CLEAN_House7.csv",
+   "CLEAN_House8.csv",
+   "CLEAN_House9.csv",
+   "CLEAN_House10.csv",
+   "CLEAN_House11.csv",
+   "CLEAN_House12.csv",
+   "CLEAN_House13.csv",
+   "CLEAN_House15.csv",
+   "CLEAN_House16.csv",
+   "CLEAN_House17.csv",
+   "CLEAN_House18.csv",
+   "CLEAN_House19.csv",
+   "CLEAN_House20.csv",
+   "CLEAN_House21.csv"
+  ],
+  "licence": "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)",
+  "citation": "Murray, D., Stankovic, L. & Stankovic, V. (2017). An electrical load measurements dataset of United Kingdom households from a two-year longitudinal study. Scientific Data 4, 160122. doi:10.1038/sdata.2016.122",
+  "time_zone": "Europe/London (REFIT Unix column is local wall-clock time; see docs/refit-evaluation.md)",
+  "code": "kettle/eval/refit.py using kettle.detect, kettle.signatures, kettle.rhythm"
+ }
+}

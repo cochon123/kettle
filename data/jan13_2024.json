@@ -1,0 +1,2616 @@
+{
+ "title": "Alberta grid emergency, January 13 2024",
+ "timezone": "America/Edmonton (MST, UTC-7). AESO hours are 'hour ending'; hour_start is the start of that hour.",
+ "fetched_at": "2026-11-07T17:22:28+00:00",
+ "sources": {
+  "aeso_hourly": {
+   "url": "http://ets.aeso.ca/ets_web/ip/Market/Reports/ActualForecastWMRQHReportServlet?beginDate=01102024&endDate=01162024&contentType=csv",
+   "what": "AESO Actual/Forecast report: hourly pool price ($/MWh) and Alberta Internal Load (MW)"
+  },
+  "aeso_smp": {
+   "url": "http://ets.aeso.ca/ets_web/ip/Market/Reports/HistoricalSystemMarginalPriceReportServlet?beginDate=01132024&endDate=01142024&contentType=csv",
+   "what": "AESO Historical System Marginal Price report ($/MWh), every price change"
+  },
+  "eccc_hourly": {
+   "url": "https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=50430&Year=2024&Month=1&Day=13&timeframe=1&submit=Download+Data",
+   "what": "Environment and Climate Change Canada historical hourly data, CALGARY INTL A (station 50430), LST",
+   "licence": "Open Government Licence - Canada"
+  }
+ },
+ "facts": {
+  "price_cap": 999.99,
+  "hours_at_cap_jan13": 4,
+  "peak_ail_mw_week": 12384.0,
+  "peak_ail_hour": "2024-01-11T17:00",
+  "coldest_c": -36.2,
+  "coldest_t": "2024-01-14T06:00"
+ },
+ "timeline": [
+  {
+   "t": "2024-01-13T15:30",
+   "text": "AESO declares a Grid Alert (EEA3), step 16 of 22 in its supply-shortfall procedure.",
+   "source": "AESO newsroom, Jan 13 2024; Power Advisory, 'January 2024 Supply Shortfall in Alberta'",
+   "url": "https://aeso.ca/aeso/newsroom/aeso-thanks-albertans-for-quick-response-to-call-for-power-conservation/"
+  },
+  {
+   "t": "2024-01-13T18:44",
+   "text": "Emergency text alert to every phone in Alberta: high risk of rotating outages, cut use to essentials.",
+   "source": "Power Advisory (Global News reports ~6:36 pm)",
+   "url": "https://www.poweradvisoryllc.com/reports/january-2024-supply-shortfall-in-alberta"
+  },
+  {
+   "t": "2024-01-13T18:46",
+   "text": "Demand drops 100 MW immediately, ~200 MW within minutes.",
+   "source": "AESO newsroom, Jan 13 2024",
+   "url": "https://aeso.ca/aeso/newsroom/aeso-thanks-albertans-for-quick-response-to-call-for-power-conservation/"
+  },
+  {
+   "t": "2024-01-13T20:40",
+   "text": "Grid Alert declared ended.",
+   "source": "AESO newsroom, Jan 13 2024",
+   "url": "https://aeso.ca/aeso/newsroom/aeso-thanks-albertans-for-quick-response-to-call-for-power-conservation/"
+  }
+ ],
+ "hourly": [
+  {
+   "hour_start": "2024-01-10T00:00",
+   "he": 1,
+   "pool_price_forecast": 39.62,
+   "pool_price": 54.58,
+   "ail_forecast_mw": 10746.0,
+   "ail_mw": 10710.0
+  },
+  {
+   "hour_start": "2024-01-10T01:00",
+   "he": 2,
+   "pool_price_forecast": 41.34,
+   "pool_price": 47.6,
+   "ail_forecast_mw": 10599.0,
+   "ail_mw": 10598.0
+  },
+  {
+   "hour_start": "2024-01-10T02:00",
+   "he": 3,
+   "pool_price_forecast": 41.29,
+   "pool_price": 40.04,
+   "ail_forecast_mw": 10564.0,
+   "ail_mw": 10512.0
+  },
+  {
+   "hour_start": "2024-01-10T03:00",
+   "he": 4,
+   "pool_price_forecast": 42.73,
+   "pool_price": 50.62,
+   "ail_forecast_mw": 10547.0,
+   "ail_mw": 10513.0
+  },
+  {
+   "hour_start": "2024-01-10T04:00",
+   "he": 5,
+   "pool_price_forecast": 68.04,
+   "pool_price": 50.87,
+   "ail_forecast_mw": 10546.0,
+   "ail_mw": 10532.0
+  },
+  {
+   "hour_start": "2024-01-10T05:00",
+   "he": 6,
+   "pool_price_forecast": 43.98,
+   "pool_price": 46.94,
+   "ail_forecast_mw": 10663.0,
+   "ail_mw": 10721.0
+  },
+  {
+   "hour_start": "2024-01-10T06:00",
+   "he": 7,
+   "pool_price_forecast": 45.41,
+   "pool_price": 49.14,
+   "ail_forecast_mw": 11010.0,
+   "ail_mw": 11069.0
+  },
+  {
+   "hour_start": "2024-01-10T07:00",
+   "he": 8,
+   "pool_price_forecast": 46.38,
+   "pool_price": 54.33,
+   "ail_forecast_mw": 11453.0,
+   "ail_mw": 11521.0
+  },
+  {
+   "hour_start": "2024-01-10T08:00",
+   "he": 9,
+   "pool_price_forecast": 60.4,
+   "pool_price": 65.26,
+   "ail_forecast_mw": 11661.0,
+   "ail_mw": 11713.0
+  },
+  {
+   "hour_start": "2024-01-10T09:00",
+   "he": 10,
+   "pool_price_forecast": 72.9,
+   "pool_price": 77.78,
+   "ail_forecast_mw": 11716.0,
+   "ail_mw": 11769.0
+  },
+  {
+   "hour_start": "2024-01-10T10:00",
+   "he": 11,
+   "pool_price_forecast": 72.7,
+   "pool_price": 79.33,
+   "ail_forecast_mw": 11796.0,
+   "ail_mw": 11800.0
+  },
+  {
+   "hour_start": "2024-01-10T11:00",
+   "he": 12,
+   "pool_price_forecast": 77.07,
+   "pool_price": 71.6,
+   "ail_forecast_mw": 11801.0,
+   "ail_mw": 11828.0
+  },
+  {
+   "hour_start": "2024-01-10T12:00",
+   "he": 13,
+   "pool_price_forecast": 51.54,
+   "pool_price": 81.55,
+   "ail_forecast_mw": 11801.0,
+   "ail_mw": 11795.0
+  },
+  {
+   "hour_start": "2024-01-10T13:00",
+   "he": 14,
+   "pool_price_forecast": 287.39,
+   "pool_price": 88.32,
+   "ail_forecast_mw": 11800.0,
+   "ail_mw": 11824.0
+  },
+  {
+   "hour_start": "2024-01-10T14:00",
+   "he": 15,
+   "pool_price_forecast": 73.21,
+   "pool_price": 77.68,
+   "ail_forecast_mw": 11799.0,
+   "ail_mw": 11853.0
+  },
+  {
+   "hour_start": "2024-01-10T15:00",
+   "he": 16,
+   "pool_price_forecast": 111.82,
+   "pool_price": 303.4,
+   "ail_forecast_mw": 11913.0,
+   "ail_mw": 11910.0
+  },
+  {
+   "hour_start": "2024-01-10T16:00",
+   "he": 17,
+   "pool_price_forecast": 187.13,
+   "pool_price": 291.5,
+   "ail_forecast_mw": 11992.0,
+   "ail_mw": 12011.0
+  },
+  {
+   "hour_start": "2024-01-10T17:00",
+   "he": 18,
+   "pool_price_forecast": 511.2,
+   "pool_price": 468.92,
+   "ail_forecast_mw": 12179.0,
+   "ail_mw": 12171.0
+  },
+  {
+   "hour_start": "2024-01-10T18:00",
+   "he": 19,
+   "pool_price_forecast": 187.27,
+   "pool_price": 350.01,
+   "ail_forecast_mw": 12024.0,
+   "ail_mw": 12065.0
+  },
+  {
+   "hour_start": "2024-01-10T19:00",
+   "he": 20,
+   "pool_price_forecast": 189.56,
+   "pool_price": 104.52,
+   "ail_forecast_mw": 11967.0,
+   "ail_mw": 11972.0
+  },
+  {
+   "hour_start": "2024-01-10T20:00",
+   "he": 21,
+   "pool_price_forecast": 84.9,
+   "pool_price": 94.46,
+   "ail_forecast_mw": 11852.0,
+   "ail_mw": 11828.0
+  },
+  {
+   "hour_start": "2024-01-10T21:00",
+   "he": 22,
+   "pool_price_forecast": 81.77,
+   "pool_price": 82.43,
+   "ail_forecast_mw": 11612.0,
+   "ail_mw": 11692.0
+  },
+  {
+   "hour_start": "2024-01-10T22:00",
+   "he": 23,
+   "pool_price_forecast": 81.73,
+   "pool_price": 77.0,
+   "ail_forecast_mw": 11479.0,
+   "ail_mw": 11465.0
+  },
+  {
+   "hour_start": "2024-01-10T23:00",
+   "he": 24,
+   "pool_price_forecast": 73.37,
+   "pool_price": 76.96,
+   "ail_forecast_mw": 11232.0,
+   "ail_mw": 11229.0
+  },
+  {
+   "hour_start": "2024-01-11T00:00",
+   "he": 1,
+   "pool_price_forecast": 106.12,
+   "pool_price": 85.37,
+   "ail_forecast_mw": 11084.0,
+   "ail_mw": 11056.0
+  },
+  {
+   "hour_start": "2024-01-11T01:00",
+   "he": 2,
+   "pool_price_forecast": 78.35,
+   "pool_price": 66.03,
+   "ail_forecast_mw": 10934.0,
+   "ail_mw": 10833.0
+  },
+  {
+   "hour_start": "2024-01-11T02:00",
+   "he": 3,
+   "pool_price_forecast": 58.5,
+   "pool_price": 63.82,
+   "ail_forecast_mw": 10734.0,
+   "ail_mw": 10738.0
+  },
+  {
+   "hour_start": "2024-01-11T03:00",
+   "he": 4,
+   "pool_price_forecast": 62.26,
+   "pool_price": 66.45,
+   "ail_forecast_mw": 10755.0,
+   "ail_mw": 10757.0
+  },
+  {
+   "hour_start": "2024-01-11T04:00",
+   "he": 5,
+   "pool_price_forecast": 58.38,
+   "pool_price": 60.91,
+   "ail_forecast_mw": 10773.0,
+   "ail_mw": 10790.0
+  },
+  {
+   "hour_start": "2024-01-11T05:00",
+   "he": 6,
+   "pool_price_forecast": 64.06,
+   "pool_price": 64.75,
+   "ail_forecast_mw": 10890.0,
+   "ail_mw": 10959.0
+  },
+  {
+   "hour_start": "2024-01-11T06:00",
+   "he": 7,
+   "pool_price_forecast": 76.04,
+   "pool_price": 76.71,
+   "ail_forecast_mw": 11240.0,
+   "ail_mw": 11321.0
+  },
+  {
+   "hour_start": "2024-01-11T07:00",
+   "he": 8,
+   "pool_price_forecast": 270.4,
+   "pool_price": 215.11,
+   "ail_forecast_mw": 11737.0,
+   "ail_mw": 11845.0
+  },
+  {
+   "hour_start": "2024-01-11T08:00",
+   "he": 9,
+   "pool_price_forecast": 558.69,
+   "pool_price": 601.31,
+   "ail_forecast_mw": 11944.0,
+   "ail_mw": 11855.0
+  },
+  {
+   "hour_start": "2024-01-11T09:00",
+   "he": 10,
+   "pool_price_forecast": 82.59,
+   "pool_price": 80.86,
+   "ail_forecast_mw": 11835.0,
+   "ail_mw": 11928.0
+  },
+  {
+   "hour_start": "2024-01-11T10:00",
+   "he": 11,
+   "pool_price_forecast": 75.2,
+   "pool_price": 73.61,
+   "ail_forecast_mw": 12028.0,
+   "ail_mw": 11978.0
+  },
+  {
+   "hour_start": "2024-01-11T11:00",
+   "he": 12,
+   "pool_price_forecast": 75.3,
+   "pool_price": 73.59,
+   "ail_forecast_mw": 11968.0,
+   "ail_mw": 12024.0
+  },
+  {
+   "hour_start": "2024-01-11T12:00",
+   "he": 13,
+   "pool_price_forecast": 73.7,
+   "pool_price": 74.36,
+   "ail_forecast_mw": 12006.0,
+   "ail_mw": 12036.0
+  },
+  {
+   "hour_start": "2024-01-11T13:00",
+   "he": 14,
+   "pool_price_forecast": 74.38,
+   "pool_price": 135.2,
+   "ail_forecast_mw": 12000.0,
+   "ail_mw": 12033.0
+  },
+  {
+   "hour_start": "2024-01-11T14:00",
+   "he": 15,
+   "pool_price_forecast": 329.96,
+   "pool_price": 167.42,
+   "ail_forecast_mw": 11980.0,
+   "ail_mw": 11983.0
+  },
+  {
+   "hour_start": "2024-01-11T15:00",
+   "he": 16,
+   "pool_price_forecast": 110.26,
+   "pool_price": 85.25,
+   "ail_forecast_mw": 12007.0,
+   "ail_mw": 12050.0
+  },
+  {
+   "hour_start": "2024-01-11T16:00",
+   "he": 17,
+   "pool_price_forecast": 74.82,
+   "pool_price": 136.76,
+   "ail_forecast_mw": 12148.0,
+   "ail_mw": 12162.0
+  },
+  {
+   "hour_start": "2024-01-11T17:00",
+   "he": 18,
+   "pool_price_forecast": 771.94,
+   "pool_price": 629.01,
+   "ail_forecast_mw": 12325.0,
+   "ail_mw": 12384.0
+  },
+  {
+   "hour_start": "2024-01-11T18:00",
+   "he": 19,
+   "pool_price_forecast": 678.29,
+   "pool_price": 667.3,
+   "ail_forecast_mw": 12276.0,
+   "ail_mw": 12259.0
+  },
+  {
+   "hour_start": "2024-01-11T19:00",
+   "he": 20,
+   "pool_price_forecast": 438.76,
+   "pool_price": 527.16,
+   "ail_forecast_mw": 12119.0,
+   "ail_mw": 12105.0
+  },
+  {
+   "hour_start": "2024-01-11T20:00",
+   "he": 21,
+   "pool_price_forecast": 459.08,
+   "pool_price": 449.18,
+   "ail_forecast_mw": 12004.0,
+   "ail_mw": 11930.0
+  },
+  {
+   "hour_start": "2024-01-11T21:00",
+   "he": 22,
+   "pool_price_forecast": 940.71,
+   "pool_price": 631.28,
+   "ail_forecast_mw": 11725.0,
+   "ail_mw": 11714.0
+  },
+  {
+   "hour_start": "2024-01-11T22:00",
+   "he": 23,
+   "pool_price_forecast": 453.52,
+   "pool_price": 444.27,
+   "ail_forecast_mw": 11481.0,
+   "ail_mw": 11409.0
+  },
+  {
+   "hour_start": "2024-01-11T23:00",
+   "he": 24,
+   "pool_price_forecast": 89.04,
+   "pool_price": 118.36,
+   "ail_forecast_mw": 11197.0,
+   "ail_mw": 11258.0
+  },
+  {
+   "hour_start": "2024-01-12T00:00",
+   "he": 1,
+   "pool_price_forecast": 166.37,
+   "pool_price": 225.27,
+   "ail_forecast_mw": 11128.0,
+   "ail_mw": 11052.0
+  },
+  {
+   "hour_start": "2024-01-12T01:00",
+   "he": 2,
+   "pool_price_forecast": 312.15,
+   "pool_price": 320.51,
+   "ail_forecast_mw": 10973.0,
+   "ail_mw": 10905.0
+  },
+  {
+   "hour_start": "2024-01-12T02:00",
+   "he": 3,
+   "pool_price_forecast": 464.65,
+   "pool_price": 382.18,
+   "ail_forecast_mw": 10829.0,
+   "ail_mw": 10800.0
+  },
+  {
+   "hour_start": "2024-01-12T03:00",
+   "he": 4,
+   "pool_price_forecast": 196.36,
+   "pool_price": 274.31,
+   "ail_forecast_mw": 10799.0,
+   "ail_mw": 10755.0
+  },
+  {
+   "hour_start": "2024-01-12T04:00",
+   "he": 5,
+   "pool_price_forecast": 226.65,
+   "pool_price": 300.86,
+   "ail_forecast_mw": 10761.0,
+   "ail_mw": 10826.0
+  },
+  {
+   "hour_start": "2024-01-12T05:00",
+   "he": 6,
+   "pool_price_forecast": 585.63,
+   "pool_price": 441.57,
+   "ail_forecast_mw": 10947.0,
+   "ail_mw": 10937.0
+  },
+  {
+   "hour_start": "2024-01-12T06:00",
+   "he": 7,
+   "pool_price_forecast": 518.3,
+   "pool_price": 563.95,
+   "ail_forecast_mw": 11131.0,
+   "ail_mw": 11164.0
+  },
+  {
+   "hour_start": "2024-01-12T07:00",
+   "he": 8,
+   "pool_price_forecast": 877.01,
+   "pool_price": 731.43,
+   "ail_forecast_mw": 11489.0,
+   "ail_mw": 11481.0
+  },
+  {
+   "hour_start": "2024-01-12T08:00",
+   "he": 9,
+   "pool_price_forecast": 999.99,
+   "pool_price": 946.27,
+   "ail_forecast_mw": 11635.0,
+   "ail_mw": 11673.0
+  },
+  {
+   "hour_start": "2024-01-12T09:00",
+   "he": 10,
+   "pool_price_forecast": 999.99,
+   "pool_price": 989.52,
+   "ail_forecast_mw": 11731.0,
+   "ail_mw": 11752.0
+  },
+  {
+   "hour_start": "2024-01-12T10:00",
+   "he": 11,
+   "pool_price_forecast": 999.99,
+   "pool_price": 960.76,
+   "ail_forecast_mw": 11789.0,
+   "ail_mw": 11878.0
+  },
+  {
+   "hour_start": "2024-01-12T11:00",
+   "he": 12,
+   "pool_price_forecast": 999.99,
+   "pool_price": 855.51,
+   "ail_forecast_mw": 11905.0,
+   "ail_mw": 11911.0
+  },
+  {
+   "hour_start": "2024-01-12T12:00",
+   "he": 13,
+   "pool_price_forecast": 746.88,
+   "pool_price": 815.67,
+   "ail_forecast_mw": 11805.0,
+   "ail_mw": 11778.0
+  },
+  {
+   "hour_start": "2024-01-12T13:00",
+   "he": 14,
+   "pool_price_forecast": 722.05,
+   "pool_price": 740.19,
+   "ail_forecast_mw": 11723.0,
+   "ail_mw": 11712.0
+  },
+  {
+   "hour_start": "2024-01-12T14:00",
+   "he": 15,
+   "pool_price_forecast": 617.89,
+   "pool_price": 640.88,
+   "ail_forecast_mw": 11677.0,
+   "ail_mw": 11755.0
+  },
+  {
+   "hour_start": "2024-01-12T15:00",
+   "he": 16,
+   "pool_price_forecast": 580.55,
+   "pool_price": 745.24,
+   "ail_forecast_mw": 11794.0,
+   "ail_mw": 11780.0
+  },
+  {
+   "hour_start": "2024-01-12T16:00",
+   "he": 17,
+   "pool_price_forecast": 999.83,
+   "pool_price": 988.47,
+   "ail_forecast_mw": 11857.0,
+   "ail_mw": 11882.0
+  },
+  {
+   "hour_start": "2024-01-12T17:00",
+   "he": 18,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 12056.0,
+   "ail_mw": 12091.0
+  },
+  {
+   "hour_start": "2024-01-12T18:00",
+   "he": 19,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11992.0,
+   "ail_mw": 11939.0
+  },
+  {
+   "hour_start": "2024-01-12T19:00",
+   "he": 20,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11820.0,
+   "ail_mw": 11803.0
+  },
+  {
+   "hour_start": "2024-01-12T20:00",
+   "he": 21,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11702.0,
+   "ail_mw": 11666.0
+  },
+  {
+   "hour_start": "2024-01-12T21:00",
+   "he": 22,
+   "pool_price_forecast": 999.99,
+   "pool_price": 927.1,
+   "ail_forecast_mw": 11539.0,
+   "ail_mw": 11484.0
+  },
+  {
+   "hour_start": "2024-01-12T22:00",
+   "he": 23,
+   "pool_price_forecast": 203.45,
+   "pool_price": 189.57,
+   "ail_forecast_mw": 11293.0,
+   "ail_mw": 11304.0
+  },
+  {
+   "hour_start": "2024-01-12T23:00",
+   "he": 24,
+   "pool_price_forecast": 288.53,
+   "pool_price": 202.18,
+   "ail_forecast_mw": 11145.0,
+   "ail_mw": 11100.0
+  },
+  {
+   "hour_start": "2024-01-13T00:00",
+   "he": 1,
+   "pool_price_forecast": 376.84,
+   "pool_price": 271.6,
+   "ail_forecast_mw": 10960.0,
+   "ail_mw": 10936.0
+  },
+  {
+   "hour_start": "2024-01-13T01:00",
+   "he": 2,
+   "pool_price_forecast": 972.96,
+   "pool_price": 475.83,
+   "ail_forecast_mw": 10873.0,
+   "ail_mw": 10616.0
+  },
+  {
+   "hour_start": "2024-01-13T02:00",
+   "he": 3,
+   "pool_price_forecast": 228.07,
+   "pool_price": 240.63,
+   "ail_forecast_mw": 10527.0,
+   "ail_mw": 10555.0
+  },
+  {
+   "hour_start": "2024-01-13T03:00",
+   "he": 4,
+   "pool_price_forecast": 242.28,
+   "pool_price": 242.84,
+   "ail_forecast_mw": 10558.0,
+   "ail_mw": 10534.0
+  },
+  {
+   "hour_start": "2024-01-13T04:00",
+   "he": 5,
+   "pool_price_forecast": 246.61,
+   "pool_price": 360.46,
+   "ail_forecast_mw": 10542.0,
+   "ail_mw": 10546.0
+  },
+  {
+   "hour_start": "2024-01-13T05:00",
+   "he": 6,
+   "pool_price_forecast": 698.35,
+   "pool_price": 656.56,
+   "ail_forecast_mw": 10575.0,
+   "ail_mw": 10527.0
+  },
+  {
+   "hour_start": "2024-01-13T06:00",
+   "he": 7,
+   "pool_price_forecast": 614.16,
+   "pool_price": 635.36,
+   "ail_forecast_mw": 10572.0,
+   "ail_mw": 10624.0
+  },
+  {
+   "hour_start": "2024-01-13T07:00",
+   "he": 8,
+   "pool_price_forecast": 276.55,
+   "pool_price": 268.82,
+   "ail_forecast_mw": 10833.0,
+   "ail_mw": 10830.0
+  },
+  {
+   "hour_start": "2024-01-13T08:00",
+   "he": 9,
+   "pool_price_forecast": 666.53,
+   "pool_price": 722.05,
+   "ail_forecast_mw": 11022.0,
+   "ail_mw": 11059.0
+  },
+  {
+   "hour_start": "2024-01-13T09:00",
+   "he": 10,
+   "pool_price_forecast": 999.99,
+   "pool_price": 765.22,
+   "ail_forecast_mw": 11188.0,
+   "ail_mw": 11158.0
+  },
+  {
+   "hour_start": "2024-01-13T10:00",
+   "he": 11,
+   "pool_price_forecast": 659.84,
+   "pool_price": 601.21,
+   "ail_forecast_mw": 11284.0,
+   "ail_mw": 11255.0
+  },
+  {
+   "hour_start": "2024-01-13T11:00",
+   "he": 12,
+   "pool_price_forecast": 580.62,
+   "pool_price": 642.82,
+   "ail_forecast_mw": 11314.0,
+   "ail_mw": 11299.0
+  },
+  {
+   "hour_start": "2024-01-13T12:00",
+   "he": 13,
+   "pool_price_forecast": 589.98,
+   "pool_price": 695.51,
+   "ail_forecast_mw": 11319.0,
+   "ail_mw": 11331.0
+  },
+  {
+   "hour_start": "2024-01-13T13:00",
+   "he": 14,
+   "pool_price_forecast": 742.27,
+   "pool_price": 670.89,
+   "ail_forecast_mw": 11323.0,
+   "ail_mw": 11280.0
+  },
+  {
+   "hour_start": "2024-01-13T14:00",
+   "he": 15,
+   "pool_price_forecast": 236.67,
+   "pool_price": 590.92,
+   "ail_forecast_mw": 11250.0,
+   "ail_mw": 11331.0
+  },
+  {
+   "hour_start": "2024-01-13T15:00",
+   "he": 16,
+   "pool_price_forecast": 665.94,
+   "pool_price": 898.0,
+   "ail_forecast_mw": 11383.0,
+   "ail_mw": 11391.0
+  },
+  {
+   "hour_start": "2024-01-13T16:00",
+   "he": 17,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11558.0,
+   "ail_mw": 11525.0
+  },
+  {
+   "hour_start": "2024-01-13T17:00",
+   "he": 18,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11803.0,
+   "ail_mw": 11802.0
+  },
+  {
+   "hour_start": "2024-01-13T18:00",
+   "he": 19,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11727.0,
+   "ail_mw": 11666.0
+  },
+  {
+   "hour_start": "2024-01-13T19:00",
+   "he": 20,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11427.0,
+   "ail_mw": 11268.0
+  },
+  {
+   "hour_start": "2024-01-13T20:00",
+   "he": 21,
+   "pool_price_forecast": 999.99,
+   "pool_price": 931.28,
+   "ail_forecast_mw": 11142.0,
+   "ail_mw": 10930.0
+  },
+  {
+   "hour_start": "2024-01-13T21:00",
+   "he": 22,
+   "pool_price_forecast": 740.33,
+   "pool_price": 754.14,
+   "ail_forecast_mw": 10847.0,
+   "ail_mw": 10791.0
+  },
+  {
+   "hour_start": "2024-01-13T22:00",
+   "he": 23,
+   "pool_price_forecast": 773.46,
+   "pool_price": 735.21,
+   "ail_forecast_mw": 10714.0,
+   "ail_mw": 10674.0
+  },
+  {
+   "hour_start": "2024-01-13T23:00",
+   "he": 24,
+   "pool_price_forecast": 167.04,
+   "pool_price": 360.99,
+   "ail_forecast_mw": 10570.0,
+   "ail_mw": 10549.0
+  },
+  {
+   "hour_start": "2024-01-14T00:00",
+   "he": 1,
+   "pool_price_forecast": 152.13,
+   "pool_price": 206.28,
+   "ail_forecast_mw": 10462.0,
+   "ail_mw": 10481.0
+  },
+  {
+   "hour_start": "2024-01-14T01:00",
+   "he": 2,
+   "pool_price_forecast": 136.01,
+   "pool_price": 162.3,
+   "ail_forecast_mw": 10423.0,
+   "ail_mw": 10449.0
+  },
+  {
+   "hour_start": "2024-01-14T02:00",
+   "he": 3,
+   "pool_price_forecast": 237.88,
+   "pool_price": 233.57,
+   "ail_forecast_mw": 10410.0,
+   "ail_mw": 10394.0
+  },
+  {
+   "hour_start": "2024-01-14T03:00",
+   "he": 4,
+   "pool_price_forecast": 410.32,
+   "pool_price": 400.53,
+   "ail_forecast_mw": 10366.0,
+   "ail_mw": 10313.0
+  },
+  {
+   "hour_start": "2024-01-14T04:00",
+   "he": 5,
+   "pool_price_forecast": 410.32,
+   "pool_price": 470.22,
+   "ail_forecast_mw": 10296.0,
+   "ail_mw": 10280.0
+  },
+  {
+   "hour_start": "2024-01-14T05:00",
+   "he": 6,
+   "pool_price_forecast": 565.25,
+   "pool_price": 591.86,
+   "ail_forecast_mw": 10301.0,
+   "ail_mw": 10380.0
+  },
+  {
+   "hour_start": "2024-01-14T06:00",
+   "he": 7,
+   "pool_price_forecast": 490.38,
+   "pool_price": 827.08,
+   "ail_forecast_mw": 10437.0,
+   "ail_mw": 10467.0
+  },
+  {
+   "hour_start": "2024-01-14T07:00",
+   "he": 8,
+   "pool_price_forecast": 702.33,
+   "pool_price": 818.33,
+   "ail_forecast_mw": 10615.0,
+   "ail_mw": 10656.0
+  },
+  {
+   "hour_start": "2024-01-14T08:00",
+   "he": 9,
+   "pool_price_forecast": 972.53,
+   "pool_price": 976.52,
+   "ail_forecast_mw": 10811.0,
+   "ail_mw": 10803.0
+  },
+  {
+   "hour_start": "2024-01-14T09:00",
+   "he": 10,
+   "pool_price_forecast": 999.99,
+   "pool_price": 852.82,
+   "ail_forecast_mw": 10895.0,
+   "ail_mw": 10923.0
+  },
+  {
+   "hour_start": "2024-01-14T10:00",
+   "he": 11,
+   "pool_price_forecast": 806.24,
+   "pool_price": 812.72,
+   "ail_forecast_mw": 11038.0,
+   "ail_mw": 11070.0
+  },
+  {
+   "hour_start": "2024-01-14T11:00",
+   "he": 12,
+   "pool_price_forecast": 676.56,
+   "pool_price": 835.23,
+   "ail_forecast_mw": 11087.0,
+   "ail_mw": 11092.0
+  },
+  {
+   "hour_start": "2024-01-14T12:00",
+   "he": 13,
+   "pool_price_forecast": 763.41,
+   "pool_price": 665.87,
+   "ail_forecast_mw": 11109.0,
+   "ail_mw": 11104.0
+  },
+  {
+   "hour_start": "2024-01-14T13:00",
+   "he": 14,
+   "pool_price_forecast": 610.12,
+   "pool_price": 551.53,
+   "ail_forecast_mw": 11126.0,
+   "ail_mw": 11090.0
+  },
+  {
+   "hour_start": "2024-01-14T14:00",
+   "he": 15,
+   "pool_price_forecast": 551.07,
+   "pool_price": 584.39,
+   "ail_forecast_mw": 11093.0,
+   "ail_mw": 11068.0
+  },
+  {
+   "hour_start": "2024-01-14T15:00",
+   "he": 16,
+   "pool_price_forecast": 999.99,
+   "pool_price": 983.36,
+   "ail_forecast_mw": 11089.0,
+   "ail_mw": 11093.0
+  },
+  {
+   "hour_start": "2024-01-14T16:00",
+   "he": 17,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11250.0,
+   "ail_mw": 11333.0
+  },
+  {
+   "hour_start": "2024-01-14T17:00",
+   "he": 18,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11619.0,
+   "ail_mw": 11669.0
+  },
+  {
+   "hour_start": "2024-01-14T18:00",
+   "he": 19,
+   "pool_price_forecast": 828.13,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11581.0,
+   "ail_mw": 11561.0
+  },
+  {
+   "hour_start": "2024-01-14T19:00",
+   "he": 20,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11443.0,
+   "ail_mw": 11447.0
+  },
+  {
+   "hour_start": "2024-01-14T20:00",
+   "he": 21,
+   "pool_price_forecast": 940.24,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11328.0,
+   "ail_mw": 11326.0
+  },
+  {
+   "hour_start": "2024-01-14T21:00",
+   "he": 22,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11223.0,
+   "ail_mw": 11156.0
+  },
+  {
+   "hour_start": "2024-01-14T22:00",
+   "he": 23,
+   "pool_price_forecast": 889.38,
+   "pool_price": 757.83,
+   "ail_forecast_mw": 11023.0,
+   "ail_mw": 10908.0
+  },
+  {
+   "hour_start": "2024-01-14T23:00",
+   "he": 24,
+   "pool_price_forecast": 230.19,
+   "pool_price": 240.58,
+   "ail_forecast_mw": 10715.0,
+   "ail_mw": 10711.0
+  },
+  {
+   "hour_start": "2024-01-15T00:00",
+   "he": 1,
+   "pool_price_forecast": 100.07,
+   "pool_price": 181.59,
+   "ail_forecast_mw": 10579.0,
+   "ail_mw": 10559.0
+  },
+  {
+   "hour_start": "2024-01-15T01:00",
+   "he": 2,
+   "pool_price_forecast": 610.74,
+   "pool_price": 400.51,
+   "ail_forecast_mw": 10480.0,
+   "ail_mw": 10427.0
+  },
+  {
+   "hour_start": "2024-01-15T02:00",
+   "he": 3,
+   "pool_price_forecast": 439.52,
+   "pool_price": 414.98,
+   "ail_forecast_mw": 10396.0,
+   "ail_mw": 10358.0
+  },
+  {
+   "hour_start": "2024-01-15T03:00",
+   "he": 4,
+   "pool_price_forecast": 411.13,
+   "pool_price": 415.41,
+   "ail_forecast_mw": 10356.0,
+   "ail_mw": 10368.0
+  },
+  {
+   "hour_start": "2024-01-15T04:00",
+   "he": 5,
+   "pool_price_forecast": 564.31,
+   "pool_price": 602.61,
+   "ail_forecast_mw": 10428.0,
+   "ail_mw": 10434.0
+  },
+  {
+   "hour_start": "2024-01-15T05:00",
+   "he": 6,
+   "pool_price_forecast": 999.99,
+   "pool_price": 941.11,
+   "ail_forecast_mw": 10556.0,
+   "ail_mw": 10570.0
+  },
+  {
+   "hour_start": "2024-01-15T06:00",
+   "he": 7,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 10800.0,
+   "ail_mw": 10888.0
+  },
+  {
+   "hour_start": "2024-01-15T07:00",
+   "he": 8,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11228.0,
+   "ail_mw": 11246.0
+  },
+  {
+   "hour_start": "2024-01-15T08:00",
+   "he": 9,
+   "pool_price_forecast": 999.99,
+   "pool_price": 999.99,
+   "ail_forecast_mw": 11399.0,
+   "ail_mw": 11392.0
+  },
+  {
+   "hour_start": "2024-01-15T09:00",
+   "he": 10,
+   "pool_price_forecast": 999.99,
+   "pool_price": 337.67,
+   "ail_forecast_mw": 11407.0,
+   "ail_mw": 11453.0
+  },
+  {
+   "hour_start": "2024-01-15T10:00",
+   "he": 11,
+   "pool_price_forecast": 102.83,
+   "pool_price": 79.83,
+   "ail_forecast_mw": 11543.0,
+   "ail_mw": 11521.0
+  },
+  {
+   "hour_start": "2024-01-15T11:00",
+   "he": 12,
+   "pool_price_forecast": 103.91,
+   "pool_price": 82.49,
+   "ail_forecast_mw": 11526.0,
+   "ail_mw": 11539.0
+  },
+  {
+   "hour_start": "2024-01-15T12:00",
+   "he": 13,
+   "pool_price_forecast": 112.53,
+   "pool_price": 281.78,
+   "ail_forecast_mw": 11481.0,
+   "ail_mw": 11503.0
+  },
+  {
+   "hour_start": "2024-01-15T13:00",
+   "he": 14,
+   "pool_price_forecast": 477.68,
+   "pool_price": 268.39,
+   "ail_forecast_mw": 11444.0,
+   "ail_mw": 11438.0
+  },
+  {
+   "hour_start": "2024-01-15T14:00",
+   "he": 15,
+   "pool_price_forecast": 43.12,
+   "pool_price": 59.94,
+   "ail_forecast_mw": 11400.0,
+   "ail_mw": 11396.0
+  },
+  {
+   "hour_start": "2024-01-15T15:00",
+   "he": 16,
+   "pool_price_forecast": 130.83,
+   "pool_price": 82.57,
+   "ail_forecast_mw": 11416.0,
+   "ail_mw": 11408.0
+  },
+  {
+   "hour_start": "2024-01-15T16:00",
+   "he": 17,
+   "pool_price_forecast": 682.67,
+   "pool_price": 416.81,
+   "ail_forecast_mw": 11529.0,
+   "ail_mw": 11552.0
+  },
+  {
+   "hour_start": "2024-01-15T17:00",
+   "he": 18,
+   "pool_price_forecast": 489.05,
+   "pool_price": 597.71,
+   "ail_forecast_mw": 11778.0,
+   "ail_mw": 11742.0
+  },
+  {
+   "hour_start": "2024-01-15T18:00",
+   "he": 19,
+   "pool_price_forecast": 574.63,
+   "pool_price": 208.6,
+   "ail_forecast_mw": 11597.0,
+   "ail_mw": 11604.0
+  },
+  {
+   "hour_start": "2024-01-15T19:00",
+   "he": 20,
+   "pool_price_forecast": 97.89,
+   "pool_price": 101.31,
+   "ail_forecast_mw": 11505.0,
+   "ail_mw": 11512.0
+  },
+  {
+   "hour_start": "2024-01-15T20:00",
+   "he": 21,
+   "pool_price_forecast": 39.13,
+   "pool_price": 52.87,
+   "ail_forecast_mw": 11378.0,
+   "ail_mw": 11316.0
+  },
+  {
+   "hour_start": "2024-01-15T21:00",
+   "he": 22,
+   "pool_price_forecast": 83.32,
+   "pool_price": 55.4,
+   "ail_forecast_mw": 11078.0,
+   "ail_mw": 11069.0
+  },
+  {
+   "hour_start": "2024-01-15T22:00",
+   "he": 23,
+   "pool_price_forecast": 39.24,
+   "pool_price": 41.97,
+   "ail_forecast_mw": 10846.0,
+   "ail_mw": 10789.0
+  },
+  {
+   "hour_start": "2024-01-15T23:00",
+   "he": 24,
+   "pool_price_forecast": 60.28,
+   "pool_price": 55.0,
+   "ail_forecast_mw": 10576.0,
+   "ail_mw": 10511.0
+  }
+ ],
+ "smp": [
+  {
+   "t": "2024-01-13T01:00",
+   "smp": 656.56
+  },
+  {
+   "t": "2024-01-13T01:21",
+   "smp": 381.66
+  },
+  {
+   "t": "2024-01-13T01:43",
+   "smp": 374.43
+  },
+  {
+   "t": "2024-01-13T02:00",
+   "smp": 250.23
+  },
+  {
+   "t": "2024-01-13T02:13",
+   "smp": 228.07
+  },
+  {
+   "t": "2024-01-13T02:39",
+   "smp": 250.23
+  },
+  {
+   "t": "2024-01-13T03:00",
+   "smp": 250.13
+  },
+  {
+   "t": "2024-01-13T03:40",
+   "smp": 228.26
+  },
+  {
+   "t": "2024-01-13T04:00",
+   "smp": 228.41
+  },
+  {
+   "t": "2024-01-13T04:37",
+   "smp": 381.66
+  },
+  {
+   "t": "2024-01-13T04:44",
+   "smp": 656.56
+  },
+  {
+   "t": "2024-01-13T05:00",
+   "smp": 656.56
+  },
+  {
+   "t": "2024-01-13T06:00",
+   "smp": 656.56
+  },
+  {
+   "t": "2024-01-13T06:50",
+   "smp": 529.36
+  },
+  {
+   "t": "2024-01-13T07:00",
+   "smp": 529.36
+  },
+  {
+   "t": "2024-01-13T07:04",
+   "smp": 250.21
+  },
+  {
+   "t": "2024-01-13T08:00",
+   "smp": 231.2
+  },
+  {
+   "t": "2024-01-13T08:04",
+   "smp": 601.21
+  },
+  {
+   "t": "2024-01-13T08:07",
+   "smp": 765.94
+  },
+  {
+   "t": "2024-01-13T09:00",
+   "smp": 765.94
+  },
+  {
+   "t": "2024-01-13T09:48",
+   "smp": 762.32
+  },
+  {
+   "t": "2024-01-13T10:00",
+   "smp": 601.21
+  },
+  {
+   "t": "2024-01-13T11:00",
+   "smp": 589.98
+  },
+  {
+   "t": "2024-01-13T11:14",
+   "smp": 601.21
+  },
+  {
+   "t": "2024-01-13T11:19",
+   "smp": 665.94
+  },
+  {
+   "t": "2024-01-13T12:00",
+   "smp": 601.21
+  },
+  {
+   "t": "2024-01-13T12:20",
+   "smp": 665.94
+  },
+  {
+   "t": "2024-01-13T12:33",
+   "smp": 722.22
+  },
+  {
+   "t": "2024-01-13T12:45",
+   "smp": 825.52
+  },
+  {
+   "t": "2024-01-13T13:00",
+   "smp": 762.32
+  },
+  {
+   "t": "2024-01-13T13:06",
+   "smp": 722.22
+  },
+  {
+   "t": "2024-01-13T13:27",
+   "smp": 665.94
+  },
+  {
+   "t": "2024-01-13T13:40",
+   "smp": 601.21
+  },
+  {
+   "t": "2024-01-13T13:45",
+   "smp": 589.98
+  },
+  {
+   "t": "2024-01-13T14:00",
+   "smp": 589.98
+  },
+  {
+   "t": "2024-01-13T14:55",
+   "smp": 601.21
+  },
+  {
+   "t": "2024-01-13T15:00",
+   "smp": 665.94
+  },
+  {
+   "t": "2024-01-13T15:05",
+   "smp": 722.22
+  },
+  {
+   "t": "2024-01-13T15:08",
+   "smp": 762.32
+  },
+  {
+   "t": "2024-01-13T15:10",
+   "smp": 825.52
+  },
+  {
+   "t": "2024-01-13T15:28",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T16:00",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T17:00",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T17:14",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T18:00",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T19:00",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T20:00",
+   "smp": 999.99
+  },
+  {
+   "t": "2024-01-13T20:42",
+   "smp": 778.91
+  },
+  {
+   "t": "2024-01-13T20:49",
+   "smp": 765.91
+  },
+  {
+   "t": "2024-01-13T21:00",
+   "smp": 765.91
+  },
+  {
+   "t": "2024-01-13T21:37",
+   "smp": 735.21
+  },
+  {
+   "t": "2024-01-13T22:00",
+   "smp": 735.21
+  },
+  {
+   "t": "2024-01-13T23:00",
+   "smp": 640.32
+  },
+  {
+   "t": "2024-01-13T23:25",
+   "smp": 175.0
+  },
+  {
+   "t": "2024-01-13T23:37",
+   "smp": 152.56
+  },
+  {
+   "t": "2024-01-13T23:45",
+   "smp": 145.57
+  },
+  {
+   "t": "2024-01-13T23:55",
+   "smp": 175.0
+  }
+ ],
+ "weather": [
+  {
+   "t": "2024-01-10T00:00",
+   "temp_c": -15.8,
+   "wind_kmh": 27.0,
+   "wind_chill": -27.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T01:00",
+   "temp_c": -16.7,
+   "wind_kmh": 25.0,
+   "wind_chill": -27.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T02:00",
+   "temp_c": -17.2,
+   "wind_kmh": 17.0,
+   "wind_chill": -26.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T03:00",
+   "temp_c": -17.2,
+   "wind_kmh": 20.0,
+   "wind_chill": -27.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T04:00",
+   "temp_c": -17.4,
+   "wind_kmh": 24.0,
+   "wind_chill": -28.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T05:00",
+   "temp_c": -18.2,
+   "wind_kmh": 22.0,
+   "wind_chill": -29.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T06:00",
+   "temp_c": -18.9,
+   "wind_kmh": 24.0,
+   "wind_chill": -30.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T07:00",
+   "temp_c": -19.5,
+   "wind_kmh": 25.0,
+   "wind_chill": -31.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T08:00",
+   "temp_c": -19.8,
+   "wind_kmh": 23.0,
+   "wind_chill": -31.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T09:00",
+   "temp_c": -20.3,
+   "wind_kmh": 27.0,
+   "wind_chill": -32.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T10:00",
+   "temp_c": -20.6,
+   "wind_kmh": 21.0,
+   "wind_chill": -31.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T11:00",
+   "temp_c": -20.8,
+   "wind_kmh": 29.0,
+   "wind_chill": -33.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T12:00",
+   "temp_c": -20.9,
+   "wind_kmh": 27.0,
+   "wind_chill": -33.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T13:00",
+   "temp_c": -21.1,
+   "wind_kmh": 27.0,
+   "wind_chill": -33.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T14:00",
+   "temp_c": -21.4,
+   "wind_kmh": 29.0,
+   "wind_chill": -34.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T15:00",
+   "temp_c": -21.5,
+   "wind_kmh": 28.0,
+   "wind_chill": -34.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T16:00",
+   "temp_c": -21.9,
+   "wind_kmh": 25.0,
+   "wind_chill": -34.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T17:00",
+   "temp_c": -22.5,
+   "wind_kmh": 22.0,
+   "wind_chill": -34.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T18:00",
+   "temp_c": -23.0,
+   "wind_kmh": 23.0,
+   "wind_chill": -35.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T19:00",
+   "temp_c": -23.1,
+   "wind_kmh": 28.0,
+   "wind_chill": -36.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-10T20:00",
+   "temp_c": -23.4,
+   "wind_kmh": 23.0,
+   "wind_chill": -36.0,
+   "weather": "Cloudy"
+  },
+  {
+   "t": "2024-01-10T21:00",
+   "temp_c": -23.8,
+   "wind_kmh": 22.0,
+   "wind_chill": -36.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-10T22:00",
+   "temp_c": -24.0,
+   "wind_kmh": 22.0,
+   "wind_chill": -36.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-10T23:00",
+   "temp_c": -24.4,
+   "wind_kmh": 27.0,
+   "wind_chill": -38.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T00:00",
+   "temp_c": -24.8,
+   "wind_kmh": 31.0,
+   "wind_chill": -39.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T01:00",
+   "temp_c": -25.5,
+   "wind_kmh": 26.0,
+   "wind_chill": -39.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T02:00",
+   "temp_c": -25.8,
+   "wind_kmh": 21.0,
+   "wind_chill": -38.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T03:00",
+   "temp_c": -26.4,
+   "wind_kmh": 24.0,
+   "wind_chill": -40.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T04:00",
+   "temp_c": -27.3,
+   "wind_kmh": 26.0,
+   "wind_chill": -41.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T05:00",
+   "temp_c": -28.4,
+   "wind_kmh": 36.0,
+   "wind_chill": -45.0,
+   "weather": "Snow,Blowing Snow,Drifting Snow"
+  },
+  {
+   "t": "2024-01-11T06:00",
+   "temp_c": -28.8,
+   "wind_kmh": 28.0,
+   "wind_chill": -44.0,
+   "weather": "Snow,Blowing Snow,Drifting Snow"
+  },
+  {
+   "t": "2024-01-11T07:00",
+   "temp_c": -29.0,
+   "wind_kmh": 37.0,
+   "wind_chill": -46.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T08:00",
+   "temp_c": -29.0,
+   "wind_kmh": 17.0,
+   "wind_chill": -41.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-11T09:00",
+   "temp_c": -29.3,
+   "wind_kmh": 26.0,
+   "wind_chill": -44.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T10:00",
+   "temp_c": -29.6,
+   "wind_kmh": 16.0,
+   "wind_chill": -41.0,
+   "weather": "Snow,Fog"
+  },
+  {
+   "t": "2024-01-11T11:00",
+   "temp_c": -29.3,
+   "wind_kmh": 21.0,
+   "wind_chill": -43.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T12:00",
+   "temp_c": -29.6,
+   "wind_kmh": 18.0,
+   "wind_chill": -42.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T13:00",
+   "temp_c": -30.1,
+   "wind_kmh": 25.0,
+   "wind_chill": -45.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T14:00",
+   "temp_c": -29.8,
+   "wind_kmh": 18.0,
+   "wind_chill": -42.0,
+   "weather": "Cloudy"
+  },
+  {
+   "t": "2024-01-11T15:00",
+   "temp_c": -30.1,
+   "wind_kmh": 25.0,
+   "wind_chill": -45.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-11T16:00",
+   "temp_c": -30.2,
+   "wind_kmh": 18.0,
+   "wind_chill": -43.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T17:00",
+   "temp_c": -30.5,
+   "wind_kmh": 18.0,
+   "wind_chill": -43.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T18:00",
+   "temp_c": -31.1,
+   "wind_kmh": 11.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-11T19:00",
+   "temp_c": -31.3,
+   "wind_kmh": 14.0,
+   "wind_chill": -43.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T20:00",
+   "temp_c": -31.0,
+   "wind_kmh": 12.0,
+   "wind_chill": -41.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T21:00",
+   "temp_c": -31.2,
+   "wind_kmh": 20.0,
+   "wind_chill": -45.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T22:00",
+   "temp_c": -31.7,
+   "wind_kmh": 25.0,
+   "wind_chill": -47.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-11T23:00",
+   "temp_c": -32.3,
+   "wind_kmh": 12.0,
+   "wind_chill": -43.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-12T00:00",
+   "temp_c": -33.0,
+   "wind_kmh": 15.0,
+   "wind_chill": -45.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-12T01:00",
+   "temp_c": -33.5,
+   "wind_kmh": 11.0,
+   "wind_chill": -44.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-12T02:00",
+   "temp_c": -33.7,
+   "wind_kmh": 10.0,
+   "wind_chill": -44.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-12T03:00",
+   "temp_c": -33.8,
+   "wind_kmh": 15.0,
+   "wind_chill": -46.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-12T04:00",
+   "temp_c": -34.4,
+   "wind_kmh": 10.0,
+   "wind_chill": -44.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T05:00",
+   "temp_c": -34.8,
+   "wind_kmh": 12.0,
+   "wind_chill": -46.0,
+   "weather": "Mainly Clear"
+  },
+  {
+   "t": "2024-01-12T06:00",
+   "temp_c": -35.1,
+   "wind_kmh": 13.0,
+   "wind_chill": -47.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T07:00",
+   "temp_c": -35.5,
+   "wind_kmh": 12.0,
+   "wind_chill": -47.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T08:00",
+   "temp_c": -35.5,
+   "wind_kmh": 9.0,
+   "wind_chill": -45.0,
+   "weather": "Mainly Clear"
+  },
+  {
+   "t": "2024-01-12T09:00",
+   "temp_c": -35.1,
+   "wind_kmh": 11.0,
+   "wind_chill": -46.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T10:00",
+   "temp_c": -34.3,
+   "wind_kmh": 15.0,
+   "wind_chill": -47.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T11:00",
+   "temp_c": -33.5,
+   "wind_kmh": 15.0,
+   "wind_chill": -46.0,
+   "weather": "Mainly Clear"
+  },
+  {
+   "t": "2024-01-12T12:00",
+   "temp_c": -32.8,
+   "wind_kmh": 14.0,
+   "wind_chill": -44.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T13:00",
+   "temp_c": -31.9,
+   "wind_kmh": 14.0,
+   "wind_chill": -43.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T14:00",
+   "temp_c": -31.4,
+   "wind_kmh": 14.0,
+   "wind_chill": -43.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-12T15:00",
+   "temp_c": -30.9,
+   "wind_kmh": 11.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T16:00",
+   "temp_c": -31.3,
+   "wind_kmh": 12.0,
+   "wind_chill": -42.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T17:00",
+   "temp_c": -32.3,
+   "wind_kmh": 7.0,
+   "wind_chill": -40.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-12T18:00",
+   "temp_c": -32.4,
+   "wind_kmh": 11.0,
+   "wind_chill": -43.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T19:00",
+   "temp_c": -31.3,
+   "wind_kmh": 7.0,
+   "wind_chill": -39.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T20:00",
+   "temp_c": -30.9,
+   "wind_kmh": 5.0,
+   "wind_chill": -37.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-12T21:00",
+   "temp_c": -33.1,
+   "wind_kmh": 3.0,
+   "wind_chill": -37.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T22:00",
+   "temp_c": -31.1,
+   "wind_kmh": 5.0,
+   "wind_chill": -37.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-12T23:00",
+   "temp_c": -32.3,
+   "wind_kmh": 8.0,
+   "wind_chill": -41.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T00:00",
+   "temp_c": -33.3,
+   "wind_kmh": 12.0,
+   "wind_chill": -44.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T01:00",
+   "temp_c": -33.4,
+   "wind_kmh": 12.0,
+   "wind_chill": -44.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T02:00",
+   "temp_c": -33.3,
+   "wind_kmh": 11.0,
+   "wind_chill": -44.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T03:00",
+   "temp_c": -33.7,
+   "wind_kmh": 9.0,
+   "wind_chill": -43.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T04:00",
+   "temp_c": -32.6,
+   "wind_kmh": 5.0,
+   "wind_chill": -39.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T05:00",
+   "temp_c": -33.8,
+   "wind_kmh": 7.0,
+   "wind_chill": -42.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T06:00",
+   "temp_c": -34.0,
+   "wind_kmh": 8.0,
+   "wind_chill": -43.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T07:00",
+   "temp_c": -34.0,
+   "wind_kmh": 6.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T08:00",
+   "temp_c": -33.5,
+   "wind_kmh": 0.0,
+   "wind_chill": null,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T09:00",
+   "temp_c": -33.5,
+   "wind_kmh": 7.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T10:00",
+   "temp_c": -31.5,
+   "wind_kmh": 11.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T11:00",
+   "temp_c": -29.9,
+   "wind_kmh": 9.0,
+   "wind_chill": -38.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-13T12:00",
+   "temp_c": -28.4,
+   "wind_kmh": 13.0,
+   "wind_chill": -39.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T13:00",
+   "temp_c": -27.4,
+   "wind_kmh": 12.0,
+   "wind_chill": -37.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T14:00",
+   "temp_c": -27.0,
+   "wind_kmh": 15.0,
+   "wind_chill": -38.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T15:00",
+   "temp_c": -27.5,
+   "wind_kmh": 23.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T16:00",
+   "temp_c": -28.3,
+   "wind_kmh": 23.0,
+   "wind_chill": -42.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T17:00",
+   "temp_c": -29.7,
+   "wind_kmh": 17.0,
+   "wind_chill": -42.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T18:00",
+   "temp_c": -30.9,
+   "wind_kmh": 14.0,
+   "wind_chill": -42.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T19:00",
+   "temp_c": -31.5,
+   "wind_kmh": 9.0,
+   "wind_chill": -40.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T20:00",
+   "temp_c": -31.8,
+   "wind_kmh": 11.0,
+   "wind_chill": -42.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-13T21:00",
+   "temp_c": -31.8,
+   "wind_kmh": 10.0,
+   "wind_chill": -41.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T22:00",
+   "temp_c": -31.8,
+   "wind_kmh": 8.0,
+   "wind_chill": -40.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-13T23:00",
+   "temp_c": -32.3,
+   "wind_kmh": 8.0,
+   "wind_chill": -41.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-14T00:00",
+   "temp_c": -33.1,
+   "wind_kmh": 9.0,
+   "wind_chill": -42.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-14T01:00",
+   "temp_c": -33.1,
+   "wind_kmh": 5.0,
+   "wind_chill": -39.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-14T02:00",
+   "temp_c": -34.2,
+   "wind_kmh": 5.0,
+   "wind_chill": -40.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T03:00",
+   "temp_c": -33.1,
+   "wind_kmh": 5.0,
+   "wind_chill": -39.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T04:00",
+   "temp_c": -33.3,
+   "wind_kmh": 4.0,
+   "wind_chill": -38.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T05:00",
+   "temp_c": -34.5,
+   "wind_kmh": 3.0,
+   "wind_chill": -38.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T06:00",
+   "temp_c": -36.2,
+   "wind_kmh": 8.0,
+   "wind_chill": -45.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T07:00",
+   "temp_c": -35.3,
+   "wind_kmh": 8.0,
+   "wind_chill": -44.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T08:00",
+   "temp_c": -34.8,
+   "wind_kmh": 8.0,
+   "wind_chill": -44.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T09:00",
+   "temp_c": -35.2,
+   "wind_kmh": 5.0,
+   "wind_chill": -42.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T10:00",
+   "temp_c": -34.3,
+   "wind_kmh": 10.0,
+   "wind_chill": -44.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T11:00",
+   "temp_c": -32.0,
+   "wind_kmh": 10.0,
+   "wind_chill": -42.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T12:00",
+   "temp_c": -30.1,
+   "wind_kmh": 11.0,
+   "wind_chill": -40.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T13:00",
+   "temp_c": -28.2,
+   "wind_kmh": 9.0,
+   "wind_chill": -36.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T14:00",
+   "temp_c": -27.7,
+   "wind_kmh": 8.0,
+   "wind_chill": -35.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T15:00",
+   "temp_c": -27.3,
+   "wind_kmh": 17.0,
+   "wind_chill": -39.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T16:00",
+   "temp_c": -27.7,
+   "wind_kmh": 7.0,
+   "wind_chill": -35.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T17:00",
+   "temp_c": -29.3,
+   "wind_kmh": 9.0,
+   "wind_chill": -38.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T18:00",
+   "temp_c": -29.1,
+   "wind_kmh": 5.0,
+   "wind_chill": -35.0,
+   "weather": "Ice Crystals"
+  },
+  {
+   "t": "2024-01-14T19:00",
+   "temp_c": -30.2,
+   "wind_kmh": 4.0,
+   "wind_chill": -35.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-14T20:00",
+   "temp_c": -30.2,
+   "wind_kmh": 5.0,
+   "wind_chill": -36.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-14T21:00",
+   "temp_c": -30.2,
+   "wind_kmh": 5.0,
+   "wind_chill": -36.0,
+   "weather": "Fog"
+  },
+  {
+   "t": "2024-01-14T22:00",
+   "temp_c": -29.5,
+   "wind_kmh": 5.0,
+   "wind_chill": -35.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-14T23:00",
+   "temp_c": -30.3,
+   "wind_kmh": 9.0,
+   "wind_chill": -39.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-15T00:00",
+   "temp_c": -30.2,
+   "wind_kmh": 5.0,
+   "wind_chill": -36.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T01:00",
+   "temp_c": -30.4,
+   "wind_kmh": 7.0,
+   "wind_chill": -38.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T02:00",
+   "temp_c": -29.8,
+   "wind_kmh": 7.0,
+   "wind_chill": -37.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-15T03:00",
+   "temp_c": -29.7,
+   "wind_kmh": 9.0,
+   "wind_chill": -38.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T04:00",
+   "temp_c": -28.4,
+   "wind_kmh": 14.0,
+   "wind_chill": -39.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T05:00",
+   "temp_c": -29.3,
+   "wind_kmh": 10.0,
+   "wind_chill": -38.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-15T06:00",
+   "temp_c": -29.6,
+   "wind_kmh": 11.0,
+   "wind_chill": -39.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T07:00",
+   "temp_c": -29.2,
+   "wind_kmh": 7.0,
+   "wind_chill": -36.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T08:00",
+   "temp_c": -27.9,
+   "wind_kmh": 6.0,
+   "wind_chill": -34.0,
+   "weather": "Clear"
+  },
+  {
+   "t": "2024-01-15T09:00",
+   "temp_c": -28.6,
+   "wind_kmh": 9.0,
+   "wind_chill": -37.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T10:00",
+   "temp_c": -24.9,
+   "wind_kmh": 10.0,
+   "wind_chill": -33.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T11:00",
+   "temp_c": -21.7,
+   "wind_kmh": 12.0,
+   "wind_chill": -30.0,
+   "weather": "Mostly Cloudy"
+  },
+  {
+   "t": "2024-01-15T12:00",
+   "temp_c": -18.7,
+   "wind_kmh": 13.0,
+   "wind_chill": -27.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T13:00",
+   "temp_c": -16.1,
+   "wind_kmh": 12.0,
+   "wind_chill": -23.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T14:00",
+   "temp_c": -13.7,
+   "wind_kmh": 8.0,
+   "wind_chill": -19.0,
+   "weather": "Mostly Cloudy"
+  },
+  {
+   "t": "2024-01-15T15:00",
+   "temp_c": -12.6,
+   "wind_kmh": 8.0,
+   "wind_chill": -18.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T16:00",
+   "temp_c": -11.7,
+   "wind_kmh": 12.0,
+   "wind_chill": -18.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T17:00",
+   "temp_c": -10.9,
+   "wind_kmh": 5.0,
+   "wind_chill": -14.0,
+   "weather": "Cloudy"
+  },
+  {
+   "t": "2024-01-15T18:00",
+   "temp_c": -10.0,
+   "wind_kmh": 3.0,
+   "wind_chill": -12.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T19:00",
+   "temp_c": -9.8,
+   "wind_kmh": 0.0,
+   "wind_chill": null,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T20:00",
+   "temp_c": -10.9,
+   "wind_kmh": 5.0,
+   "wind_chill": -14.0,
+   "weather": "Mostly Cloudy"
+  },
+  {
+   "t": "2024-01-15T21:00",
+   "temp_c": -8.8,
+   "wind_kmh": 10.0,
+   "wind_chill": -14.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T22:00",
+   "temp_c": -9.0,
+   "wind_kmh": 5.0,
+   "wind_chill": -12.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-15T23:00",
+   "temp_c": -8.1,
+   "wind_kmh": 7.0,
+   "wind_chill": -12.0,
+   "weather": "Mostly Cloudy"
+  },
+  {
+   "t": "2024-01-16T00:00",
+   "temp_c": -8.7,
+   "wind_kmh": 7.0,
+   "wind_chill": -13.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T01:00",
+   "temp_c": -9.1,
+   "wind_kmh": 7.0,
+   "wind_chill": -13.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T02:00",
+   "temp_c": -8.0,
+   "wind_kmh": 10.0,
+   "wind_chill": -13.0,
+   "weather": "Mostly Cloudy"
+  },
+  {
+   "t": "2024-01-16T03:00",
+   "temp_c": -7.9,
+   "wind_kmh": 15.0,
+   "wind_chill": -14.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T04:00",
+   "temp_c": -8.9,
+   "wind_kmh": 11.0,
+   "wind_chill": -14.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T05:00",
+   "temp_c": -9.5,
+   "wind_kmh": 8.0,
+   "wind_chill": -14.0,
+   "weather": "Mostly Cloudy"
+  },
+  {
+   "t": "2024-01-16T06:00",
+   "temp_c": -10.0,
+   "wind_kmh": 7.0,
+   "wind_chill": -14.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T07:00",
+   "temp_c": -9.4,
+   "wind_kmh": 6.0,
+   "wind_chill": -13.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T08:00",
+   "temp_c": -9.6,
+   "wind_kmh": 9.0,
+   "wind_chill": -14.0,
+   "weather": "Cloudy"
+  },
+  {
+   "t": "2024-01-16T09:00",
+   "temp_c": -10.6,
+   "wind_kmh": 5.0,
+   "wind_chill": -14.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T10:00",
+   "temp_c": -10.0,
+   "wind_kmh": 8.0,
+   "wind_chill": -14.0,
+   "weather": "NA"
+  },
+  {
+   "t": "2024-01-16T11:00",
+   "temp_c": -7.9,
+   "wind_kmh": 5.0,
+   "wind_chill": -11.0,
+   "weather": "Cloudy"
+  },
+  {
+   "t": "2024-01-16T12:00",
+   "temp_c": -8.1,
+   "wind_kmh": 9.0,
+   "wind_chill": -13.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T13:00",
+   "temp_c": -7.9,
+   "wind_kmh": 8.0,
+   "wind_chill": -12.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T14:00",
+   "temp_c": -7.4,
+   "wind_kmh": 6.0,
+   "wind_chill": -11.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T15:00",
+   "temp_c": -6.4,
+   "wind_kmh": 12.0,
+   "wind_chill": -12.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T16:00",
+   "temp_c": -7.1,
+   "wind_kmh": 29.0,
+   "wind_chill": -16.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T17:00",
+   "temp_c": -8.4,
+   "wind_kmh": 25.0,
+   "wind_chill": -17.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T18:00",
+   "temp_c": -9.8,
+   "wind_kmh": 16.0,
+   "wind_chill": -17.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T19:00",
+   "temp_c": -10.9,
+   "wind_kmh": 17.0,
+   "wind_chill": -18.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T20:00",
+   "temp_c": -13.0,
+   "wind_kmh": 24.0,
+   "wind_chill": -22.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T21:00",
+   "temp_c": -14.2,
+   "wind_kmh": 27.0,
+   "wind_chill": -25.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T22:00",
+   "temp_c": -14.9,
+   "wind_kmh": 25.0,
+   "wind_chill": -25.0,
+   "weather": "Snow"
+  },
+  {
+   "t": "2024-01-16T23:00",
+   "temp_c": -15.0,
+   "wind_kmh": 13.0,
+   "wind_chill": -22.0,
+   "weather": "Snow"
+  }
+ ]
+}

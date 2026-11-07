@@ -1,0 +1,56 @@
+{
+ "generated_at": "2026-11-07T18:04:23+00:00",
+ "source": "REFIT (Murray, Stankovic & Stankovic 2017), CC BY 4.0",
+ "houses": 20,
+ "home_days": 9242,
+ "home_days_kettle_plug": 6163,
+ "checkins_per_home_month": {
+  "v0_kettle_plug": {
+   "standard": 4.69,
+   "cold": 5.69
+  },
+  "v1_whole_home": {
+   "standard": 5.04,
+   "cold": 6.14
+  }
+ },
+ "checkins_per_home_month_test_houses": {
+  "v0_kettle_plug": {
+   "standard": 5.43,
+   "cold": 6.69
+  },
+  "v1_whole_home": {
+   "standard": 5.62,
+   "cold": 6.81
+  }
+ },
+ "checkins_per_home_month_away_paused": {
+  "v0_kettle_plug": {
+   "standard": 2.5,
+   "cold": 3.59
+  },
+  "v1_whole_home": {
+   "standard": 3.13,
+   "cold": 4.31
+  }
+ },
+ "minutes_after_usual_before_asking": {
+  "v0_kettle_plug": {
+   "standard": 76.2,
+   "cold": 50.8
+  },
+  "v1_whole_home": {
+   "standard": 93.4,
+   "cold": 62.3
+  }
+ },
+ "kettle_f1": 0.658,
+ "kettle_f1_test_houses": 0.69,
+ "kettle_f1_calibrated": 0.724,
+ "kettle_f1_plug": 0.956,
+ "kettle_precision": 0.674,
+ "kettle_recall": 0.643,
+ "kettle_houses": 14,
+ "keys_doc": "docs/refit-evaluation.md#summaryjson",
+ "runtime_s": 151.0
+}
