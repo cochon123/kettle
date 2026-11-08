@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kettle demo: wiring the Arduino</title>
+<style>
+  :root { --amber:#d97706; --ink:#1f2328; --muted:#5b6470; --line:#e5e1d8; --paper:#fbf8f2; --card:#fff; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--ink); background:var(--paper); }
+  main { max-width:1180px; margin:0 auto; padding:32px 22px 80px; }
+  header { display:flex; gap:16px; align-items:center; margin-bottom:6px; }
+  .logo { width:44px; height:44px; border-radius:11px; background:var(--amber); color:#fff; display:grid; place-items:center; font-weight:650; font-size:22px; flex:none; }
+  h1 { font-size:28px; margin:0; letter-spacing:-.01em; }
+  .lede { color:var(--muted); margin:6px 0 22px; max-width:820px; }
+  h2 { font-size:20px; margin:40px 0 12px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+  .roles { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+  .roles .card b { display:block; margin-bottom:2px; }
+  .roles .card span { color:var(--muted); font-size:14.5px; }
+  .diagram-wrap { background:#fff; border:1px solid var(--line); border-radius:14px; padding:10px; }
+  .diagram { width:100%; height:auto; display:block; }
+  .pinlbl { font:600 8.5px ui-monospace, monospace; fill:#e9f1f7; }
+  .pinlbl.dim { fill:#9fbfd6; font-weight:500; }
+  .pinlbl.hl { fill:#ffd34d; font-size:10px; }
+  .board { font:700 15px ui-sans-serif, system-ui, sans-serif; fill:#e9f1f7; letter-spacing:.08em; }
+  .board.big { font-size:26px; }
+  .board.sm { font-size:9px; font-weight:600; }
+  .bbnum { font:600 8.5px ui-monospace, monospace; fill:#ffe1dc; }
+  .note { font:500 12px ui-sans-serif, system-ui, sans-serif; fill:#333; }
+  .note.b { font-weight:700; }
+  .note.xs { font-size:8.5px; fill:#555; }
+  .wlbl { font:700 12.5px ui-sans-serif, system-ui, sans-serif; paint-order:stroke; stroke:#fff; stroke-width:4px; }
+  .callout text { font:800 13px ui-sans-serif, system-ui, sans-serif; fill:#fff; }
+  .breathe { animation:breathe 2.2s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+  @keyframes breathe { 0%,100% { opacity:.25; } 50% { opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { .breathe { animation:none; opacity:.7; } }
+  table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; font-size:15px; }
+  th, td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:#f4efe5; font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:#6b5a3a; }
+  tr:last-child td { border-bottom:none; }
+  .sw { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-1px; margin-right:6px; border:1px solid rgba(0,0,0,.25); }
+  ol.steps { counter-reset:s; list-style:none; padding:0; margin:0; display:grid; gap:12px; }
+  ol.steps > li { counter-increment:s; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 18px 14px 62px; position:relative; }
+  ol.steps > li::before { content:counter(s); position:absolute; left:16px; top:14px; width:30px; height:30px; border-radius:50%; background:var(--amber); color:#fff; font-weight:800; display:grid; place-items:center; }
+  ol.steps > li.zero { counter-increment:none; }
+  ol.steps > li.zero::before { content:"0"; background:#6b7280; }
+  ol.steps > li > b:first-child { display:block; margin-bottom:2px; }
+  ol.steps p { margin:4px 0 0; color:#3b424b; }
+  .warn { border-left:4px solid #dc2626; background:#fff5f5; border-radius:10px; padding:12px 16px; margin:12px 0; }
+  .tip { border-left:4px solid var(--amber); background:#fffaf0; border-radius:10px; padding:12px 16px; margin:12px 0; }
+  code { font:14px ui-monospace, SFMono-Regular, Menlo, monospace; background:#f2ede3; padding:1px 5px; border-radius:5px; }
+  pre code { background:none; padding:0; color:inherit; font:inherit; }
+  pre { background:#1d2125; color:#e6edf3; padding:16px 18px; border-radius:12px; overflow:auto; font:13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .bands { display:inline-flex; gap:3px; vertical-align:-2px; padding:2px 6px; background:#e7cf9f; border-radius:7px; }
+  .bands i { display:block; width:6px; height:14px; border-radius:1px; }
+  .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:14.5px; }
+  .flow .n { background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px 12px; }
+  .flow .a { color:var(--muted); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:820px) { .two { grid-template-columns:1fr; } }
+  .muted { color:var(--muted); }
+  .stepper { display:grid; grid-template-columns:minmax(0,1fr) 250px; gap:14px; align-items:start; }
+  .steppanel { background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px; position:sticky; top:12px; }
+  .stepbtns { display:grid; gap:6px; }
+  .stepbtns button, .stepnav button { font:inherit; font-size:14.5px; text-align:left; cursor:pointer; border:1px solid var(--line); background:#faf7f1; color:var(--ink); border-radius:10px; padding:8px 10px; display:flex; align-items:center; gap:10px; }
+  .stepbtns button span { width:22px; height:22px; border-radius:50%; background:#e7dfcf; color:#5a4a2a; font-weight:800; font-size:12.5px; display:grid; place-items:center; flex:none; }
+  .stepbtns button:hover, .stepnav button:hover { border-color:#d9b98a; }
+  .stepbtns button.on { background:var(--amber); border-color:var(--amber); color:#fff; font-weight:650; }
+  .stepbtns button.on span { background:#fff; color:var(--amber); }
+  .stepbtns button.done span { background:#7fb069; color:#fff; }
+  .stepbtns button:focus-visible, .stepnav button:focus-visible { outline:3px solid #f5b54a; outline-offset:2px; }
+  .stepdetail { margin:12px 2px 10px; min-height:120px; }
+  .stepdetail h3 { margin:0 0 4px; font-size:16px; }
+  .stepdetail p { margin:0; font-size:14.5px; color:#3b424b; }
+  .stepnav { display:flex; gap:6px; }
+  .stepnav button { flex:1; justify-content:center; }
+  .stepnav button:disabled { opacity:.4; cursor:default; }
+  .keyhint { margin:8px 2px 0; font-size:12.5px; color:var(--muted); }
+  .diagram [data-step] { transition:opacity .25s; }
+  .diagram.stepping [data-step].future { opacity:0; visibility:hidden; }
+  .diagram.stepping [data-step].past { opacity:.35; }
+  .diagram.stepping [data-step].now { filter:drop-shadow(0 0 4px rgba(217,119,6,.85)); }
+  .diagram.stepping .now .callout circle { animation:pop .9s ease-in-out infinite alternate; transform-origin:center; transform-box:fill-box; }
+  @keyframes pop { from { transform:scale(1); } to { transform:scale(1.25); } }
+  @media (prefers-reduced-motion: reduce) { .diagram.stepping .now .callout circle { animation:none; } }
+  ol.steps > li { cursor:pointer; }
+  ol.steps > li.current { border-color:var(--amber); box-shadow:0 0 0 2px rgba(217,119,6,.25); }
+  @media (max-width:900px) {
+    .stepper { grid-template-columns:1fr; }
+    .steppanel { position:static; }
+    .stepbtns { grid-template-columns:repeat(3,1fr); }
+    .stepbtns button { font-size:13px; padding:6px 8px; }
+    .stepdetail { min-height:0; }
+  }
+</style>
+</head>
+<body>
+<main>
+<header><div class="logo">K</div><h1>Kettle demo: wiring the Arduino</h1></header>
+<p class="lede">Your parts: Arduino UNO R4 Minima, mini breadboard, one 10&nbsp;mm LED, four resistors, jumper wires and the big blue arcade button.
+The button becomes Margaret's physical <b>"I'm fine"</b> button, and it <b>lights up</b>: the LED goes inside the dome, so the button itself pulses during a check-in ("press me") and glows steadily when someone sends "thinking of you".
+There's no smart plug, so the kettle itself is simulated in software.</p>
+
+<div class="roles">
+  <div class="card"><b>🔵 Big button → "I'm fine"</b><span>Pressing it answers the check-in, so no neighbour gets asked.</span></div>
+  <div class="card"><b>💡 Light inside the button</b><span>The thing that asks is the thing you press. It pulses for "please press" and glows steadily for "thinking of you".</span></div>
+  <div class="card"><b>🔌 Arduino → laptop over USB</b><span>The UNO R4 Minima has no Wi-Fi, so it talks to the laptop over the USB cable (<code>/dev/ttyACM0</code>).</span></div>
+  <div class="card"><b>☕ Kettle → simulated</b><span><code>python -m kettle demo --plug sim</code>, then press <b>K</b> on the stage screen.</span></div>
+</div>
+
+<h2>The diagram</h2>
+<div class="stepper">
+  <div class="diagram-wrap">
+<svg viewBox="0 0 1200 620" class="diagram" role="img" aria-labelledby="dgtitle">
+<title id="dgtitle">Wiring diagram: Arduino UNO R4 Minima, mini breadboard with resistor, big arcade button with a light inside</title>
+<defs>
+  <linearGradient id="bbshade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".12"/>
+  </linearGradient>
+  <radialGradient id="ledglow"><stop offset="0" stop-color="#ffb347" stop-opacity=".95"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+  <linearGradient id="dome" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f8de8"/><stop offset="1" stop-color="#1546a0"/></linearGradient>
+</defs>
+
+<!-- ============ Arduino UNO R4 Minima ============ -->
+<g>
+  <rect x="40" y="270" width="430" height="320" rx="14" fill="#1f5f8b"/>
+  <rect x="40" y="270" width="430" height="320" rx="14" fill="none" stroke="#174a6d" stroke-width="3"/>
+  <rect x="22" y="306" width="42" height="40" rx="5" fill="#c9ccd1" stroke="#8d939b" stroke-width="2"/>
+  <rect x="30" y="318" width="26" height="16" rx="7" fill="#2b2f36"/>
+  <rect x="18" y="470" width="58" height="70" rx="4" fill="#1a1a1a"/>
+  <rect x="232" y="380" width="78" height="78" rx="4" fill="#23262b" transform="rotate(45 271 419)"/>
+  <circle cx="420" cy="555" r="9" fill="#ddd" stroke="#999"/>
+  <circle cx="402" cy="345" r="4" fill="#39d353"/>
+  <text x="414" y="349" class="board sm">ON</text>
+  <text x="120" y="510" class="board big">UNO R4</text>
+  <text x="120" y="534" class="board">MINIMA</text>
+  <rect x="140.0" y="275" width="159.5" height="18" rx="2" fill="#151515"/>
+<rect x="304.3" y="275" width="128.5" height="18" rx="2" fill="#151515"/>
+<rect x="146.8" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="150.0" y="300" transform="rotate(-90 150.0 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">SCL</text>
+<rect x="162.3" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="165.5" y="300" transform="rotate(-90 165.5 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">SDA</text>
+<rect x="177.8" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="181.0" y="300" transform="rotate(-90 181.0 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">AREF</text>
+<rect x="193.3" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="196.5" y="300" transform="rotate(-90 196.5 300)" text-anchor="end" dominant-baseline="central" class="pinlbl hl">GND</text>
+<rect x="208.8" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="212.0" y="300" transform="rotate(-90 212.0 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">13</text>
+<rect x="224.3" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="227.5" y="300" transform="rotate(-90 227.5 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">12</text>
+<rect x="239.8" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="243.0" y="300" transform="rotate(-90 243.0 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">11</text>
+<rect x="255.3" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="258.5" y="300" transform="rotate(-90 258.5 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">10</text>
+<rect x="270.8" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="274.0" y="300" transform="rotate(-90 274.0 300)" text-anchor="end" dominant-baseline="central" class="pinlbl hl">9</text>
+<rect x="286.3" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="289.5" y="300" transform="rotate(-90 289.5 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">8</text>
+<rect x="311.1" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="314.3" y="300" transform="rotate(-90 314.3 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">7</text>
+<rect x="326.6" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="329.8" y="300" transform="rotate(-90 329.8 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">6</text>
+<rect x="342.1" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="345.3" y="300" transform="rotate(-90 345.3 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">5</text>
+<rect x="357.6" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="360.8" y="300" transform="rotate(-90 360.8 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">4</text>
+<rect x="373.1" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="376.3" y="300" transform="rotate(-90 376.3 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">3</text>
+<rect x="388.6" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="391.8" y="300" transform="rotate(-90 391.8 300)" text-anchor="end" dominant-baseline="central" class="pinlbl hl">2</text>
+<rect x="404.1" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="407.3" y="300" transform="rotate(-90 407.3 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">1</text>
+<rect x="419.6" y="280.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="422.8" y="300" transform="rotate(-90 422.8 300)" text-anchor="end" dominant-baseline="central" class="pinlbl">0</text>
+<rect x="180.0" y="567" width="128.5" height="18" rx="2" fill="#151515"/>
+<rect x="319.5" y="567" width="97.5" height="18" rx="2" fill="#151515"/>
+<rect x="186.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<rect x="202.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="205.5" y="560" transform="rotate(-90 205.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">IOREF</text>
+<rect x="217.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="221.0" y="560" transform="rotate(-90 221.0 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">RESET</text>
+<rect x="233.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="236.5" y="560" transform="rotate(-90 236.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">3.3V</text>
+<rect x="248.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="252.0" y="560" transform="rotate(-90 252.0 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">5V</text>
+<rect x="264.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="267.5" y="560" transform="rotate(-90 267.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">GND</text>
+<rect x="279.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="283.0" y="560" transform="rotate(-90 283.0 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">GND</text>
+<rect x="295.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="298.5" y="560" transform="rotate(-90 298.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">VIN</text>
+<rect x="326.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="329.5" y="560" transform="rotate(-90 329.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">A0</text>
+<rect x="341.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="345.0" y="560" transform="rotate(-90 345.0 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">A1</text>
+<rect x="357.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="360.5" y="560" transform="rotate(-90 360.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">A2</text>
+<rect x="372.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="376.0" y="560" transform="rotate(-90 376.0 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">A3</text>
+<rect x="388.3" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="391.5" y="560" transform="rotate(-90 391.5 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">A4</text>
+<rect x="403.8" y="572.8" width="6.4" height="6.4" fill="#3a3a3a"/>
+<text x="407.0" y="560" transform="rotate(-90 407.0 560)" text-anchor="start" dominant-baseline="central" class="pinlbl dim">A5</text>
+  <text x="286.4" y="266" text-anchor="middle" class="board sm">DIGITAL (PWM~)</text>
+  <path d="M22,326 L4,326" stroke="#d8d8d8" stroke-width="9" stroke-linecap="round"/>
+  <text x="18" y="296" class="note" text-anchor="start">USB-C → this laptop</text>
+</g>
+
+<!-- ============ Breadboard ============ -->
+<rect x="540" y="80" width="380" height="290" rx="10" fill="#d63b2f"/>
+<rect x="540" y="80" width="380" height="290" rx="10" fill="url(#bbshade)"/>
+<rect x="548" y="212" width="364" height="26" rx="5" fill="#b02c22"/>
+<rect data-step="1" x="602" y="111" width="16" height="98" rx="7" fill="#ffd34d" opacity=".55"/>
+<rect data-step="1" x="682" y="111" width="16" height="98" rx="7" fill="#ffb36b" opacity=".55"/>
+<rect data-step="2" x="702" y="111" width="16" height="98" rx="7" fill="#9aa0a6" opacity=".55"/>
+<text x="570" y="104" text-anchor="middle" class="bbnum">1</text>
+<text x="570" y="356" text-anchor="middle" class="bbnum">1</text>
+<rect x="566.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="566.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="590" y="104" text-anchor="middle" class="bbnum">2</text>
+<text x="590" y="356" text-anchor="middle" class="bbnum">2</text>
+<rect x="586.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="586.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="610" y="104" text-anchor="middle" class="bbnum">3</text>
+<text x="610" y="356" text-anchor="middle" class="bbnum">3</text>
+<rect x="606.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="606.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="630" y="104" text-anchor="middle" class="bbnum">4</text>
+<text x="630" y="356" text-anchor="middle" class="bbnum">4</text>
+<rect x="626.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="626.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="650" y="104" text-anchor="middle" class="bbnum">5</text>
+<text x="650" y="356" text-anchor="middle" class="bbnum">5</text>
+<rect x="646.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="646.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="670" y="104" text-anchor="middle" class="bbnum">6</text>
+<text x="670" y="356" text-anchor="middle" class="bbnum">6</text>
+<rect x="666.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="666.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="690" y="104" text-anchor="middle" class="bbnum">7</text>
+<text x="690" y="356" text-anchor="middle" class="bbnum">7</text>
+<rect x="686.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="686.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="710" y="104" text-anchor="middle" class="bbnum">8</text>
+<text x="710" y="356" text-anchor="middle" class="bbnum">8</text>
+<rect x="706.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="706.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="730" y="104" text-anchor="middle" class="bbnum">9</text>
+<text x="730" y="356" text-anchor="middle" class="bbnum">9</text>
+<rect x="726.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="726.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="750" y="104" text-anchor="middle" class="bbnum">10</text>
+<text x="750" y="356" text-anchor="middle" class="bbnum">10</text>
+<rect x="746.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="746.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="770" y="104" text-anchor="middle" class="bbnum">11</text>
+<text x="770" y="356" text-anchor="middle" class="bbnum">11</text>
+<rect x="766.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="766.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="790" y="104" text-anchor="middle" class="bbnum">12</text>
+<text x="790" y="356" text-anchor="middle" class="bbnum">12</text>
+<rect x="786.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="786.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="810" y="104" text-anchor="middle" class="bbnum">13</text>
+<text x="810" y="356" text-anchor="middle" class="bbnum">13</text>
+<rect x="806.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="806.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="830" y="104" text-anchor="middle" class="bbnum">14</text>
+<text x="830" y="356" text-anchor="middle" class="bbnum">14</text>
+<rect x="826.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="826.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="850" y="104" text-anchor="middle" class="bbnum">15</text>
+<text x="850" y="356" text-anchor="middle" class="bbnum">15</text>
+<rect x="846.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="846.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="870" y="104" text-anchor="middle" class="bbnum">16</text>
+<text x="870" y="356" text-anchor="middle" class="bbnum">16</text>
+<rect x="866.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="866.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="890" y="104" text-anchor="middle" class="bbnum">17</text>
+<text x="890" y="356" text-anchor="middle" class="bbnum">17</text>
+<rect x="886.5" y="116.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="136.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="156.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="176.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="196.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="246.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="266.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="286.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="306.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<rect x="886.5" y="326.5" width="7" height="7" rx="1.2" fill="#5a1410"/>
+<text x="553" y="120" text-anchor="middle" dominant-baseline="central" class="bbnum">a</text>
+<text x="907" y="120" text-anchor="middle" dominant-baseline="central" class="bbnum">a</text>
+<text x="553" y="140" text-anchor="middle" dominant-baseline="central" class="bbnum">b</text>
+<text x="907" y="140" text-anchor="middle" dominant-baseline="central" class="bbnum">b</text>
+<text x="553" y="160" text-anchor="middle" dominant-baseline="central" class="bbnum">c</text>
+<text x="907" y="160" text-anchor="middle" dominant-baseline="central" class="bbnum">c</text>
+<text x="553" y="180" text-anchor="middle" dominant-baseline="central" class="bbnum">d</text>
+<text x="907" y="180" text-anchor="middle" dominant-baseline="central" class="bbnum">d</text>
+<text x="553" y="200" text-anchor="middle" dominant-baseline="central" class="bbnum">e</text>
+<text x="907" y="200" text-anchor="middle" dominant-baseline="central" class="bbnum">e</text>
+<text x="553" y="250" text-anchor="middle" dominant-baseline="central" class="bbnum">f</text>
+<text x="907" y="250" text-anchor="middle" dominant-baseline="central" class="bbnum">f</text>
+<text x="553" y="270" text-anchor="middle" dominant-baseline="central" class="bbnum">g</text>
+<text x="907" y="270" text-anchor="middle" dominant-baseline="central" class="bbnum">g</text>
+<text x="553" y="290" text-anchor="middle" dominant-baseline="central" class="bbnum">h</text>
+<text x="907" y="290" text-anchor="middle" dominant-baseline="central" class="bbnum">h</text>
+<text x="553" y="310" text-anchor="middle" dominant-baseline="central" class="bbnum">i</text>
+<text x="907" y="310" text-anchor="middle" dominant-baseline="central" class="bbnum">i</text>
+<text x="553" y="330" text-anchor="middle" dominant-baseline="central" class="bbnum">j</text>
+<text x="907" y="330" text-anchor="middle" dominant-baseline="central" class="bbnum">j</text>
+
+<!-- ============ Big button (side view) ============ -->
+<g>
+  <path d="M960,207 C960,140 1160,140 1160,207 Z" fill="url(#dome)" fill-opacity=".72" stroke="#123c86"/>
+  <rect x="950" y="205" width="220" height="44" rx="6" fill="#151515"/>
+  <rect x="1036" y="249" width="48" height="16" fill="#eee" stroke="#bbb"/>
+  <rect x="1032" y="265" width="56" height="20" fill="#1a1a1a"/>
+  <rect x="1008" y="285" width="102" height="60" rx="3" fill="#f2f2ee" stroke="#b9b9b2"/>
+  <rect x="1020" y="292" width="16" height="22" rx="2" fill="#d4a63a" stroke="#9c7620"/>
+  <circle cx="1028" cy="306" r="3.5" fill="#f2f2ee"/>
+  <path d="M1110,300 L1146,300" stroke="#9aa1a9" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1110,325 L1146,325" stroke="#9aa1a9" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1095,345 L1095,377" stroke="#9aa1a9" stroke-width="4" stroke-linecap="round"/>
+  <text x="1150" y="294" class="note b">NC ✗</text>
+  <text x="1150" y="319" class="note b" fill="#2f6fd6">NO</text>
+  <text x="1103" y="392" class="note b">COM</text>
+  <text x="1015" y="333" class="note xs" text-anchor="start">lamp tab</text>
+  <text x="1015" y="343" class="note xs" text-anchor="start">(see step 2)</text>
+  <text x="1075" y="134" text-anchor="middle" class="note b">big button (the "I'm fine" button)</text>
+</g>
+
+<!-- ===== step 1: resistor col 3 b -> col 7 b ===== -->
+<g data-step="1">
+  <path d="M610,140 L690,140" stroke="#9aa1a9" stroke-width="2.5" fill="none"/>
+  <rect x="631" y="132" width="38" height="16" rx="7" fill="#e7cf9f" stroke="#a78b55"/>
+  <rect x="637" y="132" width="4" height="16" fill="#e8822a"/>
+  <rect x="644" y="132" width="4" height="16" fill="#e8822a"/>
+  <rect x="651" y="132" width="4" height="16" fill="#7a4a1e"/>
+  <rect x="660" y="132" width="3" height="16" fill="#c9a227"/>
+  <circle cx="610" cy="140" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/><circle cx="690" cy="140" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/>
+  <g class="callout"><circle cx="650" cy="114" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="650" y="114.5" text-anchor="middle" dominant-baseline="central">1</text></g>
+</g>
+
+<!-- ===== step 7 glow: the whole dome breathes ===== -->
+<g data-step="7"><ellipse cx="1060" cy="182" rx="118" ry="70" fill="url(#ledglow)" class="breathe"/></g>
+
+<!-- ===== step 2: light inside the button; + -> col 7 a, - -> col 8 a ===== -->
+<g data-step="2">
+  <path d="M1054,186 L1054,205" stroke="#9aa1a9" stroke-width="2.5"/>
+  <path d="M1066,186 L1066,205" stroke="#9aa1a9" stroke-width="2.5"/>
+  <path d="M1047,190 L1073,190 L1073,196 L1047,196 Z" fill="#f6c9a6" stroke="#c98a5b"/>
+  <path d="M1050,190 L1050,170 A10,10 0 0 1 1070,170 L1070,190 Z" fill="#ffb98a" fill-opacity=".9" stroke="#c98a5b"/>
+  <text x="1060" y="232" text-anchor="middle" class="note b" fill="#f3f4f6" style="font-size:10.5px">LED or lamp inside</text>
+  <path d="M960,222 C941,222 940,40 905,40 L710,40 Q690,40 690,60 L690,120" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M960,222 C941,222 940,40 905,40 L710,40 Q690,40 690,60 L690,120" fill="none" stroke="#f08a24" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class=""/>
+  <path d="M960,236 C927,236 926,54 893,54 L728,54 Q710,54 710,72 L710,120" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M960,236 C927,236 926,54 893,54 L728,54 Q710,54 710,72 L710,120" fill="none" stroke="#7a4a1e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class=""/>
+  <circle cx="690" cy="120" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/><circle cx="710" cy="120" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/>
+  <text x="800" y="28" text-anchor="middle" class="wlbl" fill="#c2650a">orange: light + (long leg) → col 7</text>
+  <text x="800" y="76" text-anchor="middle" class="wlbl" fill="#7a4a1e" style="font-size:11.5px">brown: light − → col 8</text>
+  <g class="callout"><circle cx="926" cy="274" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="926" y="274.5" text-anchor="middle" dominant-baseline="central">2</text></g>
+</g>
+
+<!-- ===== step 3: GND -> col 8 e ===== -->
+<g data-step="3">
+  <path d="M196.5,284 C196.5,196 680,248 710,200" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M196.5,284 C196.5,196 680,248 710,200" fill="none" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class=""/><circle cx="710" cy="200" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/><circle cx="196.5" cy="284" r="8" fill="none" stroke="#fff" stroke-width="4"/><circle cx="196.5" cy="284" r="8" fill="none" stroke="#1b1b1b" stroke-width="2.5"/>
+  <text x="160" y="190" class="wlbl" fill="#1b1b1b">black: GND → col 8</text>
+  <g class="callout"><circle cx="174.5" cy="240" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="174.5" y="240.5" text-anchor="middle" dominant-baseline="central">3</text></g>
+</g>
+
+<!-- ===== step 4: D9 -> col 3 e ===== -->
+<g data-step="4">
+  <path d="M274.0,284 C274.0,222 600,250 610,200" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M274.0,284 C274.0,222 600,250 610,200" fill="none" stroke="#f2c230" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class=""/><circle cx="610" cy="200" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/><circle cx="274.0" cy="284" r="8" fill="none" stroke="#fff" stroke-width="4"/><circle cx="274.0" cy="284" r="8" fill="none" stroke="#e0a400" stroke-width="2.5"/>
+  <text x="300" y="214" class="wlbl" fill="#8a6a00">yellow: D9 → col 3</text>
+  <g class="callout"><circle cx="296.0" cy="250" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="296.0" y="250.5" text-anchor="middle" dominant-baseline="central">4</text></g>
+</g>
+
+<!-- ===== step 5: button COM -> col 8 d ===== -->
+<g data-step="5">
+  <path d="M1095,377 C1095,428 760,428 740,330 S710,215 710,180" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M1095,377 C1095,428 760,428 740,330 S710,215 710,180" fill="none" stroke="#6b7280" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class=""/><circle cx="710" cy="180" r="4" fill="#111" stroke="#fff" stroke-width="1.5"/>
+  <text x="870" y="398" class="wlbl" fill="#4b5563" text-anchor="middle">grey: button COM → col 8</text>
+  <g class="callout"><circle cx="1110" cy="430" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="1110" y="430.5" text-anchor="middle" dominant-baseline="central">5</text></g>
+</g>
+
+<!-- ===== step 6: button NO -> D2 ===== -->
+<g data-step="6">
+  <path d="M1147,325 C1192,325 1192,452 1130,452 L527,452 Q505,452 505,430 L505,258 Q505,236 483,236 L411.8,236 Q391.8,236 391.8,256 L391.8,284" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M1147,325 C1192,325 1192,452 1130,452 L527,452 Q505,452 505,430 L505,258 Q505,236 483,236 L411.8,236 Q391.8,236 391.8,256 L391.8,284" fill="none" stroke="#2f6fd6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" class=""/><circle cx="391.8" cy="284" r="8" fill="none" stroke="#fff" stroke-width="4"/><circle cx="391.8" cy="284" r="8" fill="none" stroke="#2f6fd6" stroke-width="2.5"/>
+  <text x="760" y="447" class="wlbl" fill="#2f6fd6" text-anchor="middle">blue: button NO → D2</text>
+  <g class="callout"><circle cx="505" cy="345" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="505" y="345.5" text-anchor="middle" dominant-baseline="central">6</text></g>
+</g>
+
+<!-- ===== step 7: USB back in ===== -->
+<g data-step="7">
+  <rect x="16" y="300" width="54" height="52" rx="8" fill="none" stroke="#d97706" stroke-width="3" stroke-dasharray="6 4"/>
+  <g class="callout"><circle cx="40" cy="372" r="12" fill="#d97706" stroke="#fff" stroke-width="2.5"/><text x="40" y="372.5" text-anchor="middle" dominant-baseline="central">7</text></g>
+</g>
+</svg>
+</div>
+  <aside class="steppanel" aria-label="Show the diagram step by step">
+    <div class="stepbtns" role="tablist">
+      <button data-go="all" class="on">All steps</button>
+      <button data-go="0"><span>0</span>Start, unplugged</button>
+      <button data-go="1"><span>1</span>Resistor</button>
+      <button data-go="2"><span>2</span>Light in the button</button>
+      <button data-go="3"><span>3</span>GND wire</button>
+      <button data-go="4"><span>4</span>Pin 9 wire</button>
+      <button data-go="5"><span>5</span>Button COM</button>
+      <button data-go="6"><span>6</span>Button NO</button>
+      <button data-go="7"><span>7</span>Plug in &amp; test</button>
+    </div>
+    <div class="stepdetail" aria-live="polite"><h3 id="sdTitle"></h3><p id="sdText"></p></div>
+    <div class="stepnav"><button id="prevBtn">← Prev</button><button id="nextBtn">Next →</button></div>
+    <p class="keyhint">Tip: ← / → arrow keys also work.</p>
+  </aside>
+</div>
+<p class="muted" style="font-size:14px;margin-top:8px">The board is drawn the usual way round, with USB on the left and the digital pins along the top edge. Yours is in its case and turned, so go by the pin labels printed on the board, not by position.
+On the breadboard, each column of 5 holes (a–e) is joined underneath, so anything in the same column is connected. The shaded columns 3, 7 and 8 are the ones used here.</p>
+
+<h2>Every connection</h2>
+<table>
+  <tr><th>#</th><th>From</th><th>To</th><th>Wire</th></tr>
+  <tr><td>1</td><td>Resistor, one leg</td><td>Breadboard <b>column 3</b> (row b)</td><td>the resistor's own legs (either way round)</td></tr>
+  <tr><td>1</td><td>Resistor, other leg</td><td>Breadboard <b>column 7</b> (row b)</td><td></td></tr>
+  <tr><td>2</td><td>Light inside the dome, <b>+</b> (LED long leg, or lamp tab +)</td><td>Breadboard <b>column 7</b> (row a)</td><td><span class="sw" style="background:#f08a24"></span>orange female–male jumper</td></tr>
+  <tr><td>2</td><td>Light inside the dome, <b>−</b> (LED short leg / flat side, or the other lamp tab)</td><td>Breadboard <b>column 8</b> (row a)</td><td><span class="sw" style="background:#7a4a1e"></span>brown female–male jumper</td></tr>
+  <tr><td>3</td><td>Arduino <b>GND</b> (top header, next to pin 13)</td><td>Breadboard <b>column 8</b> (row e)</td><td><span class="sw" style="background:#1b1b1b"></span>black</td></tr>
+  <tr><td>4</td><td>Arduino <b>pin 9</b> (~9, PWM)</td><td>Breadboard <b>column 3</b> (row e)</td><td><span class="sw" style="background:#f2c230"></span>yellow</td></tr>
+  <tr><td>5</td><td>Button terminal <b>COM</b> (marked C)</td><td>Breadboard <b>column 8</b> (row d)</td><td><span class="sw" style="background:#6b7280"></span>grey half-jumper</td></tr>
+  <tr><td>6</td><td>Button terminal <b>NO</b></td><td>Arduino <b>pin 2</b></td><td><span class="sw" style="background:#2f6fd6"></span>blue half-jumper</td></tr>
+  <tr><td>–</td><td>Button terminal <b>NC</b></td><td>nothing</td><td></td></tr>
+  <tr><td>7</td><td>Arduino USB-C</td><td>this laptop</td><td>already plugged in</td></tr>
+</table>
+<p class="muted" style="font-size:14px">Wire colours are only a suggestion. Any colour from your ribbon works. Using black for ground just makes mistakes easier to spot.</p>
+
+<h2>Step by step</h2>
+<ol class="steps">
+  <li class="zero"><b>Unplug the USB cable first.</b><p>Wire everything with the board off, then plug it back in at the end.</p></li>
+
+  <li><b>Find out which resistors you have, then place one.</b>
+    <p>Read the coloured bands. You want <b>330&nbsp;Ω to 1&nbsp;kΩ</b>:</p>
+    <p>
+      <span class="bands"><i style="background:#e8822a"></i><i style="background:#e8822a"></i><i style="background:#7a4a1e"></i></span> 330&nbsp;Ω (orange-orange-brown): good&nbsp;&nbsp;
+      <span class="bands"><i style="background:#f2d21b"></i><i style="background:#7b3fb3"></i><i style="background:#7a4a1e"></i></span> 470&nbsp;Ω (yellow-violet-brown): best&nbsp;&nbsp;
+      <span class="bands"><i style="background:#7a4a1e"></i><i style="background:#111"></i><i style="background:#d63b2f"></i></span> 1&nbsp;kΩ (brown-black-red): dimmer, fine
+    </p>
+    <p><span class="bands"><i style="background:#d63b2f"></i><i style="background:#d63b2f"></i><i style="background:#7a4a1e"></i></span> 220&nbsp;Ω (red-red-brown): use <b>two in series</b> (column 3 → 5 and 5 → 7).
+       <span class="bands"><i style="background:#7a4a1e"></i><i style="background:#111"></i><i style="background:#7a4a1e"></i></span> 100&nbsp;Ω (brown-black-brown): use all <b>four in series</b> (3 → 4 → 5 → 6 → 7).</p>
+    <p>Bend the legs and push it into <b>column 3, row b</b> and <b>column 7, row b</b>. Resistors work either way round.</p>
+    <div class="warn"><b>Why not a smaller resistor:</b> the UNO R4's pins are only rated for <b>8&nbsp;mA</b>, much less than the older UNO R3. With 330&nbsp;Ω or more the LED stays under that limit.</div>
+  </li>
+
+  <li><b>Put the light inside the button.</b>
+    <p>Twist the <b>lamp holder</b> out from under the dome. It's the part with the brass tab. Then look inside it:</p>
+    <p><b>It has a lamp (a small bulb or LED):</b> slide a female jumper end onto each of its two tabs. This is often a 12&nbsp;V lamp, so at 5&nbsp;V it draws only a few mA and may glow dimly. If it stays dark, swap the two wires. That's harmless.</p>
+    <p><b>It's empty:</b> push your LED up into the dome through the holder's hole. Slide a female jumper end onto each leg, and remember which one is the <b>long leg (+)</b>. The flat side of the rim is (−).</p>
+    <p>Then plug the male ends into the breadboard: <b>+ → column 7, row a</b> (same column as the resistor's right leg) and <b>− → column 8, row a</b>. A light put in backwards just stays dark. Flip it and nothing is damaged.</p>
+    <div class="tip"><b>Colour:</b> a red LED behind the blue dome looks dim and muddy, because blue plastic blocks most red light. A <b>white</b> (or blue) LED makes the whole dome glow. Use the red one for now if that's all you have.</div>
+  </li>
+
+  <li><b>Ground wire: Arduino GND → column 8.</b>
+    <p>Use the <b>GND</b> pin on the top header, between AREF and 13. Push the other end into <b>column 8, row e</b>. The light's (−) wire and the button now share this ground.</p>
+  </li>
+
+  <li><b>Signal wire: Arduino pin 9 → column 3.</b>
+    <p>Pin <b>~9</b> (the ~ means PWM, which lets the light fade smoothly) goes to <b>column 3, row e</b>. That completes the light circuit: pin 9 → resistor → light in the button → GND.</p>
+  </li>
+
+  <li><b>Make two button wires, find COM, and wire COM → column 8.</b>
+    <p>The button's terminals are flat metal tabs, so a jumper pin can't plug into them. Cut <b>one</b> jumper wire in half. You get two wires, each with a pin on one end.
+    Strip about 1&nbsp;cm of insulation from each cut end. Push the bare copper <b>through the hole in the tab</b> (or wrap it tightly around the tab), twist it back on itself, and cover it with a bit of tape.
+    Alligator clips or 4.8&nbsp;mm / 2.8&nbsp;mm spade connectors work too, if you have them.</p>
+    <p>The white microswitch under the button has three silver terminals, with tiny letters moulded next to them: <b>C</b> (or COM), <b>NO</b> and <b>NC</b>.
+    In your photo, "NO" is printed by the side terminals, and COM is probably the one pointing down. Trust the letters on your switch over the drawing.
+    The <b>brass tab with a hole</b> higher up belongs to the lamp holder (step 2), not the switch.</p>
+    <p>Attach the first wire to <b>COM</b> and push its pin into breadboard <b>column 8, row d</b> (ground).</p>
+  </li>
+
+  <li><b>Wire NO → Arduino pin 2.</b>
+    <p>Attach the second wire to <b>NO</b> and push its pin into the Arduino header at <b>2</b>. Leave <b>NC</b> empty.</p>
+    <div class="tip">The button needs no resistor. The Arduino's built-in pull-up holds pin 2 HIGH, and pressing the button connects it to ground (LOW). This wiring can't harm the board.</div>
+  </li>
+
+  <li><b>Plug the USB back in and run the test sketch below.</b>
+    <p>The button should breathe slowly. When you press it, the light turns fully on and the serial monitor prints <code>PRESSED</code>.</p>
+  </li>
+</ol>
+
+<h2>Test sketch</h2>
+<div class="two">
+  <div>
+    <pre><code>// Kettle demo, wiring test (UNO R4 Minima)
+// Big button: COM -&gt; GND, NO -&gt; D2.  LED: D9 -&gt; resistor -&gt; LED(+), LED(-) -&gt; GND.
+const int BUTTON_PIN = 2;
+const int LED_PIN = 9;          // PWM pin, so the light can breathe
+
+bool wasPressed = false;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);   // internal pull-up: no resistor needed for the button
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  bool pressed = digitalRead(BUTTON_PIN) == LOW;   // pressed connects D2 to GND
+
+  if (pressed) {
+    analogWrite(LED_PIN, 255);                     // full brightness while held
+  } else {
+    float s = (sin(millis() / 350.0) + 1.0) / 2.0; // slow "please press" pulse
+    analogWrite(LED_PIN, (int)(10 + 150 * s));
+  }
+
+  if (pressed != wasPressed) {
+    Serial.println(pressed ? "PRESSED" : "released");
+    wasPressed = pressed;
+    delay(30);                                     // debounce
+  }
+}
+</code></pre>
+  </div>
+  <div>
+    <div class="card">
+      <b>Uploading it</b>
+      <ol style="padding-left:20px;margin:8px 0 0">
+        <li>Arduino IDE 2 → Boards Manager → install <b>"Arduino UNO R4 Boards"</b>.</li>
+        <li>Board: <b>Arduino UNO R4 Minima</b>. Port: <b>/dev/ttyACM0</b>.</li>
+        <li>Upload, then open the Serial Monitor at <b>115200</b> baud.</li>
+      </ol>
+      <p class="muted" style="font-size:14px;margin-bottom:0">On this laptop, your user isn't in the <code>dialout</code> group yet, so uploading will fail with "permission denied". Run <code>sudo usermod -aG dialout $USER</code> once, then log out and back in.</p>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <b>If something's off</b>
+      <ul style="padding-left:20px;margin:8px 0 0">
+        <li><b>It prints PRESSED when you're <i>not</i> pressing:</b> you're on NC. Move the blue wire to the other side terminal.</li>
+        <li><b>Nothing prints when you press:</b> check the COM wire is in column 8 and the twisted ends are tight on the tabs.</li>
+        <li><b>Light dark:</b> swap its two wires in columns 7 and 8. Check the yellow wire is on <b>9</b> and not on 8 or 10.</li>
+        <li><b>Light very dim:</b> with a red LED behind the blue dome that's expected, so use a white LED. Otherwise check the resistor: 330–470&nbsp;Ω is brighter than 1&nbsp;kΩ or several in series.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<h2>How it plugs into Kettle</h2>
+<div class="card">
+  <div class="flow">
+    <span class="n">🔵 big button</span><span class="a">→ pin 2 →</span>
+    <span class="n">Arduino</span><span class="a">→ USB serial →</span>
+    <span class="n">small bridge script on the laptop</span><span class="a">→</span>
+    <span class="n">edge hub <code>POST /api/im_fine</code></span>
+  </div>
+  <div class="flow" style="margin-top:10px">
+    <span class="n">edge hub <code>GET /api/status</code></span><span class="a">→ check-in? glow? →</span>
+    <span class="n">bridge</span><span class="a">→ USB serial →</span>
+    <span class="n">Arduino</span><span class="a">→ pin 9 →</span>
+    <span class="n">💡 the button pulses / glows</span>
+  </div>
+  <p class="muted" style="margin:12px 0 0;font-size:14.5px">The test sketch above only checks the wiring. The demo firmware for the UNO R4, and the bridge script that connects it to the hub (it sends "pressed" and receives the light state), come next. They use the same two pins, so you won't need to rewire.
+  The kettle stays simulated: start with <code>--plug sim</code> and press <b>K</b> on the stage screen at the "Margaret puts the kettle on" moment.</p>
+</div>
+
+</main>
+<script>
+(function () {
+  var STEPS = [
+    ["Start: unplug the USB", "Wire everything with the board off. This is the empty layout: Arduino on the left, mini breadboard top right, big button on the right."],
+    ["1 · Resistor: column 3 ↔ column 7", "Push one leg into column 3, row b and the other into column 7, row b. Either way round. Use 330 Ω to 1 kΩ (orange-orange-brown, yellow-violet-brown or brown-black-red)."],
+    ["2 · Light inside the button", "Twist out the lamp holder. Use its lamp if it has one, otherwise push your LED up into the dome. Female jumper ends go onto the legs (or lamp tabs): + (long leg) to column 7, row a, and − to column 8, row a. A white LED glows best through the blue dome."],
+    ["3 · Black wire: GND → column 8", "From the GND pin on the top header (between AREF and 13) to column 8, row e. The light's (−) wire is now grounded."],
+    ["4 · Yellow wire: pin 9 → column 3", "From pin ~9 to column 3, row e. The light circuit is complete: pin 9 → resistor → light in the button → GND."],
+    ["5 · Grey wire: button COM → column 8", "Cut one jumper in half and strip the cut ends. Twist one through the hole of the tab marked C/COM, then push its pin into column 8, row d (ground)."],
+    ["6 · Blue wire: button NO → pin 2", "Twist the other half-jumper onto the NO tab and push its pin into pin 2 on the Arduino. Leave NC and the brass lamp tab empty."],
+    ["7 · Plug in and test", "Plug the USB back in and upload the test sketch below. The button breathes slowly. Press it: the light goes fully on and the serial monitor prints PRESSED."]
+  ];
+  var svg = document.querySelector(".diagram");
+  var layers = svg.querySelectorAll("[data-step]");
+  var btns = document.querySelectorAll(".stepbtns button");
+  var cards = document.querySelectorAll("ol.steps > li");
+  var title = document.getElementById("sdTitle"), text = document.getElementById("sdText");
+  var prev = document.getElementById("prevBtn"), next = document.getElementById("nextBtn");
+  var cur = "all";
+
+  function show(step) {
+    cur = step;
+    var all = step === "all", n = all ? 99 : +step;
+    svg.classList.toggle("stepping", !all);
+    layers.forEach(function (g) {
+      var s = +g.getAttribute("data-step");
+      g.classList.toggle("future", !all && s > n);
+      g.classList.toggle("past", !all && s < n);
+      g.classList.toggle("now", !all && s === n);
+    });
+    btns.forEach(function (b) {
+      var g = b.getAttribute("data-go");
+      b.classList.toggle("on", g === String(step));
+      b.classList.toggle("done", !all && g !== "all" && +g < n);
+      b.setAttribute("aria-selected", g === String(step));
+    });
+    cards.forEach(function (c, i) { c.classList.toggle("current", !all && i === n); });
+    if (all) { title.textContent = "All steps"; text.textContent = "The finished wiring. Use the buttons to build it up one step at a time."; }
+    else { title.textContent = STEPS[n][0]; text.textContent = STEPS[n][1]; }
+    prev.disabled = !all && n === 0;
+    next.disabled = !all && n === 7;
+  }
+  function go(d) {
+    if (cur === "all") return show(d > 0 ? 0 : 7);
+    var n = Math.max(0, Math.min(7, +cur + d)); show(n);
+  }
+  btns.forEach(function (b) { b.addEventListener("click", function () { var g = b.getAttribute("data-go"); show(g === "all" ? "all" : +g); }); });
+  prev.addEventListener("click", function () { go(-1); });
+  next.addEventListener("click", function () { go(1); });
+  document.addEventListener("keydown", function (e) {
+    if (e.target.closest && e.target.closest("input,textarea,select")) return;
+    if (e.key === "ArrowRight") { go(1); e.preventDefault(); }
+    if (e.key === "ArrowLeft") { go(-1); e.preventDefault(); }
+  });
+  cards.forEach(function (c, i) {
+    c.title = "Show this step in the diagram";
+    c.addEventListener("click", function (e) {
+      if (e.target.closest("a,code")) return;
+      show(i);
+      document.querySelector(".stepper").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+  show("all");
+})();
+</script>
+</body>
+</html>

@@ -78,6 +78,7 @@ class Home:
     ringing_until: float | None = None
     replay_cursor: int = 0
     heat_asked_day: dt.date | None = None
+    seed_shift_min: float = 0.0       # presenter mode: slide the seeded mornings to a chosen usual time
 
     @property
     def p(self) -> dict:
@@ -105,6 +106,9 @@ class Engine:
         self.offline_grace_s = 8.0 if demo else 120.0
         # In a cold snap a gas furnace's blower cycles every few minutes; this long without one is unusual.
         self.blower_gap_s = 90 * 60.0
+        # Presenter mode (`python -m kettle show`): no timers, each step happens on a keypress.
+        self.show: dict | None = None
+        self.phone_site: str | None = None            # the phone app's public URL (Vercel), for SMS links
 
     # ================================================================== setup
     @staticmethod
@@ -188,7 +192,8 @@ class Engine:
             return
         shift_days = (today - last).days - 1
         shift_days -= shift_days % 7          # whole weeks, so Mondays stay Mondays
-        obs = [DayObs(dt.date.fromisoformat(d["date"]) + dt.timedelta(days=shift_days), d["first_min"], d["first_label"])
+        obs = [DayObs(dt.date.fromisoformat(d["date"]) + dt.timedelta(days=shift_days),
+                      d["first_min"] + h.seed_shift_min, d["first_label"])
                for d in h.seed_days if d.get("first_min") is not None]
         h.model.fit(obs)
 
@@ -380,9 +385,16 @@ class Engine:
             if t == "call_person":
                 # timings are demo-clock seconds; the ring animation runs in real seconds
                 h.ringing_until = time.time() + max((self.timings.self_s - 2) / max(self.clock.speed, 1e-6), 1.0)
-                r = await self.notifier.call(getattr(self, "person_phone", {}).get(h.id), a["text"],
-                                             gather_path=f"/twilio/gather/{h.id}")
-                self._log_out("voice", h.person, a["text"], r["via"])
+                phone = getattr(self, "person_phone", {}).get(h.id)
+                if self.show:
+                    h.ringing_until = time.time() + 15
+                    text = (f"Good morning {h.person}, it's Kettle. We haven't seen your morning start yet. "
+                            f"If you're fine, just press the glowing button on your Kettle. {self.phone_link(h.id)}").strip()
+                    r = await self.notifier.sms(phone, text)
+                    self._log_out("sms", h.person, text, r["via"])
+                if not self.show or self.show.get("call"):
+                    r = await self.notifier.call(phone, a["text"], gather_path=f"/twilio/gather/{h.id}")
+                    self._log_out("voice", h.person, a["text"], r["via"])
                 self.flashes.append({"type": "ring", "home": h.id, "t": time.time()})
             elif t == "device":
                 dev = self.devices.get(h.id)
@@ -395,8 +407,9 @@ class Engine:
             elif t == "notify":
                 self._note(a["member"], {k: a[k] for k in ("kind", "title", "body", "buttons", "escalation", "home_id")})
                 m = self.members.get(a["member"], {}).get("member")
-                if m and a["kind"] in ("ask", "ask_family", "welfare", "need_help", "grid", "dark", "heat"):
-                    link = f"{self.notifier.public_url}/circle/?m={m.id}" if self.notifier.public_url else ""
+                texted = ("ask", "ask_family", "welfare", "need_help", "grid", "dark", "heat") + (("resolved",) if self.show else ())
+                if m and a["kind"] in texted:
+                    link = self.phone_link(m.id)
                     r = await self.notifier.sms(m.phone, f"{a['title']} {a['body']} {link}".strip())
                     self._log_out("sms", m.name, a["title"], r["via"])
                 elif m:
@@ -408,6 +421,11 @@ class Engine:
             await self.store.escalation(e.to_dict())
             if not e.active and (not h.past or h.past[-1]["id"] != e.id):
                 h.past.append(e.to_dict())
+
+    def phone_link(self, who: str) -> str:
+        if self.phone_site:
+            return f"{self.phone_site}/"
+        return f"{self.notifier.public_url}/phone/?c={who}" if self.notifier.public_url else ""
 
     def _note(self, member_id: str, note: dict) -> None:
         if member_id not in self.notes:
@@ -454,7 +472,7 @@ class Engine:
             e = h.escalation
             if e and e.active:
                 await self.run(h, e.tick(now))
-            elif not paused and h.first_today is None and not h.asked_today and h.circle:
+            elif not paused and h.first_today is None and not h.asked_today and h.circle and not self.show:
                 b = h.model.baseline(day, self.policy())
                 if now_min >= b.deadline_min:
                     await self._start_morning(h, b, now, now_min)
@@ -616,6 +634,103 @@ class Engine:
                 await self._broadcast_check(h, "grid", f"Alberta grid emergency: rotating outages possible. It's {self._temp_str()}.",
                                             f"{h.person} lives alone. A quick call or knock tonight would help.")
         await self.broadcast()
+
+    # ================================================================== presenter show
+    SHOW_STEPS = ("ask_self", "ask_neighbour", "ask_family", "tea")
+
+    async def show_setup(self, home_id: str = "margaret", usual: str = "8:30", phones: dict | None = None,
+                         call: bool = False) -> dict:
+        """Presenter mode: Margaret's learned morning sits at `usual`, nothing escalates on a timer, and each
+        step (ask her, ask a neighbour, ask family, she makes tea) happens when the presenter asks for it.
+        `phones` maps "margaret" / member ids to real numbers that get the texts."""
+        h = self.homes[home_id]
+        hh, mm = (int(x) for x in usual.split(":"))
+        target = hh * 60 + mm
+        h.seed_shift_min = 0.0
+        day = dt.datetime.now(self.clock.tz).date()     # the morning show_reset() jumps to (not the kettle day of 00:30)
+        self._reseed(h, day)
+        # the learned baseline doesn't move 1:1 with the seed on every day of the week, so close in on it
+        for _ in range(6):
+            b = h.model.baseline(day, STANDARD)
+            if b.usual_min is None or abs(b.usual_min - target) < 0.5:
+                break
+            h.seed_shift_min += target - b.usual_min
+            self._reseed(h, day)
+        self.show = {"home": home_id, "usual_min": target, "call": call, "step": 0}
+        numbers = []
+        for who, num in (phones or {}).items():
+            if not num:
+                continue
+            if who == home_id:
+                if not hasattr(self, "person_phone"):
+                    self.person_phone = {}
+                self.person_phone[home_id] = num
+            elif who in self.members:
+                self.members[who]["member"].phone = num
+            else:
+                raise ValueError(f"unknown phone owner {who!r}")
+            numbers.append(num)
+        if numbers:
+            self.notifier.only = set(numbers)     # only these real phones ever get a text
+        await self.show_reset()
+        return self.show_state()
+
+    def show_state(self) -> dict:
+        h = self.homes[self.show["home"]] if self.show else None
+        b = h.model.baseline(kettle_day(self.clock.local()), STANDARD) if h else None
+        return {"show": self.show, "clock": self.clock.local().strftime("%-H:%M"), "twilio": self.notifier.via,
+                "usual": fmt_min(b.usual_min) if b and b.usual_min is not None else None,
+                "step": h.escalation.step.value if h and h.escalation else None,
+                "outbox": list(self.outbox)[:12]}
+
+    async def show_reset(self) -> None:
+        await self.demo_reset(fmt_min(self.show["usual_min"] - 12))
+        self.show["step"] = 0
+
+    async def show_step(self, name: str) -> dict:
+        """ask_self | ask_neighbour | ask_family | tea | next | reset"""
+        if not self.show:
+            raise ValueError("call show_setup first")
+        if name == "reset":
+            await self.show_reset()
+            return self.show_state()
+        if name == "next":
+            name = self.SHOW_STEPS[min(self.show["step"], len(self.SHOW_STEPS) - 1)]
+        if name not in self.SHOW_STEPS:
+            raise ValueError(f"unknown step {name!r}")
+        h, usual = self.homes[self.show["home"]], self.show["usual_min"]
+        # the demo clock moves on with the story: 1 min late, then 3 min later, then 20 min later
+        at = {"ask_self": 1, "ask_neighbour": 4, "ask_family": 24, "tea": 31}[name]
+        if minutes(self.clock.local()) < usual + at:
+            await self.demo_clock(fmt_min(usual + at), 1.0)
+        now, e = self.clock.now(), h.escalation
+        if name == "ask_self":
+            if e and e.active:
+                return self.show_state()
+            what = "No kettle" if h.sensing == "v0" else "No kettle, no lights, no TV"
+            e = Escalation(h.id, h.person, "morning", f"{h.person}'s morning hasn't started.",
+                           f"{what} by {fmt_min(usual + at)}. Usually {fmt_min(usual)}.", h.circle, now,
+                           Timings(self_s=10**9, neighbour_s=10**9, going_s=10**9, family_s=10**9), pronoun=h.pronoun)
+            h.escalation, h.asked_today = e, True
+            await self.run(h, e.start(now))
+        elif name in ("ask_neighbour", "ask_family"):
+            if not (e and e.active):
+                return self.show_state()
+            if name == "ask_neighbour" and e.step == Step.CHECK_SELF:
+                await self.run(h, e.advance(now))
+            elif name == "ask_family" and e.step == Step.CHECK_SELF:
+                await self.run(h, e.advance(now))
+                await self.run(h, e.advance(now))
+            elif name == "ask_family" and e.step in (Step.ASK_NEIGHBOUR, Step.NEIGHBOUR_GOING):
+                await self.run(h, e.advance(now))
+        elif name == "tea":
+            if not await self.demo_device(h.id, {"type": "sim", "appliance": "kettle"}):
+                # no Kettle device connected: deliver the event the plug would have sent
+                await self.ingest(h.id, {"t": now, "kind": "on", "label": "kettle", "human": True, "dp_w": 1500.0},
+                                  source="show")
+        self.show["step"] = self.SHOW_STEPS.index(name) + 1
+        await self.broadcast()
+        return self.show_state()
 
     # ================================================================== views
     def home_view(self, h: Home, private: bool = False) -> dict:

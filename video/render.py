@@ -44,7 +44,7 @@ class Chrome:
 
     async def start(self, url: str) -> None:
         self.prof = tempfile.mkdtemp(prefix="film-prof-")
-        self.proc = subprocess.Popen(["google-chrome", "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run", "--mute-audio",
+        self.proc = subprocess.Popen(["google-chrome", "--headless=new", "--disable-gpu", "--enable-unsafe-swiftshader", "--hide-scrollbars", "--no-first-run", "--mute-audio",
                                       "--force-color-profile=srgb", f"--remote-debugging-port={self.port}", f"--user-data-dir={self.prof}",
                                       "--window-size=1920,1080", "about:blank"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         for _ in range(600):

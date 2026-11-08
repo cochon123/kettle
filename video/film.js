@@ -152,19 +152,38 @@
     $("rh-chips").appendChild(el);
     return { e, el, at: wt(2, label === "kettle" ? "kettle" : label) };
   });
+  // the 22 days fold into one point of light, which becomes the 42%
+  const FOLD = { a: 20.9, b: 22.05, x: 512, y: 488 };
   function renderRhythm(t) {
-    const o = scene("s-rhythm", t, 10.3, 21.6, 0.5, 0.9);
-    if (o <= 0) return;
+    scene("s-rhythm", t, 10.3, 20.7, 0.5, 0.6);
+    if (t < 10.3 || t > 23.4) return;
     const zoom = 1 + 0.05 * ease.ioSine(ramp(t, VO["3"].at, 22.4));
-    back.save(); back.translate(960, 520); back.scale(zoom, zoom); back.translate(-960, -520);
+    const f = er(t, FOLD.a, FOLD.b, ease.io3), fx = f ** 0.7, fy = f ** 1.35;
     $("s-rhythm").style.transform = `scale(${zoom})`; $("s-rhythm").style.transformOrigin = "960px 520px";
-    try { drawRhythm(t); } finally { back.restore(); }
+    if (t < FOLD.b + 0.05) {
+      back.save();
+      back.translate(lerp(960, FOLD.x, f), lerp(520, FOLD.y, f));
+      back.scale(zoom * lerp(1, 0.015, fx), zoom * lerp(1, 0.02, fy));
+      back.translate(-960, -520);
+      try { drawRhythm(t); } finally { back.restore(); }
+    }
+    // the spark: gathers as the rows fold, flashes, and leaves a soft ring that opens into the number
+    const gather = er(t, FOLD.a + 0.4, FOLD.b, ease.in2), spark = Math.exp(-Math.max(0, t - FOLD.b) * 3.2) * (t >= FOLD.b ? 1 : gather);
+    back.globalCompositeOperation = "lighter";
+    blob(back, SPR.amber, FOLD.x, FOLD.y, 40 + 260 * spark, 0.9 * spark);
+    blob(back, SPR.white, FOLD.x, FOLD.y, 14 + 40 * spark, 0.8 * spark);
+    back.globalCompositeOperation = "source-over";
+    const ring = ramp(t, FOLD.b, FOLD.b + 1.1);
+    if (ring > 0 && ring < 1) {
+      back.strokeStyle = `rgba(255,190,110,${(0.5 * (1 - ring) ** 1.5).toFixed(3)})`; back.lineWidth = 2.5 * (1 - ring) + 0.5;
+      back.beginPath(); back.arc(FOLD.x, FOLD.y, 30 + ease.out3(ring) * 420, 0, Math.PI * 2); back.stroke();
+    }
   }
   function drawRhythm(t) {
     const toRows = er(t, VO["3"].at - 0.1, VO["3"].at + 1.6, ease.io3);
     const yMain = lerp(700, rowsY(day0Index), toRows);
-    ticks.forEach((s, i) => { rev(s, t, 10.6 + i * 0.06, 21.2, { rise: 8, blur: 4 }); s.style.top = `${lerp(730, 830, toRows) + 0}px`; });
-    const fade = 1 - ramp(t, 21.0, 21.9);
+    ticks.forEach((s, i) => { rev(s, t, 10.6 + i * 0.06, 20.5, { rise: 8, blur: 4, fo: 0.5 }); s.style.top = `${lerp(730, 830, toRows) + 0}px`; });
+    const fade = 1 - ramp(t, FOLD.b - 0.25, FOLD.b);
     // main day: baseline + spikes that rise as the voice names them
     const pts = [[RX0, yMain]];
     const shown = day0.events.map((e) => {
@@ -210,8 +229,8 @@
       g.addColorStop(0, "rgba(255,180,87,0)"); g.addColorStop(0.5, `rgba(255,180,87,${0.16 * bandA})`); g.addColorStop(1, "rgba(255,180,87,0)");
       back.fillStyle = g; back.fillRect(xa, yt, xb - xa, yb - yt);
     }
-    const bl = $("rh-band"); rev(bl, t, wt(3, "and") + 0.2, 21.0); bl.style.left = `${rx(614)}px`; bl.style.top = `${rowsY(0) - 96}px`;
-    rev($("rh-src"), t, wt(3, "already"), 21.0, { rise: 8, blur: 4 });
+    const bl = $("rh-band"); rev(bl, t, wt(3, "and") + 0.2, 20.4, { fo: 0.5 }); bl.style.left = `${rx(614)}px`; bl.style.top = `${rowsY(0) - 96}px`;
+    rev($("rh-src"), t, wt(3, "already"), 20.4, { rise: 8, blur: 4, fo: 0.5 });
   }
 
   // ================================================================== PROBLEM
@@ -223,34 +242,61 @@
     if (o <= 0) return;
     // 42%
     const a0 = VO["4"].at;
-    const n = Math.round(42 * er(t, a0 + 0.1, a0 + 1.7, ease.outExpo));
+    const n = Math.max(1, Math.round(42 * er(t, FOLD.b - 0.05, a0 + 1.7, ease.outExpo)));
     $("pb-42").textContent = `${n}%`;
-    rev($("pb-42"), t, a0, 27.7, { rise: 30, blur: 14, dur: 1.2 });
+    { const el = $("pb-42"), k = er(t, FOLD.b - 0.05, FOLD.b + 1.1, ease.out5), out = er(t, 27.7, 28.4, ease.io3);
+      style(el, k * (1 - out), -out * 18, lerp(0.72, 1, k), (1 - k) * 22 + out * 8); el.style.transformOrigin = "282px 158px"; }
     pbWords.forEach((s, i) => rev(s, t, a0 + 0.9 + i * 0.07, 27.7, { rise: 14, blur: 6 }));
     rev($("pb-42s"), t, a0 + 1.6, 27.7, { rise: 6, blur: 3 });
     // 8 in 10
     const b0 = VO["5"].at;
-    rev($("pb-b1"), t, b0 + 0.05, 36.9);
+    rev($("pb-b1"), t, b0 + 0.05, 36.5, { fo: 0.6 });
     const dotsAt = wt(5, "8");
+    // the ten circles slide together and become the pendant: the eight who didn't press, the two who did
+    const merge = er(t, 36.55, 37.4, ease.io3), gone = er(t, 37.32, 37.6);
     dotEls.forEach((d, i) => {
       const ap = er(t, dotsAt + i * 0.07, dotsAt + 0.5 + i * 0.07, ease.out5);
       const used = i === 3 || i === 7; // two of the ten
       const k = er(t, wt(5, "they") - 1.0 + i * 0.06, wt(5, "they") - 0.4 + i * 0.06);
-      const out = er(t, 36.8, 37.4, ease.io3);
-      d.style.opacity = (ap * (1 - out)).toFixed(3);
-      d.style.transform = `translateY(${(1 - ap) * 20}px) scale(${lerp(0.6, 1, ap)})`;
-      if (used) { d.style.background = `rgba(255,180,87,${lerp(0.25, 0.95, k)})`; d.style.boxShadow = `0 0 ${40 * k}px rgba(255,180,87,${0.6 * k})`; d.style.border = "0"; }
-      else { d.style.background = `rgba(246,239,228,${lerp(0.25, 0, k)})`; d.style.border = `2px solid rgba(246,239,228,${lerp(0.25, 0.35, k)})`; d.style.boxShadow = "none"; }
+      const cx = 960 - 4.5 * 118 + i * 118;
+      d.style.opacity = (ap * (1 - gone)).toFixed(3);
+      const sc = lerp(0.6, 1, ap) * lerp(1, used ? 60 / 84 : 140 / 84, merge);
+      d.style.transform = `translate(${((960 - cx) * merge).toFixed(1)}px, ${((1 - ap) * 20 + 78 * merge).toFixed(1)}px) scale(${sc.toFixed(4)})`;
+      d.style.zIndex = used ? 2 : 1;
+      if (used) { d.style.background = `rgba(255,180,87,${lerp(lerp(0.25, 0.95, k), 0.6, merge)})`; d.style.boxShadow = `0 0 ${40 * k}px rgba(255,180,87,${0.6 * k})`; d.style.border = "0"; }
+      else { d.style.background = `rgba(20,14,9,${0.6 * merge})`; d.style.border = `${lerp(2, 2.4, merge)}px solid rgba(246,239,228,${lerp(lerp(0.25, 0.35, k), 0.9, merge)})`; d.style.boxShadow = "none"; }
     });
-    rev($("pb-b2"), t, wt(5, "they") - 0.1, 36.9);
-    rev($("pb-bs"), t, wt(5, "they") + 0.4, 36.9, { rise: 6, blur: 3 });
-    // the pendant
-    const c0 = VO["6"].at;
-    const pa = er(t, c0 - 0.2, c0 + 1.0, ease.out3) * (1 - er(t, 41.0, 41.6, ease.io3));
+    rev($("pb-b2"), t, wt(5, "they") - 0.1, 36.5, { fo: 0.6 });
+    rev($("pb-bs"), t, wt(5, "they") + 0.4, 36.5, { rise: 6, blur: 3, fo: 0.6 });
+    // the pendant: in place where the circles met; its cord draws up, then it swings
+    const pa = er(t, 37.3, 37.6) * (1 - er(t, 41.0, 41.6, ease.io3));
     const pe = $("pb-pendant");
     pe.style.opacity = pa.toFixed(3); pe.style.visibility = pa > 0 ? "visible" : "hidden";
-    const ang = 7 * Math.sin((t - c0) * 2.1) * Math.exp(-Math.max(0, t - c0) * 0.25) + 1.5 * Math.sin(t * 1.3);
-    pe.style.transform = `translateY(${(1 - pa) * -60}px) rotate(${ang.toFixed(3)}deg)`;
+    const cord = $("pb-cord"), ck = er(t, 37.45, 38.3, ease.out3);
+    cord.style.strokeDasharray = "520 520"; cord.style.strokeDashoffset = (520 * (1 - ck)).toFixed(1);
+    const s0 = 38.1, P = wt(6, "press") + 0.22;
+    let ang = (t > s0 ? 6 * Math.sin((t - s0) * 2.1) * Math.exp(-(t - s0) * 0.25) * ramp(t, s0, s0 + 0.8) : 0) + 1.2 * Math.sin(t * 1.3) * ramp(t, 37.6, 38.6);
+    if (t > P) ang += 2.2 * Math.sin((t - P) * 7) * Math.exp(-(t - P) * 2.6);
+    pe.style.transform = `rotate(${ang.toFixed(3)}deg)`;
+    // the press: the button gives, the light answers (and a click on the soundtrack)
+    const press = ramp(t, P - 0.07, P) * (1 - er(t, P + 0.06, P + 0.4));
+    const lit = t >= P ? Math.exp(-(t - P) * 1.6) : 0;
+    $("pb-disc").style.transform = `scale(${(1 - 0.09 * press).toFixed(4)})`;
+    const core = $("pb-core");
+    core.setAttribute("opacity", (0.6 + 0.4 * lit).toFixed(3));
+    core.setAttribute("fill", lit > 0.02 ? `rgb(255,${Math.round(lerp(145, 205, lit))},${Math.round(lerp(45, 130, lit))})` : "#e8912d");
+    const rad = (ang * Math.PI) / 180, dx = 960 - 590 * Math.sin(rad), dy = 590 * Math.cos(rad);
+    if (lit > 0.01) {
+      front.globalCompositeOperation = "lighter";
+      blob(front, SPR.amber, dx, dy, 120 + 120 * lit, 0.55 * lit * pa);
+      front.globalCompositeOperation = "source-over";
+      for (const r0 of [P, P + 0.2]) {
+        const u = ramp(t, r0, r0 + 1.0);
+        if (u <= 0 || u >= 1) continue;
+        front.strokeStyle = `rgba(255,196,120,${(0.55 * (1 - u) ** 1.6 * pa).toFixed(3)})`; front.lineWidth = 2;
+        front.beginPath(); front.arc(dx, dy, 74 + ease.out3(u) * 150, 0, Math.PI * 2); front.stroke();
+      }
+    }
     rev($("pb-wear"), t, wt(6, "wear") - 0.05, 41.0, { rise: 16 });
     rev($("pb-press"), t, wt(6, "press") - 0.05, 41.0, { rise: 16 });
   }
@@ -278,23 +324,24 @@
     steam(back, t, { x: 960, y: 520, t0: 43.6, t1: 51.0, rate: 40, life: 5, scale: 1.5, alpha: 0.5 * o, seed: 9 });
   }
 
-  // ================================================================== SENSE
-  const houseParts = ["se-roof", "se-walls", "se-floor", "se-counter", "se-cord"].map((id) => { const p = $(id); const L = p.getTotalLength(); p.style.strokeDasharray = `${L} ${L}`; return { p, L }; });
+  // ================================================================== SENSE (3D: Margaret's kitchen, then her whole house)
   const waveCtx = $("se-wave").getContext("2d");
   const boil = D.boil.trace; // [[s, W]]
+  function pin(el, xy, dx = 0, dy = 0) { if (!xy) return; el.style.left = `${(xy[0] + dx).toFixed(1)}px`; el.style.top = `${(xy[1] + dy).toFixed(1)}px`; }
   function renderSense(t) {
     const o = scene("s-sense", t, 52.0, 62.0, 0.5, 0.7);
     if (o <= 0) return;
-    const a0 = VO["9"].at;
-    houseParts.forEach(({ p, L }, i) => { const k = er(t, 52.1 + i * 0.25, 53.4 + i * 0.25, ease.io3); p.style.strokeDashoffset = (L * (1 - k)).toFixed(1); });
-    const pk = er(t, 52.9, 53.8);
-    for (const id of ["se-kettle", "se-plug", "se-hub"]) $(id).style.opacity = pk;
-    const plugLit = er(t, wt(9, "plug") - 0.1, wt(9, "plug") + 0.4);
-    $("se-plug").querySelector(".led").style.opacity = (0.3 + 0.7 * plugLit).toFixed(3);
-    blob(back, SPR.amber, 906, 822, 60, 0.5 * plugLit * o);
-    rev($("se-l-plug"), t, wt(9, "plug"), 61.4, { rise: 10, blur: 4 });
-    rev($("se-l-hub"), t, wt(9, "plug") + 0.5, 61.4, { rise: 10, blur: 4 });
-    // raw readings: the real REFIT boil, scrolling inside the walls
+    const a0 = VO["9"].at, A = WA || {};
+    // labels hang under the plug and the hub as the camera pulls back
+    const lp = $("se-l-plug"), lh = $("se-l-hub");
+    rev(lp, t, wt(9, "plug"), 56.6, { rise: 10, blur: 4 });
+    rev(lh, t, wt(9, "plug") + 0.5, 56.6, { rise: 10, blur: 4 });
+    for (const [el, xy, lead] of [[lp, A.plug, 80], [lh, A.hub, 64]]) {
+      if (!xy) continue;
+      el.style.setProperty("--lead", `${lead}px`);
+      pin(el, xy, 0, lead); el.style.transform += " translateX(-50%)";
+    }
+    // raw readings: the real REFIT boil, scrolling; world.js floats this canvas inside the house
     const wv = er(t, wt(9, "the") - 0.2, wt(9, "the") + 0.8);
     waveCtx.clearRect(0, 0, 560, 200);
     if (wv > 0) {
@@ -306,40 +353,26 @@
         for (let i = 0; i < boil.length - 1; i++) if (boil[i][0] <= s && boil[i + 1][0] > s) { w = boil[i][1]; break; }
         pts.push([x, 170 - (w / 2200) * 130 + vnoise(x * 0.3 + t * 8, 4) * 1.5]);
       }
-      glowLine(waveCtx, pts, { color: "255,180,87", width: 2.4, alpha: wv * o, glow: 0.8 });
+      glowLine(waveCtx, pts, { color: "255,180,87", width: 2.4, alpha: 1, glow: 0.8 });
       const g = waveCtx.createLinearGradient(0, 0, 560, 0);
       g.addColorStop(0, "rgba(0,0,0,1)"); g.addColorStop(0.12, "rgba(0,0,0,0)"); g.addColorStop(0.88, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,1)");
       waveCtx.globalCompositeOperation = "destination-out"; waveCtx.fillStyle = g; waveCtx.fillRect(0, 0, 560, 200); waveCtx.globalCompositeOperation = "source-over";
     }
-    $("se-wave").style.opacity = wv;
     rev($("se-l-raw"), t, wt(9, "never") - 0.1, 61.4);
-    // the walls hold: a soft amber pulse along roof and walls
-    const wallGlow = er(t, wt(9, "never"), wt(9, "never") + 0.6) * (1 - er(t, wt(9, "only") + 0.4, wt(9, "only") + 1.4));
-    for (const id of ["se-roof", "se-walls"]) $(id).style.stroke = `rgb(${Math.round(lerp(246, 255, wallGlow))},${Math.round(lerp(239, 180, wallGlow))},${Math.round(lerp(228, 87, wallGlow))})`;
-    // only events leave
-    const cm = er(t, wt(9, "only") - 0.2, wt(9, "kettle") + 1.6, ease.io3);
+    // only moments leave: the chip rides a light up out of the roof
     const chip = $("se-chip");
-    const cx = lerp(1154, 1560, ease.io3(cm)), cy = lerp(700, 150, cm) - Math.sin(cm * Math.PI) * 40;
     style(chip, er(t, wt(9, "only") - 0.2, wt(9, "only") + 0.3) * (1 - er(t, 61.4, 62.0)), 0, 1, 0, "");
-    chip.style.left = `${cx}px`; chip.style.top = `${cy}px`; chip.style.transform += " translate(-50%, -50%)";
-    if (cm > 0 && cm < 1) blob(back, SPR.amber, cx, cy, 90, 0.25 * o);
-    rev($("se-l-out"), t, wt(9, "kettle") + 0.3, 61.4, { rise: 10, blur: 4 });
-    $("se-house").style.transform = `scale(${1 + 0.025 * ramp(t, 52, 62)})`;
+    if (A.chip) { pin(chip, A.chip); chip.style.transform += " translate(-50%, -130%)"; }
+    const lo = $("se-l-out");
+    rev(lo, t, wt(9, "kettle") + 0.3, 61.4, { rise: 10, blur: 4 });
+    if (A.chip) { pin(lo, A.chip, 0, 0); lo.style.transform += " translate(150px, -50%)"; }
   }
 
-  // ================================================================== MAP (missed → neighbour → kettle)
+  // ================================================================== MAP (the street is 3D: world.js)
   const GEO = {
     bow: [[-30, 164], [60, 176], [130, 190], [200, 206], [255, 226], [300, 240], [345, 262], [385, 292], [420, 322], [455, 344], [500, 356], [548, 362], [600, 368], [645, 384], [690, 394], [722, 414], [740, 452], [750, 500], [762, 552], [786, 630]],
     elbow: [[110, 630], [200, 594], [262, 576], [318, 568], [372, 552], [418, 524], [452, 502], [486, 486], [524, 474], [562, 463], [596, 443], [618, 419], [636, 399], [647, 386]],
-    park: [[352, 96], [410, 64], [480, 72], [516, 112], [498, 158], [430, 172], [370, 154]],
-    roads: [
-      [[706, -10], [700, 120], [688, 250], [668, 338], [664, 388], [714, 432], [746, 520], [772, 620]],
-      [[1010, 262], [820, 262], [620, 266], [470, 268], [390, 244], [300, 196], [190, 156], [70, 132], [-10, 122]],
-      [[240, -10], [300, 120], [362, 240], [404, 330], [416, 420], [392, 520], [356, 620]],
-      [[-10, 524], [180, 528], [290, 546], [440, 540], [620, 546], [820, 540], [1010, 536]],
-    ],
   };
-  const AREAS = [["BOWNESS", 300, 210], ["INGLEWOOD", 690, 440], ["KILLARNEY", 420, 470], ["RENFREW", 760, 200], ["WILDWOOD", 230, 380], ["RAMSAY", 620, 520], ["BRIDGELAND", 548, 340]];
   function catmull(pts, n = 8) {
     const out = [];
     for (let i = 0; i < pts.length - 1; i++) {
@@ -351,90 +384,16 @@
     }
     out.push(pts[pts.length - 1]); return out;
   }
-  // map space 1000x600 → screen, with a fisheye around Margaret so her street has room
-  const FOC = [548, 300], FISH = 2.6;
-  function lens([x, y]) {
-    const dx = x - FOC[0], dy = y - FOC[1], rr = Math.hypot(dx, dy);
-    let fx = x, fy = y;
-    if (rr > 1e-6) {
-      const ux = dx / rr, uy = dy / rr;
-      const tx = ux > 0 ? (1000 - FOC[0]) / ux : ux < 0 ? -FOC[0] / ux : Infinity, ty = uy > 0 ? (600 - FOC[1]) / uy : uy < 0 ? -FOC[1] / uy : Infinity;
-      const R = Math.max(1, Math.min(tx, ty)), q = Math.min(rr / R, 1.4);
-      const f = (R * (FISH + 1) * q) / (FISH * q + 1);
-      fx = FOC[0] + ux * f; fy = FOC[1] + uy * f;
-    }
-    return [fx * 1.92, fy * 1.92 - 36];
-  }
-  const NS = "http://www.w3.org/2000/svg";
-  const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
-  const dPath = (pts) => pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("");
-  const svg = $("map");
-  mk("path", { d: dPath(catmull([...GEO.park, GEO.park[0]], 6).map(lens)) + "Z", class: "park" }, svg);
-  for (const r of GEO.roads) mk("path", { d: dPath(catmull(r, 10).map(lens)), class: "road" }, svg);
-  mk("path", { d: dPath(catmull(GEO.bow, 10).map(lens)), class: "river", "stroke-width": 16 }, svg);
-  mk("path", { d: dPath(catmull(GEO.elbow, 10).map(lens)), class: "river", "stroke-width": 11 }, svg);
-  mk("path", { d: dPath(catmull(GEO.bow, 10).map(lens)), class: "river-sheen" }, svg);
-  for (const [n, x, y] of AREAS) { if (n === "BRIDGELAND") continue; const [a, b] = lens([x, y]); mk("text", { x: a, y: b, class: "area" }, svg).textContent = n; }
-  const MP = { margaret: lens([548, 300]), priya: lens([574, 286]), tom: lens([512, 334]), daniel: lens([640, 40]) };
-  // homes: Margaret, plus the circle
-  const homeG = mk("g", {}, svg);
-  const houseGlyph = (x, y, s, cls) => mk("path", { d: `M${x - 14 * s} ${y + 2 * s} L${x} ${y - 12 * s} L${x + 14 * s} ${y + 2 * s} V${y + 16 * s} H${x - 14 * s} Z`, fill: "none", stroke: "#ffb457", "stroke-width": 3, "stroke-linejoin": "round", class: cls }, homeG);
-  houseGlyph(MP.margaret[0], MP.margaret[1], 1.6, "m-home");
-  const mLabel = mk("text", { x: MP.margaret[0], y: MP.margaret[1] + 76, class: "home-l" }, homeG); mLabel.textContent = "Margaret";
-  const members = [
-    { k: "priya", name: "Priya", sub: "next door · 2 min", dx: 34, dy: -6 },
-    { k: "tom", name: "Tom", sub: "across the street · 4 min", dx: -34, dy: 8, anchor: "end" },
-  ].map((m) => {
-    const g = mk("g", {}, svg), [x, y] = MP[m.k];
-    mk("circle", { cx: x, cy: y, r: 13, fill: "#1b130d", stroke: "#cdbfae", "stroke-width": 2.5 }, g);
-    mk("text", { x: x, y: y + 6, "text-anchor": "middle", style: "font: 600 15px Inter; fill: #f6efe4" }, g).textContent = m.name[0];
-    const tx = mk("text", { x: x + m.dx, y: y + m.dy, class: "who", "text-anchor": m.anchor || "start" }, g); tx.textContent = m.name;
-    const ts = mk("text", { x: x + m.dx, y: y + m.dy + 26, class: "who-s", "text-anchor": m.anchor || "start" }, g); ts.textContent = m.sub;
-    return { ...m, g, x, y };
-  });
-  let mapLights = null;
+  let WA = null;   // this frame's 3D anchors (screen positions from world.js)
   function renderMap(t) {
-    const o = scene("s-map", t, 76.4, 101.8, 1.2, 1.2);
-    if (o <= 0) return;
-    // camera: slow push, then make room for the phone
-    const push = 1.0 + 0.1 * ease.ioSine(ramp(t, 76.4, 92));
-    const side = er(t, 83.3, 84.5, ease.io3) * 1;
-    const dim = 1 - 0.85 * er(t, 92.3, 93.2, ease.io3);
-    const cv = 1 - er(t, 92.3, 93.0, ease.io3);
-    const cx = MP.margaret[0], cy = MP.margaret[1];
-    $("map-cam").style.transformOrigin = `${cx}px ${cy}px`;
-    $("map-cam").style.transform = `translate(${960 - cx - side * 360}px, ${560 - cy}px) scale(${push})`;
-    $("map-cam").style.opacity = dim;
-    members.forEach((m, i) => { const a = er(t, wt(13, "it") + 0.5 + i * 0.3, wt(13, "it") + 1.3 + i * 0.3); m.g.style.opacity = a; });
-    const pr = members[0];
-    // Margaret's glow, and the thread of light to Priya (canvas, drawn in the camera's space)
-    const toScreen = ([x, y]) => [(x - cx) * push + cx + 960 - cx - side * 360, (y - cy) * push + cy + 560 - cy];
-    const [mx, my] = toScreen(MP.margaret), [px, py] = toScreen([pr.x, pr.y]);
-    const pulse = 0.75 + 0.25 * Math.sin(t * 3.0);
-    const alarm = er(t, 76.6, 77.6);
-    // the neighbourhood's homes, faint
-    if (!mapLights) mapLights = cityLights.filter((_, i) => i % 2 === 0).map(([, , r, , x, y]) => [...lens([x, y]), r]);
-    back.globalCompositeOperation = "lighter";
-    for (const [lx, ly, r] of mapLights) {
-      const [sx, sy] = toScreen([lx, ly]);
-      if (sx < -10 || sx > W + 10 || sy < -10 || sy > H + 10) continue;
-      back.fillStyle = `rgba(255,${Math.round(190 + 30 * r)},${Math.round(110 + 50 * r)},${(0.16 + 0.12 * r) * o * cv})`;
-      back.fillRect(sx - 1.2, sy - 1.2, 2.4, 2.4);
-    }
-    back.globalCompositeOperation = "source-over";
-    blob(back, SPR.amber, mx, my, 150 * push, 0.45 * alarm * pulse * o * cv);
-    const th = er(t, wt(14, "priya") - 0.1, wt(14, "priya") + 1.3, ease.io3);
-    if (th > 0) {
-      const ctrl = [(mx + px) / 2 + 30, Math.min(my, py) - 120 * push];
-      const q = (u) => [(1 - u) ** 2 * mx + 2 * (1 - u) * u * ctrl[0] + u * u * px, (1 - u) ** 2 * my + 2 * (1 - u) * u * ctrl[1] + u * u * py];
-      const pts = []; for (let u = 0; u <= th + 1e-6; u += 0.02) pts.push(q(Math.min(u, th)));
-      glowLine(back, pts, { color: "255,196,120", width: 2.6, alpha: o * cv, glow: 1 });
-      const head = q(th); blob(back, SPR.amber, head[0], head[1], 44, 0.7 * o * cv * (th < 1 ? 1 : 0.4));
-      if (th >= 1) blob(back, SPR.amber, px, py, 70 * (0.9 + 0.1 * pulse), 0.45 * o * cv);
-      // Priya on her way: a light moving back along the thread
-      const go = er(t, 88.6, 92.4, ease.ioSine);
-      if (go > 0 && go < 1) { const p2 = q(1 - go); blob(back, SPR.white, p2[0], p2[1], 26, 0.75 * o * cv); blob(back, SPR.amber, p2[0], p2[1], 60, 0.4 * o * cv); }
-    }
+    const o = scene("s-map", t, 76.4, 92.9, 1.2, 0.6);
+    if (o <= 0 || !WA) return;
+    const pm = $("pin-m"), pp = $("pin-p"), pt = $("pin-t");
+    style(pm, er(t, 77.0, 78.0) * (1 - er(t, 92.2, 92.7)));
+    pin(pm, WA.margaret); pm.style.transform += " translate(-50%, -100%)";
+    [pp, pt].forEach((el, i) => style(el, er(t, wt(13, "it") + 0.5 + i * 0.3, wt(13, "it") + 1.3 + i * 0.3) * (1 - er(t, 92.2, 92.7)), 0, 1, 0));
+    pin(pp, WA.priya); pp.style.transform += " translate(-17px, -50%)";
+    pin(pt, WA.tom); pt.style.transform += " translate(-17px, -50%)";
   }
 
   // ================================================================== MISSED
@@ -559,39 +518,39 @@
     phone.style.transform += ` rotate(${(shake * 1.2).toFixed(3)}deg)`;
     // taps
     $("tap").style.opacity = 0;
-    tapAt(t, 88.0, 0.5, 0.771) || tapAt(t, wt(17, "tap") - 0.05, 0.5, 0.805);
+    tapAt(t, 88.0, 0.5, 0.686) || tapAt(t, wt(17, "tap") - 0.05, 0.5, 0.819);   // "I'm going", "Thinking of you"
   }
 
-  // ================================================================== KETTLE
+  // ================================================================== KETTLE (3D kitchen from world.js; a small live power panel)
   function renderKettle(t) {
-    const o = scene("s-kettle", t, 92.4, 101.6, 0.8, 1.0);
+    const o = scene("s-kettle", t, 93.4, 101.6, 0.6, 1.0);
     if (o <= 0) return;
-    const y = 760, x0 = 150, x1 = 1170, xs = 780; // the step happens at xs
     const on = 94.42; // the click
     const up = er(t, on, on + 0.35, ease.out5);
-    const W0 = D.boil.step_w;
-    const h = (W0 / 2200) * 300;
-    // trace: flat until the click, then the kettle's real step (2,119 W in REFIT House 11)
+    const fade = 1 - er(t, 100.8, 101.8);
+    // the panel: last minutes of Margaret's power, flat until the click, then the kettle's real step (REFIT House 11)
+    const x0 = 150, x1 = 640, y = 960, xs = 560, hMax = 92;
+    const reveal = lerp(x0, x1, er(t, 93.5, 94.3, ease.io3));
+    const h = (D.boil.step_w / 2200) * hMax;
     const pts = [];
-    const reveal = lerp(x0, x1, er(t, 92.5, 94.2, ease.io3));
-    for (let x = x0; x <= Math.max(x0 + 8, reveal); x += 6) {
-      let yy = y + vnoise(x * 0.05 + t * 3, 3) * 1.4;
-      if (x > xs) yy = y - h * up + vnoise(x * 0.07 + t * 2, 6) * 1.6 * up;
+    for (let x = x0; x <= Math.max(x0 + 8, reveal); x += 5) {
+      let yy = y + vnoise(x * 0.05 + t * 3, 3) * 1.1;
+      if (x > xs) yy = y - h * up + vnoise(x * 0.07 + t * 2, 6) * 1.3 * up;
       pts.push([x, yy]);
     }
     if (reveal > xs) pts.splice(pts.findIndex((p) => p[0] > xs), 0, [xs, y], [xs + 0.1, y - h * up]);
-    const fade = 1 - er(t, 100.8, 101.8);
-    glowLine(back, pts, { color: up > 0 ? "255,190,110" : "246,239,228", width: 2.6, alpha: 0.95 * o * fade, glow: 1 });
-    rev($("ke-l"), t, 92.8, 100.6, { rise: 8, blur: 4 });
-    const kon = $("ke-on"); kon.style.left = `${xs + 20}px`; kon.style.top = `${y - h - 52}px`; rev(kon, t, on + 0.2, 100.6, { rise: 10, blur: 4 });
-    // light and steam
-    const flash = Math.exp(-Math.max(0, t - on) * 2.5) * (t >= on ? 1 : 0);
-    blob(back, SPR.amber, xs, y - h * up, 260 + 200 * flash, (0.25 + 0.4 * flash) * up * o * fade);
-    steam(back, t, { x: xs + 40, y: y - h - 40, t0: on + 0.6, t1: 100.6, rate: 80, life: 5.4, scale: 1.8, alpha: 1.0 * o, seed: 17, spread: 1.3 });
-    const warm = er(t, on, on + 2.5) * fade * o;
-    front.globalCompositeOperation = "lighter";
-    blob(front, SPR.amber, 960, 640, 1100, 0.10 * warm);
-    front.globalCompositeOperation = "source-over";
+    { const g = front.createRadialGradient(390, 960, 20, 390, 960, 420); g.addColorStop(0, `rgba(10,7,5,${0.55 * o * fade})`); g.addColorStop(1, "rgba(10,7,5,0)"); front.fillStyle = g; front.fillRect(0, 600, 900, 480); }
+    front.strokeStyle = `rgba(246,239,228,${0.12 * o * fade})`; front.lineWidth = 1; front.beginPath(); front.moveTo(x0, y + 0.5); front.lineTo(x1, y + 0.5); front.stroke();
+    glowLine(front, pts, { color: up > 0 ? "255,190,110" : "246,239,228", width: 2.4, alpha: 0.95 * o * fade, glow: 0.8 });
+    if (up > 0) blob(front, SPR.amber, xs, y - h * up, 70, 0.35 * up * o * fade);
+    rev($("ke-l"), t, 93.6, 100.6, { rise: 8, blur: 4 });
+    const kon = $("ke-on"); kon.style.left = `${xs + 16}px`; kon.style.top = `${y - h - 44}px`; rev(kon, t, on + 0.2, 100.6, { rise: 10, blur: 4 });
+    // steam from the 3D kettle's spout, sized to the shot
+    const A = WA;
+    if (A && A.spout) {
+      const k = clamp(A.pxPerM / 900, 0.4, 3);
+      steam(front, t, { x: A.spout[0], y: A.spout[1], t0: on + 0.8, t1: 100.6, rate: 70, life: 4.6, scale: 1.2 * k, alpha: 0.9 * o * fade, seed: 17, spread: 1.0 });
+    }
   }
 
   // ================================================================== GLOW
@@ -812,24 +771,38 @@
       back.restore(); back.globalCompositeOperation = "source-over";
     }
     rev($("cl-meter"), t, mAt - 0.1, VO["23"].at - 0.6);
-    // the end
-    const e0 = VO["23"].at;
+    // the end: the brand, then the people it is for
+    const e0 = VO["23"].at, just = wt(23, "just");
+    const ph0 = just + 0.1, brandOut = er(t, just + 0.3, just + 1.3, ease.io3);
     drawLogo(closeLogo, t, e0 - 0.6);
-    $("cl-logo").style.opacity = er(t, e0 - 0.7, e0 - 0.3);
-    rev($("cl-brand").querySelector(".wordmark"), t, e0 - 0.3, 1e9, { dur: 1.4, rise: 24, blur: 12 });
+    $("cl-logo").style.opacity = er(t, e0 - 0.7, e0 - 0.3) * (1 - brandOut);
+    rev($("cl-brand").querySelector(".wordmark"), t, e0 - 0.3, just + 0.3, { dur: 1.4, rise: 24, blur: 12, fo: 1.0 });
     const nos = [...$("cl-nos").children];
-    nos.forEach((s, i) => rev(s, t, wt(23, [0, 2][i]) - 0.05, 1e9, { rise: 14, blur: 6 }));
-    rev($("cl-just"), t, wt(23, "just") - 0.05, 1e9, { dur: 1.4, rise: 16 });
-    rev($("cl-event"), t, 161.0, 1e9, { rise: 8, blur: 4 });
-    rev($("cl-fine"), t, 161.6, 1e9, { rise: 6, blur: 3 });
-    steam(back, t, { x: 960, y: 420, t0: e0 - 0.5, t1: 166, rate: 36, life: 5, scale: 1.4, alpha: 0.45 * o, seed: 31 });
+    nos.forEach((s, i) => rev(s, t, wt(23, [0, 2][i]) - 0.05, just + 0.3, { rise: 14, blur: 6, fo: 1.0 }));
+    // "Just someone who notices." lands, then settles into the lower third over the photo
+    const jl = $("cl-just"), drop = er(t, just + 0.9, just + 2.4, ease.io3), credits = er(t, 167.4, 168.4, ease.io3);
+    rev(jl, t, just - 0.05, 1e9, { dur: 1.3, rise: 16 });
+    jl.style.transform += ` translateY(${(drop * 168).toFixed(1)}px)`;
+    jl.style.opacity = (parseFloat(jl.style.opacity) * (1 - credits)).toFixed(3);
+    jl.style.textShadow = `0 2px 30px rgba(0,0,0,${(0.7 * drop).toFixed(2)})`;
+    const ev = $("cl-event");
+    rev(ev, t, just + 2.6, 167.4, { rise: 8, blur: 4, fo: 1.0 });
+    ev.style.transform += " translateY(130px)";
+    const ph = $("cl-photo"), pa = er(t, ph0, ph0 + 2.0, ease.ioSine) * (1 - credits * 0.9);
+    ph.style.opacity = pa.toFixed(3); ph.style.visibility = pa > 0.001 ? "visible" : "hidden";
+    ph.firstElementChild.style.transform = `scale(${(1.0 + 0.075 * ease.ioSine(ramp(t, ph0, 175))).toFixed(4)})`;
+    ph.style.filter = `brightness(${(1 - 0.75 * credits).toFixed(3)})`;
+    rev($("cl-fine"), t, 168.2, 1e9, { rise: 8, blur: 4, dur: 1.2 });
+    steam(back, t, { x: 960, y: 420, t0: e0 - 0.5, t1: just + 1.5, rate: 36, life: 5, scale: 1.4, alpha: 0.45 * o * (1 - brandOut), seed: 31 });
   }
 
   // ================================================================== frame
   const scenes = [renderOpen, renderRhythm, renderProblem, renderBrand, renderSense, renderMissed, renderMap, renderKettle, renderGlow, renderPhone, renderCold, renderEvidence, renderClose];
   function seek(t) {
     back.clearRect(0, 0, W, H); front.clearRect(0, 0, W, H);
+    WA = window.WORLD ? window.WORLD.setup(t) : null;
     for (const r of scenes) r(t);
+    if (window.WORLD) window.WORLD.draw();
     // fade in/out from black (film grain is added by ffmpeg in render.py)
     const bk = $("black");
     bk.style.visibility = (t > 0.55 && t < TL.duration - 1.65) ? "hidden" : "visible";
@@ -840,7 +813,8 @@
   window.FILM = { duration: TL.duration, fps: TL.fps };
 
   const q = new URLSearchParams(location.search);
-  Promise.all([document.fonts.ready, ...[...document.images].map((im) => im.decode().catch(() => 0))]).then(() => {
+  const worldReady = new Promise((r) => (window.WORLD ? r() : window.addEventListener("world-ready", r, { once: true })));
+  Promise.all([document.fonts.ready, worldReady, ...[...document.images].map((im) => im.decode().catch(() => 0))]).then(() => {
     window.READY = true;
     if (q.has("t")) seek(parseFloat(q.get("t")));
     else if (q.has("play")) { const t0 = performance.now() - (parseFloat(q.get("play")) || 0) * 1000; const loop = () => { seek((performance.now() - t0) / 1000); requestAnimationFrame(loop); }; loop(); }

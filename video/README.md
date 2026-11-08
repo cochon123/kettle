@@ -1,13 +1,14 @@
 # Kettle — the film
 
-A 2:48 brand film for the Hack the Change 2026 submission. It's built as code: `film.html` is the film, rendered frame by frame in headless Chrome, so every number on screen comes from `../data/` (via `build_data.py`) and every product screen is a real screenshot of the running app.
+A 2:56 brand film for the Hack the Change 2026 submission. It's built as code: `film.html` is the film, rendered frame by frame in headless Chrome, so every number on screen comes from `../data/` (via `build_data.py`) and every product screen is a real screenshot of the running app.
 
 | | |
 |---|---|
 | Picture | `film.html` + `film.js` + `film.css`: motion design in the Kettle night palette, plus real UI captures in `assets/` |
+| 3D | `world.js` (three.js, vendored in `vendor/three/`, MIT): Margaret's house and kitchen, her street, Priya's walk over, and the kettle coming on |
 | Voice | Gemini TTS (`gemini-3.8-flash-tts`, voice "Sulafat"), one take cut into lines: `audio/vo/` |
-| Music | Lyria RealTime, steered scene by scene: `audio/music.opus` |
-| Sound effects | Synthesized in `audio/mix.py` (kettle switch, landline ring, phone buzz, chimes, wind), with no samples |
+| Music | Lyria RealTime, steered scene by scene: `audio/music.opus`; `mix.py` darkens it at the end and closes on a synthesized D major chord |
+| Sound effects | Synthesized in `audio/mix.py` (kettle switch, landline ring, phone buzz, pendant click, chimes, swells, wind), with no samples |
 | Captions | `kettle-film.en.srt` / `.vtt` |
 | Timing | `timeline.json`: where each voice line sits; `film.js` and `mix.py` both key off it |
 
@@ -28,6 +29,7 @@ ffmpeg -i /tmp/picture.mp4 -i /tmp/sound.wav -vf "noise=c0s=6:c0f=t+u" \
 
 - **Numbers:** StatCan 2021 (42% of 85+ live alone), Fleming & Brayne, BMJ 2008 (8 in 10), REFIT House 11 (Margaret's mornings and the boil trace), AESO pool price and ECCC temperature for Jan 13 2024, and the REFIT evaluation (9,242 home-days, F1 0.96, 4.7 check-ins per home per month).
 - **Screens:** the circle app, the kitchen display and the stage, captured from `python -m kettle demo`. Demo time is accelerated.
-- **Stylized:** the house, the map of Calgary (same geometry as the stage), Alberta's outline and the "every phone" dots, which are illustrative rather than real phone locations.
+- **Stylized:** Margaret's house, kitchen and street (3D), the Calgary city lights, Alberta's outline and the "every phone" dots, which are illustrative rather than real phone locations.
+- **Photo:** the closing photo is by kawilson on Pixabay (Pixabay Content License), `assets/grandparents.jpg`.
 
 Margaret, Priya and Tom are personas. Fonts: Fraunces and Inter (SIL OFL, `fonts/`).

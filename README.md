@@ -103,6 +103,8 @@ docs/                             architecture, demo script, Q&A, accessibility,
 | `KETTLE_TWILIO_PROFILE=<twilio-cli profile>` or `TWILIO_ACCOUNT_SID` + `TWILIO_AUTH_TOKEN` | Twilio credentials |
 | `TWILIO_FROM=+1825…` | a Twilio number you own. Without it, calls and SMS are simulated and shown on stage |
 | `KETTLE_MARGARET_PHONE=+1…` | the phone that rings as "Margaret's landline" |
+| `KETTLE_TWILIO_ONLY=+1…,+1…` | only these numbers get real calls and texts; everyone else stays simulated. Fictional 555-01XX numbers (the demo circle) are never dialled |
+| `KETTLE_VOICE=…` | Twilio text-to-speech voice for calls (default `Google.en-US-Chirp3-HD-Aoede`; e.g. `Polly.Joanna`) |
 | `KETTLE_PUBLIC_URL=https://…` | public URL, so SMS links work and Twilio can post "press 1" back |
 | `KETTLE_DEVICE_KEY`, `KETTLE_INVITE` | device shared key (default `demo-key`), circle invite code (default `margaret`) |
 | `KETTLE_DEMO=0` | real clock and production timings (3 min self check, 10 min per neighbour) |

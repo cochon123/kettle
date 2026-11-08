@@ -137,6 +137,88 @@ def whoosh(dur: float = 1.6, lo: float = 300, hi: float = 2400) -> np.ndarray:
     return out * e * 0.22
 
 
+def plastic_click() -> np.ndarray:
+    """A pendant button: a short plastic snap down, a softer one back up."""
+    n = int(0.3 * SR)
+    out = np.zeros(n)
+    for at, g, lo, hi, f in [(0.0, 1.0, 2500, 9000, 2400), (0.17, 0.45, 1800, 7000, 1900)]:
+        i = int(at * SR)
+        m = n - i
+        out[i:] += bandpass(rng.standard_normal(m), lo, hi) * env(m, 0.0003, 0.004) * g
+        out[i:] += np.sin(2 * np.pi * f * np.arange(m) / SR) * env(m, 0.0005, 0.012) * 0.25 * g
+    return out / np.abs(out).max() * 0.5
+
+
+def confirm_beep() -> np.ndarray:
+    """Two soft sine tones, like a pendant acknowledging the press."""
+    n = int(0.7 * SR)
+    t = np.arange(n) / SR
+    out = np.zeros(n)
+    for at, f in [(0.0, 1318.5), (0.16, 1760.0)]:
+        u = np.clip(t - at, 0, None)
+        out += np.sin(2 * np.pi * f * u) * (t >= at) * np.minimum(1, u / 0.008) * np.exp(-u / 0.12)
+    return lowpass(out, 5000) * 0.12
+
+
+def swell(dur: float) -> np.ndarray:
+    """Air that gathers and stops: rising band-passed noise with a tonal shimmer, ending on the cut."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    u = t / dur
+    x = rng.standard_normal(n)
+    out = np.zeros(n)
+    hop = 1024
+    for i in range(0, n, hop):
+        fc = 400 * (5000 / 400) ** (i / n)
+        seg = x[max(0, i - 4096): i + hop]
+        y = bandpass(seg, fc * 0.6, min(fc * 1.6, SR / 2 - 100))
+        out[i: i + hop] = y[-len(out[i: i + hop]):]
+    shimmer = sum(np.sin(2 * np.pi * f * t) for f in (587.33, 880.0, 1174.7)) / 3
+    e = u ** 2.4 * np.minimum(1, (dur - t) / 0.03)
+    return (out * 0.25 + shimmer * 0.05) * e
+
+
+def piano(f: float, dur: float, vel: float = 1.0) -> np.ndarray:
+    """A soft felt-piano note: inharmonic partials with their own decays, a little hammer noise."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    B = 0.00035
+    out = np.zeros(n)
+    for k in range(1, 9):
+        fk = k * f * np.sqrt(1 + B * k * k)
+        if fk > 7000:
+            break
+        dec = (5.5 if f < 200 else 4.2) / k ** 0.7
+        out += (1 / k ** 1.4) * np.sin(2 * np.pi * fk * t + k) * np.exp(-t / dec)
+    out *= 1 - np.exp(-t / 0.005)
+    out += bandpass(rng.standard_normal(n), 300, 2500) * env(n, 0.001, 0.012) * 0.15
+    return lowpass(out, 2600) * vel * 0.2
+
+
+def reverb(x: np.ndarray, seconds: float = 3.6, decay: float = 1.25) -> np.ndarray:
+    """Stereo room: decorrelated exponentially decaying noise, darkened."""
+    n = int(seconds * SR)
+    t = np.arange(n) / SR
+    irs = [lowpass(rng.standard_normal(n), 4500) * np.exp(-t / decay) for _ in range(2)]
+    irs = [ir / np.sqrt((ir ** 2).sum()) for ir in irs]
+    return np.stack([signal.fftconvolve(x, ir)[: len(x) + n] for ir in irs], axis=1)
+
+
+def final_chord(dur: float = 9.5) -> np.ndarray:
+    """D major (add 9), rolled from the bass up, with a high D a beat later: the score comes home."""
+    n = int(dur * SR)
+    dry = np.zeros(n)
+    notes = [(73.42, 0.0, 0.9), (110.0, 0.06, 0.7), (185.0, 0.13, 0.6), (220.0, 0.19, 0.55), (329.63, 0.27, 0.5), (440.0, 0.36, 0.42), (587.33, 1.15, 0.3)]
+    for f, at, vel in notes:
+        i = int(at * SR)
+        nt = piano(f, dur - at, vel)[: n - i]
+        dry[i:i + len(nt)] += nt
+    wet = reverb(dry)[:n]
+    mix = np.stack([dry, dry], axis=1) * 0.75 + wet * 0.9
+    t = np.arange(n) / SR
+    return mix * np.minimum(1, (dur - t) / 2.5)[:, None]
+
+
 def wind(dur: float) -> np.ndarray:
     n = int(dur * SR)
     t = np.arange(n) / SR
@@ -166,9 +248,16 @@ def main(out: str) -> None:
 
     music = load(HERE / "music.opus")[:N]
     music = np.pad(music, ((0, N - len(music)), (0, 0)))
+    # the ending: the score darkens (a slow low-pass crossfade) and steps back for the final chord
+    END_A, END_B = 163.5, 168.0
+    dark = np.stack([lowpass(music[:, c], 650, 2) for c in range(2)], axis=1)
+    tt0 = np.arange(N) / SR
+    xf = np.clip((tt0 - END_A) / (END_B - END_A), 0, 1)[:, None] ** 0.8
+    music = music * (1 - xf) + dark * 1.4 * xf
     # score automation (dB), shaped to the film rather than to the generator
     keys = [(0, 3), (12, 3), (14, -4), (21.5, -4), (23, -9), (40.5, -9), (42, -5), (52, -6), (62, -6), (63.5, -2), (81, -2),
-            (92, -3), (94.4, 1), (100, 1), (103, -1), (111, -1), (133, -3), (146, -3), (148, 0), (160, 0), (164.5, -2), (167.6, -60)]
+            (92, -3), (94.4, 1), (100, 1), (103, -1), (111, -1), (133, -3), (146, -3), (148, 0), (160, 0), (163.5, -1),
+            (166.3, -9), (168.5, -20), (170.5, -42), (172, -90), (DUR, -90)]
     tk, gk = zip(*keys)
     tt = np.arange(N) / SR
     gain = 10 ** (np.interp(tt, tk, gk) / 20)
@@ -194,8 +283,16 @@ def main(out: str) -> None:
     place(fx, tap(), vo_time("17", "tap") - 0.05, -6, pan=-0.1)
     place(fx, chime(784, 3.0), 95.95, -14, pan=0.35)             # "Margaret's kettle just came on"
     place(fx, chime(659, 3.5), vo_time("17", "warm") - 0.1, -12) # the kitchen glows
-    for at, dur in [(21.4, 1.6), (41.0, 1.8), (62.0, 2.0), (146.6, 1.8)]:
+    for at, dur in [(41.0, 1.8), (62.0, 2.0), (146.6, 1.8)]:
         place(fx, whoosh(dur), at, -8)
+    place(fx, swell(1.15), 20.9, -9)                             # the days fold into a point of light…
+    place(fx, chime(1174.7, 2.6), 22.05, -17)                    # …which becomes the 42%
+    place(fx, whoosh(1.0, 200, 900), 36.5, -14)                  # ten circles become one pendant
+    press = vo_time("6", "press") + 0.22                         # "And press it."
+    place(fx, plastic_click(), press - 0.02, -6)
+    place(fx, confirm_beep(), press + 0.12, -12)
+    place(fx, whoosh(1.7, 250, 1800), 92.2, -9)                  # the camera dives into her kitchen
+    place(fx, final_chord(), 166.3, -7)                          # the score comes home
     place(fx, whoosh(2.6, 200, 1400), 110.4, -6)
     place(fx, wind(22.5), 110.8, -8)
 

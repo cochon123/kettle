@@ -15,7 +15,7 @@ html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; 
   font-family: var(--serif); font-variation-settings: "SOFT" 100, "WONK" 0; -webkit-font-smoothing: antialiased; }
 #bg { position: absolute; inset: 0;
   background: radial-gradient(1400px 900px at 50% 58%, #261910 0%, #160f0a 55%, #0b0705 100%); }
-canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
+canvas#back, canvas#front, canvas#gl { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; }
 #tint { position: absolute; inset: 0; background: radial-gradient(1400px 900px at 50% 58%, #13202d 0%, #0b131c 55%, #05090d 100%); opacity: 0; }
 #vignette { position: absolute; inset: 0; background: radial-gradient(1300px 820px at 50% 50%, transparent 55%, rgba(0, 0, 0, .55) 100%); }
 #black { position: absolute; inset: 0; background: #000; opacity: 1; }
@@ -59,6 +59,7 @@ canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height:
 .dots { left: 0; right: 0; top: 470px; height: 120px; }
 .dots i { position: absolute; top: 0; width: 84px; height: 84px; border-radius: 50%; }
 .pendant { left: 760px; top: 0; width: 400px; height: 700px; color: var(--steam); transform-origin: 200px 0; overflow: visible; }
+#pb-disc { transform-box: view-box; transform-origin: 200px 590px; }
 .pend-word { top: 560px; font-size: 76px; font-style: italic; font-weight: 300; }
 #pb-wear { right: 1260px; text-align: right; }
 #pb-press { left: 1260px; color: var(--glow); }
@@ -81,11 +82,11 @@ canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height:
 .house #se-kettle path { stroke-width: 3.5; }
 .house .led { fill: var(--glow); stroke: none; }
 .house .hubdot { fill: var(--glow); stroke: none; opacity: .8; }
-#se-wave { left: 680px; top: 470px; width: 560px; height: 200px; }
-#se-l-plug { left: 820px; top: 900px; font-size: 26px; }
-#se-l-hub { left: 1092px; top: 790px; font-size: 24px; }
-#se-l-raw { left: 0; right: 0; text-align: center; top: 404px; font-family: var(--serif); font-size: 40px; font-style: italic; font-weight: 300; color: var(--steam); }
-#se-l-out { left: 1330px; top: 210px; font-family: var(--serif); font-size: 36px; font-style: italic; font-weight: 300; color: var(--glow); }
+#se-wave { display: none; }
+#se-l-plug, #se-l-hub { font-size: 25px; color: var(--steam); text-shadow: 0 2px 14px rgba(0,0,0,.9); }
+#se-l-plug::before, #se-l-hub::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 1.5px; height: var(--lead, 60px); background: linear-gradient(transparent, rgba(246,239,228,.7)); }
+#se-l-raw { left: 0; right: 0; text-align: center; top: 120px; text-shadow: 0 2px 20px rgba(0,0,0,.8); font-family: var(--serif); font-size: 40px; font-style: italic; font-weight: 300; color: var(--steam); }
+#se-l-out { left: 0; top: 0; text-shadow: 0 2px 20px rgba(0,0,0,.8); font-family: var(--serif); font-size: 36px; font-style: italic; font-weight: 300; color: var(--glow); }
 .chip { display: flex; align-items: center; gap: 12px; padding: 12px 22px 12px 18px; border-radius: 999px; font-family: var(--sans); font-size: 24px; font-weight: 600;
   color: var(--steam); background: rgba(255, 180, 87, .12); border: 1.5px solid rgba(255, 180, 87, .55); white-space: nowrap; }
 .chip i { width: 12px; height: 12px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 12px var(--glow); }
@@ -105,7 +106,7 @@ canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height:
   background: radial-gradient(closest-side, rgba(255, 170, 80, .5), rgba(255, 170, 80, .16) 50%, transparent); }
 .tablet .screen { position: relative; width: 100%; height: 100%; border-radius: 22px; overflow: hidden; background: #1f160f; }
 .tablet img { position: absolute; inset: 0; width: 100%; height: 100%; }
-.btn-pulse { position: absolute; left: 50%; top: 58.4%; width: 420px; height: 420px; margin: -210px 0 0 -210px; border-radius: 50%;
+.btn-pulse { position: absolute; left: 50%; top: 60.8%; width: 360px; height: 360px; margin: -180px 0 0 -180px; border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 190, 110, .55) 0%, rgba(255, 170, 80, .18) 45%, transparent 70%); mix-blend-mode: screen; }
 .call { display: flex; align-items: center; gap: 22px; }
 .call-ic { position: relative; width: 84px; height: 84px; border-radius: 50%; background: rgba(255, 180, 87, .14); color: var(--glow); display: grid; place-items: center; }
@@ -115,7 +116,13 @@ canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height:
 .call-top { font-family: var(--sans); font-size: 30px; font-weight: 600; color: var(--steam); }
 .call-sub { font-family: var(--sans); font-size: 21px; font-weight: 500; color: var(--steam-3); }
 
-/* ---------- map */
+/* ---------- map (3D street; labels follow the houses) */
+.pin { left: 0; top: 0; display: flex; align-items: center; gap: 14px; font-family: var(--sans); text-shadow: 0 2px 14px rgba(0,0,0,.9); white-space: nowrap; }
+.pin i { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 16px; font-weight: 700;
+  background: rgba(20,14,9,.85); border: 2px solid var(--steam-2); color: var(--steam); text-shadow: none; }
+.pin b { display: block; font-size: 26px; font-weight: 600; color: var(--steam); }
+.pin small { display: block; font-size: 19px; font-weight: 500; color: var(--steam-2); }
+.pin.home b { font-family: var(--serif); font-size: 38px; font-weight: 400; }
 .map-cam { inset: 0; transform-origin: 50% 50%; }
 #map { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: visible; }
 #map .river { fill: none; stroke: #1f3a52; stroke-linecap: round; stroke-linejoin: round; }
@@ -142,7 +149,7 @@ canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height:
 .tap { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; background: rgba(255, 255, 255, .35); border: 3px solid rgba(255, 255, 255, .85); opacity: 0; }
 
 /* ---------- kettle */
-#ke-l { left: 160px; top: 650px; }
+#ke-l { left: 150px; top: 984px; font-size: 20px; letter-spacing: .04em; color: var(--steam-2); }
 #ke-on { left: 0; top: 0; }
 
 /* ---------- glow */
@@ -171,9 +178,17 @@ canvas#back, canvas#front { position: absolute; inset: 0; width: 1920px; height:
 .homes svg { width: 24px; height: 24px; color: var(--glow); }
 
 /* ---------- close */
-.since { left: 230px; top: 250px; width: 1460px; }
-.since .huge { margin-top: 10px; }
-.since .stat-text { position: absolute; left: 820px; top: 150px; width: 640px; }
+.since { left: 0; right: 0; top: 196px; text-align: center; }
+.since .eyebrow { color: var(--glow); }
+.since .huge { margin-top: 18px; }
+.since .stat-text { width: 1080px; margin: 40px auto 0; text-wrap: balance; }
+.photo { inset: 0; overflow: hidden; }
+.photo img { position: absolute; left: 0; top: -100px; width: 1920px; height: 1280px; object-fit: cover; transform-origin: 56% 34%;
+  filter: saturate(.78) sepia(.14) brightness(.9) contrast(1.03); }
+.photo::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(12,8,5,0) 45%, rgba(12,8,5,.55) 72%, rgba(12,8,5,.88) 100%),
+              radial-gradient(1400px 900px at 50% 40%, transparent 55%, rgba(12,8,5,.55) 100%); }
 .brand.end .logo { top: 250px; }
 .brand.end .wordmark { top: 422px; }
-.fine { left: 260px; right: 260px; bottom: 54px; text-align: center; font-family: var(--sans); font-size: 15px; line-height: 1.6; font-weight: 450; color: rgba(155, 139, 122, .85); }
+.fine { left: 360px; right: 360px; top: 420px; text-align: center; font-family: var(--sans); font-size: 21px; line-height: 1.75; font-weight: 450; color: rgba(205, 191, 174, .88); text-wrap: balance; }
+.fine br { display: block; content: ""; margin-top: 18px; }

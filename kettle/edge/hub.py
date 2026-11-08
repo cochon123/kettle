@@ -2,12 +2,14 @@
 
     .venv/bin/python -m kettle edge --plug sim                  # no hardware
     .venv/bin/python -m kettle edge --plug shelly:192.168.1.50  # real plug on the kettle
+    .venv/bin/python -m kettle edge --button serial:/dev/ttyACM0 # big button on a given port (default: auto)
 
 It
   1. reads the plug once a second, on the LAN only,
   2. runs the detector (kettle/detect.py) locally,
   3. sends *events only* to the cloud (store-and-forward if the internet drops),
-  4. serves the kitchen display (web/hub) and a local-only live trace on :8701.
+  4. serves the kitchen display (web/hub) and a local-only live trace on :8701,
+  5. drives the physical "I'm fine" button and its light over USB (kettle/edge/button.py).
 
 The raw readings exist only in this process's memory and on the local screen.
 """
@@ -31,6 +33,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from ..detect import Detector, DetectorConfig
+from .button import Button, light_for
 from .plugs import make_plug
 from .sim import Simulator
 
@@ -39,7 +42,8 @@ WEB = pathlib.Path(__file__).resolve().parents[2] / "web"
 
 
 class Hub:
-    def __init__(self, home: str, plug_spec: str, cloud: str, key: str, kettle_s: float, sensing: str = "plug"):
+    def __init__(self, home: str, plug_spec: str, cloud: str, key: str, kettle_s: float, sensing: str = "plug",
+                 button: str = "auto"):
         self.home, self.cloud, self.key = home, cloud.rstrip("/"), key
         self.sensing = sensing
         self.label = "kettle" if sensing == "plug" else "home"
@@ -57,6 +61,10 @@ class Hub:
         self.plug_ok, self.plug_err = False, None
         self.events_sent = 0
         self.interval = 0.5 if not self.plug.real else 1.0
+        self.button = Button(button,
+                             on_press=lambda: self.from_local({"type": "im_fine", "via": "button"}),
+                             get_light=lambda: light_for(self.ui, time.time(), time.time() < self.outage_until),
+                             on_change=lambda: self.to_local(self.status()))
 
     # ------------------------------------------------------------------ local UI
     async def to_local(self, msg: dict) -> None:
@@ -73,7 +81,7 @@ class Hub:
         return {"type": "status", "home": self.home, "plug": self.plug.name, "plug_real": self.plug.real,
                 "plug_ok": self.plug_ok, "plug_err": self.plug_err, "cloud_ok": self.cloud_ok,
                 "queued": len(self.outq), "sent": self.events_sent, "outage": time.time() < self.outage_until,
-                "ui": self.ui, "label": self.label}
+                "ui": self.ui, "label": self.label, "button": self.button.status()}
 
     async def from_local(self, msg: dict) -> None:
         t = msg.get("type")
@@ -204,10 +212,12 @@ def _is_lan(host: str) -> bool:
 def make_app(hub: Hub) -> FastAPI:
     @contextlib.asynccontextmanager
     async def lifespan(app):
-        tasks = [asyncio.create_task(hub.sense_loop()), asyncio.create_task(hub.cloud_loop())]
+        tasks = [asyncio.create_task(hub.sense_loop()), asyncio.create_task(hub.cloud_loop()),
+                 asyncio.create_task(hub.button.run())]
         yield
         for t in tasks:
             t.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
         await hub.plug.close()
 
     app = FastAPI(title="Kettle edge hub", lifespan=lifespan)
@@ -276,6 +286,10 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--kettle-seconds", type=float, default=75.0, help="simulated boil length")
     ap.add_argument("--sensing", choices=["plug", "meter"], default="plug",
                     help="plug: a plug on the kettle (v0). meter: whole-home reading (v1), e.g. ESP32 on the meter LED")
+    ap.add_argument("--button", default="auto",
+                    help="physical I'm-fine button: auto (find an Arduino on USB) | serial:<port> | none")
     a = ap.parse_args(argv)
-    hub = Hub(a.home, a.plug, a.cloud, a.key, a.kettle_seconds, a.sensing)
+    logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(name)s %(message)s")
+    logging.getLogger("kettle.button").setLevel(logging.INFO)   # "connected on /dev/ttyACM0", presses
+    hub = Hub(a.home, a.plug, a.cloud, a.key, a.kettle_seconds, a.sensing, a.button)
     uvicorn.run(make_app(hub), host=a.host, port=a.port, log_level="warning")

@@ -27,6 +27,37 @@ Presenter keys on the stage: **D** drawer · **R** reset to 6:30 · **J** jump j
 | 2:15 | "Raw power never leaves the house; only events like 'kettle on' do. We replayed 20 real homes, over 9,000 home-days, through the code you just saw: a plug on the kettle detects it 96% of the time, and Kettle would ring the person about 4.7 times a month, 2.5 if they pause it when away. Each of those is a phone call to her, not a neighbour at the door. Next is a consented pilot in Calgary homes." | Point at the evidence strip (or deck slide 7). |
 | 2:40 | "Japan has done this with a kettle since 2001. Every Calgary home already has a meter. No cameras. No wearables. Just someone who notices." | Logo. |
 
+## Presenter mode (no smart plug): the story one keypress at a time
+
+`python3 -m kettle show` starts everything (simulated kettle plug, the big button when the Arduino is plugged in),
+puts Margaret's learned morning at 8:30 and switches the timers off. Nothing happens until you press **SPACE** in that terminal:
+
+| Key | Clock | What happens | Show |
+|---|---|---|---|
+| SPACE | 8:31 | Kettle texts Margaret; the big button pulses | Margaret's phone, the button |
+| SPACE | 8:34 | No answer: Priya, next door, gets "Can you knock on Margaret's door?" | Priya's phone |
+| SPACE | 8:54 | Still nothing: Daniel, her son, gets "Can you call Margaret?" | Daniel's phone |
+| SPACE | 9:01 | She makes her tea: everyone gets "Margaret's kettle just came on" | All phones |
+
+**R** starts over, **Q** quits. Pressing the big button at any point is Margaret saying "I'm fine" and ends it the same way.
+`--usual 7:45` moves her morning.
+
+### The phones: https://kettle-demo.vercel.app
+
+Each phone plays one character. Open the site (or scan the QR code on the host page), pick Margaret, Priya or Daniel,
+and optionally add a phone number. Registered numbers get real texts with a link back to the site, where the buttons
+are ("I'm going", "All good, I know she's fine", "I'm fine"…); SMS can't carry buttons. Numbers are kept 24 hours at most.
+
+The laptop is the hub: `kettle show` pushes every phone's card to the site about once a second and picks up taps and
+registrations on the way back, so the laptop needs internet but no open port. The host page
+(`/host/?pin=…`, link printed in the presenter terminal) lists who is playing, removes a phone to free its character,
+and has the same Next / Restart as SPACE / R.
+
+No internet? `kettle show --offline`, and phones on the same Wi-Fi open the laptop links printed at the bottom of the
+presenter screen (`…:8700/phone/?c=priya`, `?c=daniel`, `?c=margaret`). Real texts then need `--phone who=+1…`.
+
+The site's secrets live in `~/.config/kettle/site.json` (hub secret, host PIN, URL), never in the repo.
+
 ## If something goes wrong
 
 | Problem | Fix |

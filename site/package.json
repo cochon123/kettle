@@ -1,0 +1,6 @@
+{
+  "name": "kettle-demo",
+  "private": true,
+  "type": "module",
+  "description": "Kettle live-demo phone site: phones play a character, the laptop hub syncs out to it."
+}

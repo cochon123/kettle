@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Kettle · host</title>
+  <link rel="icon" href="../logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../app.css">
+  <style>
+    body { background: var(--cream); }
+    main.host { max-width: 64rem; display: grid; grid-template-columns: 1fr 19rem; gap: 2.2rem; align-items: start; padding-top: 1.5rem; }
+    @media (max-width: 760px) { main.host { grid-template-columns: 1fr; } }
+    h1 { font-size: 2rem; }
+    h2 { font-family: var(--serif); font-weight: 560; font-size: 1.3rem; margin: 2rem 0 .8rem; }
+    .row { display: flex; align-items: center; gap: 1rem; padding: .9rem 1.1rem; border-radius: 20px; background: var(--paper); box-shadow: inset 0 0 0 2px var(--line); margin-bottom: .7rem; }
+    .row .av { flex: none; width: 2.8rem; height: 2.8rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif); font-size: 1.3rem; background: var(--amber-soft); color: var(--amber-ink); }
+    .row .nm { font-weight: 650; }
+    .row .ln { color: var(--ink-3); font-size: .88rem; }
+    .row .sh { color: var(--ink-2); font-size: .88rem; margin-top: .15rem; }
+    .row .st { margin-left: auto; text-align: right; font-size: .85rem; color: var(--ink-3); white-space: nowrap; }
+    .row .st b { display: block; color: var(--ink); font-weight: 600; }
+    .row.free { opacity: .6; }
+    .mini { border: 0; border-radius: 999px; padding: .45rem .9rem; background: var(--line); cursor: pointer; font-size: .85rem; font-weight: 600; margin-top: .3rem; }
+    .controls { display: flex; gap: .7rem; }
+    .controls .btn { width: auto; flex: 1; }
+    .qr { background: var(--paper); border-radius: 24px; padding: 1.2rem; box-shadow: inset 0 0 0 2px var(--line); text-align: center; }
+    .qr img { width: 100%; aspect-ratio: 1; image-rendering: pixelated; }
+    .qr .url { font-family: var(--serif); font-size: 1.25rem; margin-top: .6rem; word-break: break-all; }
+    .status { display: flex; gap: .5rem; align-items: center; color: var(--ink-2); margin-top: .6rem; }
+    .log { list-style: none; padding: 0; margin: 0; font-size: .85rem; color: var(--ink-2); }
+    .log li { padding: .4rem 0; border-bottom: 1px solid var(--line); }
+    .log .t { color: var(--ink-3); margin-right: .5rem; }
+    .pinform { max-width: 22rem; margin: 18vh auto 0; }
+  </style>
+</head>
+<body>
+  <header class="top"><span class="brand"><img src="../logo.svg" alt="" class="logo"> Kettle · host</span></header>
+  <main id="main"></main>
+  <script type="module">
+    const $ = (s) => document.querySelector(s), main = $("#main");
+    const params = new URLSearchParams(location.search);
+    if (params.get("pin")) { localStorage.setItem("kettle.pin", params.get("pin")); history.replaceState(null, "", location.pathname); }
+    let pin = localStorage.getItem("kettle.pin"), timer;
+    const h = (tag, attrs = {}, ...kids) => {
+      const el = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs || {})) {
+        if (k === "class") el.className = v; else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+        else if (v === true) el.setAttribute(k, ""); else if (v !== false && v != null) el.setAttribute(k, v);
+      }
+      for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(kid));
+      return el;
+    };
+    const call = async (body) => {
+      const r = await fetch("/api/host", { method: body ? "POST" : "GET", cache: "no-store",
+        headers: { "x-host-pin": pin || "", ...(body ? { "content-type": "application/json" } : {}) }, body: body ? JSON.stringify(body) : undefined });
+      if (r.status === 401) throw Object.assign(new Error("wrong PIN"), { auth: true });
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+      return r.json();
+    };
+    const site = location.origin;
+    const qr = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&margin=8&color=2b1d12&bgcolor=fffdf9&data=${encodeURIComponent(site + "/")}`;
+    const STEPS = ["8:31 · Kettle asks Margaret", "8:34 · Ask Priya, next door", "8:54 · Ask Daniel, her son", "9:01 · She makes her tea"];
+
+    function askPin(err) {
+      clearTimeout(timer);
+      const input = h("input", { type: "password", inputmode: "numeric", autocomplete: "off", id: "pin" });
+      main.className = "";
+      main.replaceChildren(h("form", { class: "pinform", onsubmit: (e) => { e.preventDefault(); pin = input.value.trim(); localStorage.setItem("kettle.pin", pin); load(); } },
+        h("h1", {}, "Host"), h("label", { for: "pin" }, "Host PIN"), input,
+        err ? h("p", { class: "err" }, err) : null,
+        h("div", { class: "actions" }, h("button", { class: "btn primary" }, "Open"))));
+      input.focus();
+    }
+
+    async function load() {
+      clearTimeout(timer);
+      try { render(await call()); }
+      catch (e) { if (e.auth) return askPin(pin ? "That PIN didn't work." : null); }
+      timer = setTimeout(load, 1500);
+    }
+
+    async function cmd(body, btn) {
+      if (btn) btn.disabled = true;
+      try { await call(body); } finally { if (btn) btn.disabled = false; load(); }
+    }
+
+    function render(d) {
+      const hub = d.hub || {}, step = hub.show_step ?? 0;
+      main.className = "host";
+      main.replaceChildren(
+        h("div", {},
+          h("h1", {}, "Who's playing"),
+          h("p", { class: "body" }, "Phones scan the code, pick a character and add a number for real texts. Remove a phone to free its character."),
+          h("div", { style: "margin-top:1.2rem" }, d.characters.map((c) => h("div", { class: `row${c.registered ? "" : " free"}` },
+            h("span", { class: "av" }, c.name[0]),
+            h("div", {}, h("div", { class: "nm" }, c.name, " ", h("span", { class: "ln" }, c.line)),
+              c.registered ? h("div", { class: "sh" }, c.showing ? `Sees: “${c.showing}”` : "") : h("div", { class: "sh" }, "Free")),
+            h("div", { class: "st" },
+              c.registered ? [h("b", {}, c.number || "no number"), c.online ? "● on the page" : "○ page closed",
+                h("div", {}, h("button", { class: "mini", onclick: (e) => confirm(`Remove ${c.name}'s phone?`) && cmd({ cmd: "remove", c: c.id }, e.currentTarget) }, "Remove"))] : "—")))),
+          h("h2", {}, "The story"),
+          h("ol", { class: "log", style: "padding-left:1.2rem" }, STEPS.map((s, i) => h("li", { style: i < step ? "color:var(--ok)" : i === step ? "font-weight:650;color:var(--ink)" : "" }, (i < step ? "✓ " : "") + s))),
+          h("div", { class: "controls", style: "margin-top:1rem" },
+            h("button", { class: "btn primary", disabled: !d.hub_online || step >= STEPS.length, onclick: (e) => cmd({ cmd: "next" }, e.currentTarget) }, step >= STEPS.length ? "Done" : "Next step"),
+            h("button", { class: "btn secondary", disabled: !d.hub_online, onclick: (e) => confirm("Restart the story?") && cmd({ cmd: "reset" }, e.currentTarget) }, "Restart")),
+          h("p", { class: "why" }, "Same as SPACE / R in the laptop terminal."),
+          hub.outbox?.length ? [h("h2", {}, "Sent"), h("ul", { class: "log" }, hub.outbox.map((o) => h("li", {}, h("span", { class: "t" }, o.hhmm), `${o.channel} → ${o.to} (${o.via}): ${o.text}`)))] : null),
+        h("aside", {},
+          h("div", { class: "qr" }, h("img", { src: qr, alt: `QR code for ${site}` }), h("div", { class: "url" }, site.replace(/^https:\/\//, ""))),
+          h("div", { class: "status" }, h("span", { class: `dot${d.hub_online ? "" : " off"}` }),
+            d.hub_online ? `Laptop hub connected · demo time ${hub.clock}` : "Laptop hub offline: run python3 -m kettle show"),
+          h("div", { class: "status" }, h("span", { class: `dot${hub.twilio === "twilio" ? "" : " off"}` }),
+            hub.twilio === "twilio" ? "Real SMS on (registered numbers only)" : "SMS simulated"),
+          h("p", { class: "why", style: "margin-top:1.2rem" }, h("button", { class: "mini", onclick: () => { localStorage.removeItem("kettle.pin"); pin = null; askPin(); } }, "Lock"))));
+    }
+
+    pin ? load() : askPin();
+  </script>
+</body>
+</html>
