@@ -1,0 +1,46 @@
+/* Kettle design tokens, shared by the stage, the circle app and the kitchen display.
+   Warm, calm, legible. No web fonts (the venue Wi-Fi can't be trusted). */
+:root {
+  --cream: #fbf6ee;
+  --paper: #fffdf9;
+  --ink: #2b1d12;          /* 15.9:1 on cream */
+  --ink-2: #5c4636;        /* 7.9:1 on cream */
+  --ink-3: #7a6352;        /* 5.0:1 on cream */
+  --line: #eadfce;
+  --amber: #e8912d;        /* accent; never used for small text on cream */
+  --amber-ink: #8a4b06;    /* amber for text on cream: 6.4:1 */
+  --amber-soft: #fbe3c2;
+  --ok: #2f7d4f;           /* 5.3:1 on cream */
+  --ok-soft: #dcefe2;
+  --danger: #b3261e;       /* 6.0:1 on cream */
+  --danger-soft: #f8dcd9;
+  --frost: #a9d6f5;
+  --frost-ink: #1d5a85;
+
+  /* night palette for the stage */
+  --night: #140e09;
+  --night-2: #1f160f;
+  --night-3: #2c2017;
+  --steam: #f6efe4;
+  --steam-2: #cdbfae;
+  --steam-3: #9b8b7a;
+  --glow: #ffb457;
+
+  --radius: 18px;
+  --radius-s: 10px;
+  --shadow: 0 1px 2px rgba(43, 29, 18, .06), 0 8px 24px rgba(43, 29, 18, .08);
+  --font: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: var(--font); }
+button { font: inherit; }
+.tnum { font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}

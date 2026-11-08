@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kettle · Hack the Change 2026</title>
+  <link rel="icon" href="../shared/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/kettle.css">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+  <main id="deck" aria-live="polite">
+
+    <section class="slide title" data-notes="Silence. Then: Every morning, Margaret makes tea.">
+      <div class="logo-big" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><path class="steam" d="M30 6c-6 5 6 9 0 15s6 9 1 15"/><path class="trace" d="M4 50h14l4-0 4-18 5 30 4-12h25"/></svg>
+      </div>
+      <h1>Kettle</h1>
+      <p class="lede">No cameras. No wearables. No buttons.<br><em>Just the kettle.</em></p>
+      <p class="foot">Hack the Change 2026 · Prompt 1: health, social connection &amp; well-being</p>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">The problem</p>
+      <div class="facts">
+        <div class="fact"><span class="big">42%</span><span>of Canadians aged 85+ live alone.</span><cite>Statistics Canada, The Daily, July 13 2022 (2021 Census)</cite></div>
+        <div class="fact"><span class="big">80%</span><span>of people over 90 who fell alone, couldn't get up and <b>had a call alarm</b> didn't use it.</span><cite>Fleming &amp; Brayne, BMJ 2008</cite></div>
+      </div>
+      <p class="punch">A pendant needs you to wear it and press it.<br>Kettle needs nothing.</p>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">The insight</p>
+      <h2>The power meter is the most honest wellbeing sensor in the house.</h2>
+      <ul class="beats">
+        <li><b>It already knows</b> when someone got up, made tea, cooked, turned on the TV.</li>
+        <li><b>In Calgary it knows if the heat is on.</b> Gas furnaces run an electric blower fan.</li>
+        <li><b>It's been done with a kettle since 2001.</b> Zojirushi's i-Pot emails families in Japan. We need no special appliance, and the response is a neighbour, not a call centre.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">How it works</p>
+      <div class="flow">
+        <div class="step"><span class="n">1</span><h3>Sense, at the edge</h3><p>$25 plug on the kettle → a hub in the home finds appliance events from their power signature.</p><p class="tag">Raw watts never leave the house.</p></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="step"><span class="n">2</span><h3>Learn the rhythm</h3><p id="rhythm-line">“First activity usually 10:14 ± 75 min on weekdays.”</p><p class="tag">Robust statistics, explainable.</p></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="step"><span class="n">3</span><h3>Respond with dignity</h3><p>Ask <b>her</b> first → the nearest <b>neighbour</b> → family → welfare check.</p><p class="tag">“You're 2 min away. Can you knock?”</p></div>
+      </div>
+      <p class="foot">Every alert explains itself: <em>“No kettle by 12:07. Usually 10:21.”</em></p>
+    </section>
+
+    <section class="slide demo" data-notes="Switch to the stage (D drawer, J jump). Hand the phone to a judge.">
+      <p class="kicker">Live</p>
+      <h2>Margaret's kettle, on your table.</h2>
+      <p class="lede small">Stage → <span class="mono">/stage/</span> · press <kbd>J</kbd></p>
+    </section>
+
+    <section class="slide cold">
+      <p class="kicker">Cold mode · January 13, 2024 · real data</p>
+      <div class="jan13">
+        <svg id="jan13chart" viewBox="0 0 900 300" role="img" aria-label="Alberta Internal Load and pool price on January 13 2024"></svg>
+        <div class="jan13-facts" id="jan13facts"></div>
+      </div>
+      <p class="punch small">Kettle makes that alert also say: <em>check on Margaret.</em></p>
+      <p class="foot" id="jan13src"></p>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Evidence · REFIT replay (real measurements)</p>
+      <div class="facts three" id="evidence"><p class="muted">Loading the evaluation…</p></div>
+      <p class="foot" id="evsrc"></p>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Feasible today, scalable tomorrow</p>
+      <div class="ladder">
+        <div><span class="v">v0</span><b>$25 smart plug</b><p>on the kettle. Shelly / Tasmota / Kasa, read locally.</p></div>
+        <div><span class="v">v1</span><b>$15 ESP32 on the meter LED</b><p>the whole home, no electrician. Firmware in the repo, compiles today.</p></div>
+        <div><span class="v">v2</span><b>No hardware</b><p>utility interval data via ENMAX / EPCOR partnership.</p></div>
+      </div>
+      <p class="foot">TimescaleDB continuous aggregates keep each rhythm up to date · Twilio voice + SMS · not a medical device or emergency service</p>
+    </section>
+
+    <section class="slide title close">
+      <p class="lede">Japan has done this with a kettle since 2001.<br>Every Calgary home already has a meter.</p>
+      <h2>No cameras. No wearables.<br><em>Just someone who notices.</em></h2>
+      <div class="logo-small" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="steam" d="M30 6c-6 5 6 9 0 15s6 9 1 15"/><path class="trace" d="M4 50h14l4-0 4-18 5 30 4-12h25"/></svg> Kettle</div>
+    </section>
+
+  </main>
+  <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+  <div class="count tnum" id="count"></div>
+  <script type="module" src="deck.js"></script>
+</body>
+</html>

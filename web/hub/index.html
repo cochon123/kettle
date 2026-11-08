@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f160f">
+  <title>Kettle · Kitchen</title>
+  <link rel="icon" href="../shared/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/kettle.css">
+  <style>
+    html, body { height: 100%; }
+    body { background: var(--night-2); color: var(--steam); overflow: hidden; user-select: none; -webkit-user-select: none; }
+    .room { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; padding: 4vmin 5vmin; transition: background 1.2s ease; }
+    .glowlayer { position: fixed; inset: -20%; pointer-events: none; opacity: 0; transition: opacity 1.4s ease;
+      background: radial-gradient(closest-side at 50% 55%, rgba(255,180,87,.55), rgba(255,140,40,.18) 55%, transparent 75%); }
+    body.glow .glowlayer { opacity: 1; animation: breathe 4.5s ease-in-out infinite; }
+    @keyframes breathe { 50% { transform: scale(1.06); opacity: .8; } }
+
+    header { display: flex; align-items: center; gap: 1.2vmin; color: var(--steam-2); font-size: 2.4vmin; }
+    header img { width: 4vmin; height: 4vmin; filter: invert(86%) sepia(18%) saturate(400%) hue-rotate(340deg); }
+    header .chips { margin-left: auto; display: flex; gap: 1vmin; }
+    .chip { border: 1px solid rgba(246,239,228,.18); border-radius: 999px; padding: .5vmin 1.4vmin; font-size: 1.9vmin; color: var(--steam-2); }
+    .chip.bad { color: #ffb4a8; border-color: rgba(255,120,100,.4); }
+
+    .center { display: grid; place-items: center; text-align: center; align-content: center; gap: 2.2vmin; }
+    .clock { font-size: 15vmin; font-weight: 300; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .demo { font-size: 2vmin; color: var(--glow); letter-spacing: .14em; text-transform: uppercase; }
+    .hello { font-size: 4.6vmin; color: var(--steam); }
+    .quiet { font-size: 2.6vmin; color: var(--steam-3); max-width: 70vmin; }
+
+    .im-fine { display: none; border: 0; cursor: pointer; width: min(62vmin, 80vw); aspect-ratio: 1; border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, #ffd9a0, #f39a35 70%); color: #3a2208; font-size: 8vmin; font-weight: 800; letter-spacing: -.01em;
+      box-shadow: 0 0 0 0 rgba(255,180,87,.6); animation: ask 2.2s ease-in-out infinite; }
+    .im-fine small { display: block; font-size: 2.6vmin; font-weight: 600; margin-top: 1vmin; opacity: .8; }
+    @keyframes ask { 0%,100% { box-shadow: 0 0 0 0 rgba(255,180,87,.55); } 50% { box-shadow: 0 0 0 7vmin rgba(255,180,87,0); } }
+    body.checkin .im-fine { display: block; }
+    body.checkin .clock, body.checkin .hello, body.checkin .quiet, body.checkin .demo { display: none; }
+    body.checkin .room { background: radial-gradient(circle at 50% 50%, #3a2510, var(--night-2) 70%); }
+    .ask-text { display: none; font-size: 4.2vmin; max-width: 80vmin; }
+    body.checkin .ask-text { display: block; }
+    .heard { font-size: 2.4vmin; color: var(--steam-3); min-height: 3vmin; }
+
+    .note { font-size: 4vmin; color: #ffe2b8; min-height: 5vmin; }
+
+    footer { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 3vmin; }
+    .trace { height: 13vmin; position: relative; }
+    .trace canvas { width: 100%; height: 100%; display: block; }
+    .trace .lbl { position: absolute; left: 0; top: -2.8vmin; font-size: 1.8vmin; color: var(--steam-3); }
+    .trace .w { position: absolute; right: 0; top: -2.8vmin; font-size: 1.8vmin; color: var(--steam-2); font-variant-numeric: tabular-nums; }
+    .actions { display: flex; gap: 1.2vmin; }
+    .ghost { background: transparent; color: var(--steam-2); border: 1px solid rgba(246,239,228,.25); border-radius: 1.6vmin; padding: 1.4vmin 2.2vmin; font-size: 2.2vmin; cursor: pointer; min-height: 48px; }
+    .ghost:hover { border-color: var(--steam-2); }
+
+    .outage { position: fixed; inset: 0; background: #000; color: #555; display: none; place-items: center; font-size: 2.4vmin; z-index: 10; }
+    body.outage .outage { display: grid; }
+    .toast { position: fixed; top: 4vmin; left: 50%; transform: translateX(-50%); background: var(--steam); color: var(--night); padding: 1.4vmin 2.4vmin; border-radius: 1.6vmin; font-size: 2.4vmin; font-weight: 650; }
+  </style>
+</head>
+<body>
+  <div class="glowlayer" aria-hidden="true"></div>
+  <div class="room">
+    <header>
+      <img src="../shared/logo.svg" alt=""><span>Kettle</span>
+      <div class="chips"><span class="chip" id="plug">plug…</span><span class="chip" id="cloud">cloud…</span></div>
+    </header>
+
+    <main class="center">
+      <div class="demo" id="demo" hidden>demo time</div>
+      <div class="clock" id="clock">–:–</div>
+      <div class="hello" id="hello">Good morning, Margaret.</div>
+      <div class="note" id="note" role="status" aria-live="polite"></div>
+      <div class="ask-text" id="askText" aria-live="assertive"></div>
+      <button class="im-fine" id="fine">I'm fine<small>press, or say “I'm fine”</small></button>
+      <div class="heard" id="heard"></div>
+      <div class="quiet" id="quiet">Kettle is keeping watch, quietly. Nobody sees inside your home; your circle only hears “the kettle went on”.</div>
+    </main>
+
+    <footer>
+      <div class="trace" aria-hidden="true"><span class="lbl">Power at the kettle · stays in this house</span><span class="w" id="watts"></span><canvas id="trace"></canvas></div>
+      <div class="actions">
+        <button class="ghost" id="away">I'm away today</button>
+        <button class="ghost" id="simk" hidden>Boil (sim)</button>
+      </div>
+    </footer>
+  </div>
+  <div class="outage" aria-live="polite">Power cut (demo). Kettle's cloud connection is down.</div>
+  <script type="module" src="hub.js"></script>
+</body>
+</html>

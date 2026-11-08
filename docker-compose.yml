@@ -1,0 +1,18 @@
+# TimescaleDB for Kettle's cloud (optional: the app runs in memory without it).
+#   docker compose up -d
+#   KETTLE_DB=postgresql://kettle:kettle@localhost:5433/kettle .venv/bin/python -m kettle demo
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg17
+    container_name: kettle-timescaledb
+    environment:
+      POSTGRES_USER: kettle
+      POSTGRES_PASSWORD: kettle
+      POSTGRES_DB: kettle
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - kettle-db:/var/lib/postgresql/data
+    restart: unless-stopped
+volumes:
+  kettle-db:

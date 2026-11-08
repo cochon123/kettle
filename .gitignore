@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+*.local.json
+/var/
+node_modules/
+.DS_Store
+/pilot/
+*.egg-info/
+build/

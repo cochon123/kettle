@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Kettle · Stage</title>
+  <link rel="icon" href="../shared/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/kettle.css">
+  <link rel="stylesheet" href="stage.css">
+</head>
+<body class="booting">
+  <div class="stage" id="stage">
+    <!-- ============================================================ header -->
+    <header class="top">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+          <path class="logo-steam" d="M30 6c-6 5 6 9 0 15s6 9 1 15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+          <path d="M4 50h14l4-0 4-18 5 30 4-12h25" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="brand-text">
+          <span class="word">Kettle</span>
+          <span class="tag">No cameras. No wearables. No buttons. Just the kettle.</span>
+        </div>
+      </div>
+      <div class="clock" aria-live="off">
+        <span class="time" id="clockTime">–:––</span>
+        <div class="clock-meta">
+          <span class="pill demo" id="demoPill" hidden>DEMO TIME</span>
+          <span class="date" id="clockDate"></span>
+        </div>
+      </div>
+      <div class="chips" id="chips" aria-label="Data sources and system status"></div>
+    </header>
+
+    <!-- ============================================================ main -->
+    <main class="main">
+      <section class="hero" id="hero" aria-label="Margaret's home">
+        <div class="hero-head">
+          <div class="who" id="who"></div>
+          <h1 class="status-big" id="statusBig">Connecting to Kettle…</h1>
+          <p class="status-sub" id="statusSub"></p>
+          <div class="callout" id="callout" hidden></div>
+        </div>
+
+        <div class="trace-wrap" id="traceWrap">
+          <div class="kitchen-glow" id="kitchenGlow" aria-hidden="true"></div>
+          <canvas id="trace" aria-label="Live power reading from Margaret's kettle plug"></canvas>
+          <div class="trace-note" id="traceNote" hidden></div>
+          <div class="glow-msg" id="glowMsg" hidden></div>
+          <div class="caption">
+            <span><b>Live from Margaret's kitchen</b> · raw readings never leave the house</span>
+            <span class="caption-r" id="traceCapR">real time · last 2 min</span>
+          </div>
+        </div>
+
+        <div class="day" id="day">
+          <canvas id="ribbon" aria-label="Margaret's day: rhythm band, deadline and today's activity"></canvas>
+          <div class="replay-block" id="replayBlock" hidden>
+            <canvas id="replayChart" aria-label="January 13 2024: AESO pool price, Alberta Internal Load, Calgary temperature"></canvas>
+          </div>
+          <div class="caption" id="dayCap"></div>
+        </div>
+
+        <div class="ladder" id="ladder"></div>
+      </section>
+
+      <aside class="side">
+        <div class="map-wrap" id="mapWrap">
+          <svg id="map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Stylised map of Calgary with Margaret's circle"></svg>
+          <div class="map-cap" id="mapCap"></div>
+        </div>
+        <div class="map-legend" id="mapLegend"></div>
+        <div class="context" id="context"></div>
+      </aside>
+    </main>
+
+    <!-- ============================================================ footer -->
+    <footer class="foot">
+      <section class="outbox" aria-label="What Kettle sent">
+        <h2 class="label">What Kettle sent</h2>
+        <div class="outbox-row" id="outbox"></div>
+      </section>
+      <section class="evidence" aria-label="Evidence">
+        <div class="ev-head"><h2 class="label">Evidence</h2><span class="ev-src" id="evSrc"></span></div>
+        <div class="evidence-row" id="evidence"></div>
+      </section>
+    </footer>
+  </div>
+
+  <canvas class="frost" id="frost" aria-hidden="true"></canvas>
+  <div class="moment" id="moment" hidden role="alert"></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <div class="offline-banner" id="offline" hidden>Reconnecting to Kettle cloud…</div>
+
+  <button class="corner-btn" id="drawerBtn" aria-controls="drawer" aria-expanded="false" title="Presenter controls (D)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <span class="sr-only">Presenter controls</span>
+  </button>
+  <div class="sound-ind" id="soundInd" title="Sound (M)"></div>
+
+  <aside class="drawer" id="drawer" aria-label="Presenter controls" hidden>
+    <div class="drawer-head">
+      <h2>Presenter</h2>
+      <button class="x" data-act="drawer" aria-label="Close">×</button>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-row">
+        <button data-act="reset" class="primary"><kbd>R</kbd> Reset morning (6:30)</button>
+        <button data-act="jump"><kbd>J</kbd> Past her deadline · 1×</button>
+      </div>
+      <label class="d-label" for="scrub">Time <output id="scrubOut">–</output></label>
+      <input type="range" id="scrub" min="240" max="840" step="5" value="390">
+      <div class="d-scale"><span>4:00</span><span>9:00</span><span>14:00</span></div>
+      <div class="d-label">Speed</div>
+      <div class="d-row seg" id="speeds">
+        <button data-speed="1">1×</button><button data-speed="10">10×</button><button data-speed="60">60×</button><button data-speed="300">300×</button>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-row">
+        <button data-act="kettle"><kbd>K</kbd> Simulate kettle</button>
+        <button data-act="outage"><kbd>O</kbd> Outage 30 s</button>
+      </div>
+      <div class="d-label">Cold mode <span id="coldMode"></span></div>
+      <div class="d-row seg" id="colds">
+        <button data-cold="on">On</button><button data-cold="off">Off</button><button data-cold="auto">Auto</button>
+      </div>
+      <div class="d-row">
+        <button data-act="replay"><kbd>P</kbd> Replay Jan 13 2024</button>
+        <button data-act="grid"><kbd>G</kbd> Grid alert now</button>
+      </div>
+    </div>
+
+    <div class="d-sec">
+      <div class="d-label">Rehearsal (acts as Priya / Margaret)</div>
+      <div class="d-row">
+        <button data-act="going">Priya: I'm going</button>
+        <button data-act="seen">Priya: she's OK</button>
+      </div>
+      <div class="d-row">
+        <button data-act="glow">Priya: thinking of you</button>
+        <button data-act="fine">Margaret: I'm fine</button>
+      </div>
+    </div>
+
+    <div class="d-sec qr-sec">
+      <div class="qr-card">
+        <img id="qr" alt="QR code to join Margaret's circle" width="168" height="168">
+      </div>
+      <div class="qr-text">
+        <div class="d-label">Join Margaret's circle</div>
+        <div class="qr-url" id="qrUrl"></div>
+        <div>Invite code <b>margaret</b></div>
+      </div>
+    </div>
+
+    <div class="d-keys"><kbd>D</kbd> drawer · <kbd>M</kbd> sound · <kbd>C</kbd> cold on/off · <kbd>Esc</kbd> close</div>
+  </aside>
+
+  <script type="module" src="stage.js"></script>
+</body>
+</html>
