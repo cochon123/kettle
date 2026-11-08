@@ -2,7 +2,7 @@
 
     .venv/bin/python scripts/preflight.py [--cloud http://localhost:8700] [--edge http://localhost:8701]
 
-Checks the cloud, the edge hub, the plug, the device link, the circle WebSocket,
+Checks the cloud, the edge hub, the plug, the big button, the device link, the circle WebSocket,
 the data files and the live AESO/ECCC feeds, and prints the URLs for the phones.
 """
 
@@ -54,6 +54,11 @@ async def main() -> int:
             es = (await c.get(f"{a.edge}/api/status")).json()
             line(es["plug_ok"], f"plug: {es['plug']} ({'REAL' if es['plug_real'] else 'simulated'}){'' if es['plug_ok'] else ' · ' + str(es['plug_err'])}")
             line(es["cloud_ok"], f"edge hub ↔ cloud link {'up' if es['cloud_ok'] else 'DOWN'} · {es['sent']} events sent, {es['queued']} queued")
+            b = es.get("button") or {}
+            if b.get("enabled"):
+                line(b.get("connected", False),
+                     f"big button: connected on {b.get('port')} · light {b.get('light')} · {b.get('presses', 0)} presses" if b.get("connected")
+                     else f"big button NOT connected ({b.get('err')}): check the USB cable", warn=True)
         except Exception as e:
             line(False, f"edge hub not reachable at {a.edge}: {e}")
         m = next((h for h in st["homes"] if h["id"] == "margaret"), None)

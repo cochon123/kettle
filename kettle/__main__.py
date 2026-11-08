@@ -1,6 +1,7 @@
 """Kettle command line.
 
     python -m kettle demo [--plug sim|shelly:<ip>|...]   cloud + edge hub together (the stage demo)
+    python -m kettle show [--phone priya=+1…]            presenter mode: the story one keypress at a time
     python -m kettle cloud [--port 8700]                  cloud service only
     python -m kettle edge  [--plug ...] [--cloud ws://host:8700]
 """
@@ -8,6 +9,7 @@
 from __future__ import annotations
 
 import os
+import pathlib
 import signal
 import subprocess
 import sys
@@ -50,7 +52,20 @@ def demo(argv: list[str]) -> None:
                 p.kill()
 
 
+def _use_venv() -> None:
+    """`python3 -m kettle` with the system Python: switch to the project's .venv if the deps live there."""
+    try:
+        import fastapi, segno, uvicorn  # noqa: F401
+    except ImportError:
+        venv = pathlib.Path(__file__).resolve().parents[1] / ".venv"
+        py = venv / "bin/python"
+        if py.exists() and pathlib.Path(sys.prefix).resolve() != venv.resolve():
+            os.execv(str(py), [str(py), "-m", "kettle", *sys.argv[1:]])
+        raise
+
+
 def main() -> None:
+    _use_venv()
     cmd, argv = (sys.argv[1], sys.argv[2:]) if len(sys.argv) > 1 else ("demo", [])
     if cmd == "cloud":
         cloud(argv)
@@ -59,6 +74,9 @@ def main() -> None:
         edge_main(argv)
     elif cmd == "demo":
         demo(argv)
+    elif cmd == "show":
+        from .show import main as show_main
+        show_main(argv)
     else:
         print(__doc__)
         sys.exit(2)

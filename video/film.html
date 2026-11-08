@@ -4,12 +4,14 @@
   <meta charset="utf-8">
   <title>Kettle · film</title>
   <link rel="stylesheet" href="film.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }</script>
 </head>
 <body>
   <div id="film">
     <div id="bg"></div>
     <div id="tint"></div>
     <canvas id="back" width="1920" height="1080"></canvas>
+    <canvas id="gl" width="1920" height="1080"></canvas>
 
     <!-- ============ open -->
     <section class="scene" id="s-open">
@@ -36,9 +38,11 @@
       <p class="lead lead-2" id="pb-b2"><em>8 times in 10</em>, they didn’t use their alarm.</p>
       <p class="source" id="pb-bs">Fleming &amp; Brayne · BMJ 2008 · people aged 90 and over</p>
       <svg class="pendant" id="pb-pendant" viewBox="0 0 400 700">
-        <path d="M200 0 V520" stroke="currentColor" stroke-width="3" fill="none" opacity=".55"/>
-        <circle cx="200" cy="590" r="70" stroke="currentColor" stroke-width="4" fill="none"/>
-        <circle cx="200" cy="590" r="30" fill="#e8912d" opacity=".6"/>
+        <path id="pb-cord" d="M200 520 V0" stroke="currentColor" stroke-width="3" fill="none" opacity=".55"/>
+        <g id="pb-disc">
+          <circle cx="200" cy="590" r="70" stroke="currentColor" stroke-width="4" fill="rgba(20,14,9,.6)"/>
+          <circle id="pb-core" cx="200" cy="590" r="30" fill="#e8912d" opacity=".6"/>
+        </g>
       </svg>
       <p class="pend-word" id="pb-wear">Wear it.</p>
       <p class="pend-word" id="pb-press">Press it.</p>
@@ -60,21 +64,6 @@
 
     <!-- ============ sense -->
     <section class="scene" id="s-sense">
-      <svg class="house" id="se-house" viewBox="0 0 1920 1080">
-        <path id="se-roof" d="M600 452 L960 214 L1320 452" />
-        <path id="se-walls" d="M660 412 V880 M1260 412 V880" />
-        <path id="se-floor" d="M560 880 H1360" />
-        <path id="se-counter" d="M700 772 H1220" />
-        <g id="se-kettle" transform="translate(760 652)">
-          <path d="M18 120 L30 40 Q60 26 90 40 L102 120 Z" />
-          <path d="M30 52 Q-6 40 4 18" />
-          <path d="M92 52 Q128 62 114 104" />
-          <path d="M50 30 Q60 16 70 30" />
-        </g>
-        <g id="se-plug"><rect x="884" y="800" width="44" height="58" rx="10"/><circle cx="906" cy="822" r="4" class="led"/></g>
-        <path id="se-cord" d="M880 760 Q880 800 906 800" />
-        <g id="se-hub"><rect x="1094" y="676" width="120" height="96" rx="14"/><circle cx="1154" cy="724" r="20" class="hubdot"/></g>
-      </svg>
       <canvas id="se-wave" width="560" height="200"></canvas>
       <p class="tag" id="se-l-plug">$25 smart plug</p>
       <p class="tag" id="se-l-hub">Kettle hub</p>
@@ -99,7 +88,9 @@
 
     <!-- ============ map (shared by missed / neighbour / kettle) -->
     <section class="scene" id="s-map">
-      <div class="map-cam" id="map-cam"><svg id="map" viewBox="0 0 1920 1080"></svg></div>
+      <div class="pin home" id="pin-m"><b>Margaret</b></div>
+      <div class="pin" id="pin-p"><i>P</i><span><b>Priya</b><small>next door · 2 min</small></span></div>
+      <div class="pin" id="pin-t"><i>T</i><span><b>Tom</b><small>across the street · 4 min</small></span></div>
     </section>
 
     <!-- ============ phone (shared) -->
@@ -158,7 +149,8 @@
 
     <!-- ============ close -->
     <section class="scene" id="s-close">
-      <div class="since" id="cl-since"><p class="eyebrow">Japan</p><div class="huge">2001</div><p class="stat-text">Zojirushi’s i-Pot has emailed families when an elderly parent uses their hot-water pot.</p></div>
+      <div class="since" id="cl-since"><p class="eyebrow">Japan · since</p><div class="huge">2001</div><p class="stat-text">Zojirushi’s i-Pot has emailed families when an elderly parent uses their hot-water pot.</p></div>
+      <div class="photo" id="cl-photo"><img src="assets/grandparents.jpg" alt=""></div>
       <p class="mid-line low" id="cl-meter">Every Calgary home already has a meter.</p>
       <div class="brand end" id="cl-brand">
         <svg class="logo" viewBox="0 0 64 64" id="cl-logo">
@@ -170,7 +162,7 @@
         <div class="just" id="cl-just">Just someone who notices.</div>
         <div class="event" id="cl-event">Hack the Change 2026 · Calgary</div>
       </div>
-      <p class="fine" id="cl-fine">Margaret, Priya and Tom are personas. Margaret’s routine is a real single-person home from the REFIT dataset (House 11). Product screens are the real Kettle app; demo time is accelerated. Kettle is not a medical device or an emergency service.<br>Sources: Statistics Canada · Fleming &amp; Brayne, BMJ 2008 · AESO · Environment and Climate Change Canada · REFIT (CC BY 4.0) · Zojirushi. Built with AI assistance. Voice: Gemini TTS. Music: Lyria.</p>
+      <p class="fine" id="cl-fine">Margaret, Priya and Tom are personas. Margaret’s routine is a real single-person home from the REFIT dataset (House 11). Product screens are the real Kettle app; demo time is accelerated. Kettle is not a medical device or an emergency service.<br>Sources: Statistics Canada · Fleming &amp; Brayne, BMJ 2008 · AESO · Environment and Climate Change Canada · REFIT (CC BY 4.0) · Zojirushi. Built with AI assistance. Voice: Gemini TTS. Music: Lyria. Photo: kawilson / Pixabay.</p>
     </section>
 
     <canvas id="front" width="1920" height="1080"></canvas>
@@ -180,5 +172,6 @@
   <script src="data.js"></script>
   <script src="timeline.js"></script>
   <script src="film.js"></script>
+  <script type="module" src="world.js"></script>
 </body>
 </html>

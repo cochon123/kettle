@@ -17,7 +17,7 @@ The deadline is **Sun Nov 8, before 11:30 AM Alberta Time** (the portal's "ABT" 
 |---|---|---|
 | Buy and set up a Shelly Plus Plug US (or Kasa KP115), test `--plug shelly:<ip>` with a real kettle | 1 Hardware | Boil one cup (≈70 s). Run preflight. If anything's flaky, `--plug sim` still works and is labelled. |
 | Flash an ESP32 with `firmware/kettle-sense` (OUTPUT_HUB) and wire a big button + warm LED | 1 Hardware | Optional, but the physical "I'm fine" button is a great prop |
-| Twilio number for the real phone ring | 3 Backend | The CLI profile works, but the account has no number. Buying one costs money: team decision. Then set `TWILIO_FROM`, `KETTLE_MARGARET_PHONE`, `KETTLE_TWILIO_PROFILE` |
+| Real phone ring (Twilio) | 3 Backend | **Done:** the team's Twilio number is +1 825 782 9153 and a test SMS was delivered. Run the demo with `KETTLE_TWILIO_PROFILE=cochon-victus TWILIO_FROM=+18257829153 KETTLE_MARGARET_PHONE=<team phone> KETTLE_TWILIO_ONLY=<team phone>`. "Press 1" needs a public HTTPS `KETTLE_PUBLIC_URL`; without it the call just speaks the message |
 | Pilot | 5 Pilot lead | Only with signed consent (`docs/pilot-kit.md`). Even 1–2 homes for 1 night is honest if labelled as such. **Don't overclaim.** |
 | Practise the 3-minute run 5+ times with the real kettle and a judge-phone | everyone | `docs/demo-script.md` |
 | Record the 2–3 min video | 4 Design | A raw 86 s capture of the real demo already exists: `/home/cochon/kettle-data/video/kettle-demo-raw{,-stage,-phone}.mp4`. Re-record with `scripts/record.py`, then cut and caption. Say "time accelerated" and show the AI disclosure |

@@ -28,7 +28,7 @@
     .hello { font-size: 4.6vmin; color: var(--steam); }
     .quiet { font-size: 2.6vmin; color: var(--steam-3); max-width: 70vmin; }
 
-    .im-fine { display: none; border: 0; cursor: pointer; width: min(62vmin, 80vw); aspect-ratio: 1; border-radius: 50%;
+    .im-fine { display: none; border: 0; cursor: pointer; width: min(52vmin, 80vw); aspect-ratio: 1; border-radius: 50%;
       background: radial-gradient(circle at 50% 40%, #ffd9a0, #f39a35 70%); color: #3a2208; font-size: 8vmin; font-weight: 800; letter-spacing: -.01em;
       box-shadow: 0 0 0 0 rgba(255,180,87,.6); animation: ask 2.2s ease-in-out infinite; }
     .im-fine small { display: block; font-size: 2.6vmin; font-weight: 600; margin-top: 1vmin; opacity: .8; }
@@ -36,7 +36,8 @@
     body.checkin .im-fine { display: block; }
     body.checkin .clock, body.checkin .hello, body.checkin .quiet, body.checkin .demo { display: none; }
     body.checkin .room { background: radial-gradient(circle at 50% 50%, #3a2510, var(--night-2) 70%); }
-    .ask-text { display: none; font-size: 4.2vmin; max-width: 80vmin; }
+    .ask-text { display: none; font-size: 4.2vmin; max-width: 80vmin; text-wrap: balance; margin-bottom: 8vmin; } /* clears the button's 7vmin pulse */
+    body.checkin .heard { margin-top: 6vmin; }
     body.checkin .ask-text { display: block; }
     .heard { font-size: 2.4vmin; color: var(--steam-3); min-height: 3vmin; }
 

@@ -132,3 +132,17 @@ def test_person_can_say_im_fine():
     e.start(0)
     e.on_self_ok(5, "device")
     assert e.step == Step.RESOLVED and "I'm fine" in e.resolution
+
+
+def test_notifier_never_dials_fictional_or_unlisted_numbers(monkeypatch):
+    from kettle.cloud.notify import Notifier
+    for k in ("TWILIO_AUTH_TOKEN", "TWILIO_API_KEY", "KETTLE_TWILIO_PROFILE"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setenv("TWILIO_ACCOUNT_SID", "ACtest")
+    monkeypatch.setenv("TWILIO_AUTH_TOKEN", "x")
+    monkeypatch.setenv("TWILIO_FROM", "+18255550100")
+    n = Notifier()
+    assert n.real("+14035550000") and not n.real("+15875550142") and not n.real(None)
+    monkeypatch.setenv("KETTLE_TWILIO_ONLY", "+14035550000")
+    n = Notifier()
+    assert n.real("+14035550000") and not n.real("+14035559999")

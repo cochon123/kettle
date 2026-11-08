@@ -143,6 +143,18 @@ class Escalation:
                     for m in self._family()]
         return []
 
+    def advance(self, now: float) -> list[dict]:
+        """Take the next step right away instead of waiting for its timer (presenter mode)."""
+        if not self.active:
+            return []
+        if self.step == Step.CHECK_SELF:
+            self._log(now, "self", f"No answer from {self.person}.")
+            return self._ask_next_neighbour(now)
+        if self.step in (Step.ASK_NEIGHBOUR, Step.NEIGHBOUR_GOING):
+            names = ", ".join(m.name for m in self.circle if m.id in self.asked and m.role == "neighbour")
+            return self._ask_family(now, f"No answer from {names or 'the neighbours'}.")
+        return []
+
     def on_activity(self, now: float, label: str, sentence: str | None = None) -> list[dict]:
         if not self.active:
             return []
@@ -153,7 +165,8 @@ class Escalation:
         if not self.active:
             return []
         how = {"device": f"pressed “I'm fine” on {self.p['poss']} Kettle",
-               "phone": f"answered the call: {self.p['is']} fine"}.get(via, via)
+               "phone": f"answered the call: {self.p['is']} fine",
+               "app": f"tapped “I'm fine” on {self.p['poss']} phone"}.get(via, via)
         return self._resolve(now, "self", f"{self.person} {how}.")
 
     def on_response(self, now: float, member_id: str, response: str) -> list[dict]:
@@ -248,9 +261,13 @@ class Escalation:
             return acts
         if self.step in (Step.ASK_FAMILY, Step.WELFARE):
             return acts
+        return acts + self._ask_family(now, "No neighbour could go.")
+
+    def _ask_family(self, now: float, why: str) -> list[dict]:
+        acts: list[dict] = []
         self.step, self.step_since = Step.ASK_FAMILY, now
         fam = self._family()
-        self._log(now, "family", f"No neighbour could go. Asking family: {', '.join(m.name for m in fam) or 'none listed'}.")
+        self._log(now, "family", f"{why} Asking family: {', '.join(m.name for m in fam) or 'none listed'}.")
         for m in fam:
             if m.id not in self.asked:
                 self.asked.append(m.id)

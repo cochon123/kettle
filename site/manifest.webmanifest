@@ -1,0 +1,14 @@
+{
+  "name": "Kettle",
+  "short_name": "Kettle",
+  "description": "A quiet “I'm okay” from the people you care about.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf6ee",
+  "theme_color": "#fbf6ee",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

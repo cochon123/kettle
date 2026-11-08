@@ -28,8 +28,10 @@ from pydantic import BaseModel
 from ..clock import Clock
 from .engine import Engine
 from .grid import Grid
-from .notify import Notifier
+from .notify import VOICE, Notifier
+from .relay import Relay
 from .store import Store
+from . import cards
 
 log = logging.getLogger("kettle.cloud")
 WEB = pathlib.Path(__file__).resolve().parents[2] / "web"
@@ -41,6 +43,8 @@ store = Store()
 grid = Grid()
 engine = Engine(clock, Notifier(), store, grid, demo=DEMO)
 engine.person_phone = {"margaret": os.getenv("KETTLE_MARGARET_PHONE")}
+relay = (Relay(engine, os.environ["KETTLE_SITE"], os.getenv("KETTLE_SITE_SECRET", ""))
+         if os.getenv("KETTLE_SITE") else None)
 
 
 @contextlib.asynccontextmanager
@@ -58,6 +62,8 @@ async def lifespan(app: FastAPI):
     if DEMO:
         await engine.demo_reset(os.getenv("KETTLE_DEMO_START", "6:30"))
     tasks = [asyncio.create_task(_ticker()), asyncio.create_task(grid.run()), asyncio.create_task(_context())]
+    if relay:
+        tasks.append(asyncio.create_task(relay.run()))
     yield
     for t in tasks:
         t.cancel()
@@ -336,6 +342,62 @@ async def demo_grid_alert():
     return {"ok": True}
 
 
+class ShowIn(BaseModel):
+    usual: str = "8:30"
+    phones: dict[str, str] = {}
+    call: bool = False
+
+
+@app.post("/api/demo/show/setup")
+async def demo_show_setup(s: ShowIn):
+    """Presenter mode (python -m kettle show): no timers; each step happens when the presenter asks."""
+    try:
+        return await engine.show_setup("margaret", s.usual, s.phones, s.call)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+
+@app.post("/api/demo/show/{step}")
+async def demo_show_step(step: str):
+    """step: next | reset | ask_self | ask_neighbour | ask_family | tea"""
+    try:
+        return await engine.show_step(step)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+
+@app.get("/api/demo/show")
+async def demo_show_state():
+    return engine.show_state()
+
+
+# ---------------------------------------------------------------------- phone app (same API as the Vercel site)
+@app.get("/api/p/config")
+async def phone_config():
+    return {"mode": "local", "characters": cards.CHARACTERS, "relay": relay.status() if relay else None}
+
+
+@app.get("/api/p/me")
+async def phone_me(c: str):
+    try:
+        return cards.card(engine, c)
+    except KeyError:
+        raise HTTPException(404, "unknown character")
+
+
+class ActIn(BaseModel):
+    c: str
+    action: str
+    ref: dict | None = None
+
+
+@app.post("/api/p/act")
+async def phone_act(a: ActIn):
+    r = await cards.act(engine, a.c, a.action, a.ref)
+    await engine.broadcast()
+    return r
+
+
 # ---------------------------------------------------------------------- Twilio voice webhook
 @app.post("/twilio/gather/{home_id}")
 async def twilio_gather(home_id: str, Digits: str = Form("")):
@@ -344,7 +406,7 @@ async def twilio_gather(home_id: str, Digits: str = Form("")):
         say = "Thank you. We'll let your circle know you're fine. Have a lovely day."
     else:
         say = "Okay. If you're fine, press the glowing button on your Kettle."
-    return Response(f"<Response><Say>{say}</Say></Response>", media_type="text/xml")
+    return Response(f'<Response><Say voice="{VOICE}">{say}</Say></Response>', media_type="text/xml")
 
 
 # ---------------------------------------------------------------------- static
@@ -353,6 +415,15 @@ async def root():
     return RedirectResponse("/stage/")
 
 
+@app.get("/circle/")
+async def circle_redirect(m: str | None = None, join: str | None = None):
+    """The old circle app; the redesigned phone app lives at /phone/ (and on the Vercel site)."""
+    if join is not None or not m:
+        return RedirectResponse("/circle/classic.html" + (f"?join={join}" if join is not None else ""))
+    return RedirectResponse(f"/phone/?c={m}")
+
+
+app.mount("/phone", StaticFiles(directory=WEB.parent / "site", html=True), name="phone")
 for name in ("stage", "circle", "hub", "shared", "deck"):
     d = WEB / name
     d.mkdir(parents=True, exist_ok=True)
