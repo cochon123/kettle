@@ -90,6 +90,7 @@ data/                             real AESO / ECCC data and derived REFIT result
 scripts/fetch_real_data.py        re-fetches the AESO + ECCC data
 scripts/preflight.py              pre-show check: everything green before you go on stage
 scripts/snap.py                   real-time headless-Chrome screenshots of the UIs
+video/                            the 2:48 submission film, built as code: real data, real screens (see video/README.md)
 docs/                             architecture, demo script, Q&A, accessibility, pilot kit + consent form, hardware,
                                   data sources, AI disclosure, Devpost draft
 ```
